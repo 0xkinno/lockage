@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-10-20T12:35:29.341Z",
+  "tests": {
+    "total": 68,
+    "passed": 68,
+    "failed": 0,
+    "fuzzRunsPerProperty": 10000,
+    "twinVectors": 10000
+  },
+  "census": null,
+  "controlSet": null,
+  "drift": null,
+  "counterfactual": null,
+  "challengeWindowSeconds": null,
+  "envelopeVerification": null,
+  "hypercoreSnapshot": null,
+  "deployments": {
+    "contractCount": 0,
+    "totalDeployFeeWei": "0",
+    "contracts": {}
+  },
+  "costs": null,
+  "keeper": null
+}

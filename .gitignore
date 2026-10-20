@@ -13,3 +13,7 @@ test-results/
 playwright-report/
 .vercel/
 next-env.d.ts
+data/census-addresses.json
+data/census-scan.log
+.next-dev.log
+.shots/

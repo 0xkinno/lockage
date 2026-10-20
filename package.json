@@ -1,0 +1,49 @@
+{
+  "name": "lockage",
+  "version": "0.1.0",
+  "private": true,
+  "author": "0xkinno",
+  "license": "MIT",
+  "description": "LOCKAGE tells a builder, before launch on Ascend, whether the token can ever reach HyperCore, and keeps holders on the one bridge route that is still real.",
+  "scripts": {
+    "dev": "next dev -p 3107",
+    "build": "next build",
+    "start": "next start -p 3107",
+    "typecheck": "tsc --noEmit",
+    "test:contracts": "node scripts/forge.mjs test",
+    "test:twin": "tsx --test tests/envelope.test.ts",
+    "test:ui": "playwright test",
+    "check:copy": "tsx scripts/check-copy.ts",
+    "facts": "tsx scripts/facts.ts",
+    "census": "tsx scripts/census.ts",
+    "keeper": "tsx scripts/lockkeeper.ts",
+    "deploy": "tsx scripts/deploy.ts",
+    "experiment:drift": "tsx scripts/experiment-drift.ts",
+    "verify:envelope": "tsx scripts/verify-envelope.ts",
+    "balances": "tsx scripts/balances.ts"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.104.5",
+    "clsx": "^2.1.1",
+    "motion": "^14.4.0",
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "viem": "^2.57.7",
+    "wagmi": "^2.19.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "dotenv": "^18.0.8",
+    "postcss": "^8.5.31",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  },
+  "type": "module"
+}
