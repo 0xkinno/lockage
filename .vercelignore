@@ -1,0 +1,12 @@
+/.tools
+/reference
+/node_modules
+/.next
+/lib
+/out
+/cache
+/test-results
+/.shots
+/data/census-addresses.json
+/data/census.json
+/contracts
