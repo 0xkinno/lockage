@@ -1,0 +1,15 @@
+reference/
+.tools/
+.env
+.env.*
+!.env.example
+out/
+cache/
+broadcast/
+node_modules/
+.next/
+*.tsbuildinfo
+test-results/
+playwright-report/
+.vercel/
+next-env.d.ts

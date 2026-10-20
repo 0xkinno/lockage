@@ -1,0 +1,20 @@
+[profile.default]
+src = "contracts/src"
+test = "contracts/test"
+script = "contracts/script"
+out = "out"
+cache_path = "cache"
+libs = ["lib"]
+solc_version = "0.8.28"
+evm_version = "paris"
+optimizer = true
+optimizer_runs = 200
+bytecode_hash = "none"
+fs_permissions = [{ access = "read", path = "./data" }]
+
+[fuzz]
+runs = 10000
+
+[rpc_endpoints]
+elysium = "https://testnet-rpc.elysium.kinetiq.xyz"
+hyperevm = "https://rpc.hyperliquid-testnet.xyz/evm"

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Rejects any commit message carrying AI-assistant attribution. Author: 0xkinno.
+if grep -qiE 'co-authored-by:.*(claude|anthropic)|claude-session:|generated with.*claude' "$1"; then
+  echo "commit rejected: attribution trailer found. Only 0xkinno is author." >&2
+  exit 1
+fi
