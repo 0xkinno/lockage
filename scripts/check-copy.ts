@@ -11,7 +11,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const ROOTS = ["README.md", "docs", "src", "scripts", "contracts", "tests", ".github", ".githooks", "data/wallets.json", "package.json", "foundry.toml"];
-const SKIP = new Set(["node_modules", ".next", "out", "cache", "lib", ".tools", "broadcast", "reference", "FACTS.json", "census-public.json", "census.json", "census-addresses.json", "envelope-vectors.json", "artifacts.json", "abi.ts", "spotMeta-testnet.json", "check-copy.ts"]);
+const SKIP = new Set(["node_modules", ".next", "out", "cache", "lib", ".tools", "broadcast", "reference", "FACTS.json", "census-public.json", "census.json", "census-addresses.json", "envelope-vectors.json", "artifacts.json", "abi.ts", "spotMeta-testnet.json", "check-copy.ts", "ui.spec.ts"]);
 const EXT = /\.(md|ts|tsx|sol|json|yml|yaml|mjs|css|toml)$/;
 const BANNED_WORDS = ["revolutionary", "seamless", "cutting-edge", "world-class", "military-grade", "zero-trust", "nanosecond", "paradigm"];
 const EM = /[—–]/;

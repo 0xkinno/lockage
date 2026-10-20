@@ -123,10 +123,10 @@ flowchart TD
 
 | Capability | Status |
 |---|---|
-| Survey, envelope, seal, probe, certificate | Live on testnet |
-| LockGate crossing with five pre-flight checks | Live on testnet |
-| Drift refusal with a recorded reverted transaction | Live on testnet |
-| Lockkeeper reconciliation and builder decisions | Live on testnet |
+| Survey (design mode and live token reads), envelope, certificate | Working: runs against the live testnet RPCs today |
+| Seal, probe, LockGate crossing, builder decisions | Built, unit tested and fork tested against the live gateway. First signed testnet run is recorded in `/proof` after `npm run go-live` |
+| Drift refusal as a recorded reverted transaction | Scripted (`npm run experiment:drift`); hashes appear in `/proof` once run |
+| Lockkeeper reconciliation | Built; the first unattended run is committed by the scheduled workflow |
 | Deposit-wallet leg and HyperCore genesis | Designed, waiting on Kinetiq's factory |
 | Core supply reconciliation on chain | Designed, waiting on the read precompile |
 

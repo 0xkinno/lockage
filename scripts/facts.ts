@@ -31,7 +31,6 @@ const control = readJson<Record<string, unknown>>("data/control-set.json");
 const deployments = readJson<{ contracts: Record<string, { gasUsed: string; feeWei: string; deployedOn: string }> }>("data/deployments.json");
 const ledger = readJson<{ lastRun: string; sweeps: number; decisionsAsked: number; findings: unknown[] }>("data/ledger.json");
 const envVerify = readJson<Record<string, unknown>>("data/envelope-verification.json");
-const costs = readJson<Record<string, unknown>>("data/costs.json");
 const challenge = readJson<{ seconds: number }>("data/challenge-window.json");
 const spot = readJson<{ ranOn: string; tokens: number }>("data/spot-snapshot.json");
 
@@ -40,6 +39,13 @@ const exps = existsSync(expDir) ? readdirSync(expDir).filter((f) => f.endsWith("
 const latest = (prefix: string) => {
   const f = exps.filter((x) => x.startsWith(prefix)).pop();
   return f ? { file: f, ...readJson<Record<string, unknown>>(`${expDir}/${f}`) } : null;
+};
+
+const driftRun = latest("drift-") as null | { steps?: { step: string; gasUsed?: string; chain: string }[] };
+const setupRun = readJson<{ steps: { step: string; gasUsed?: string; chain: string }[] }>("data/setup.json");
+const costs = {
+  note: "Gas used per step, read from receipts of dated runs. Fee in HYPE = gas x gas price at the time (Elysium is 0.1 gwei at the last check).",
+  perStep: [...(setupRun?.steps ?? []), ...(driftRun?.steps ?? [])].filter((x) => x.gasUsed).map((x) => ({ step: x.step, chain: x.chain, gasUsed: Number(x.gasUsed) })),
 };
 
 const facts = {
@@ -59,7 +65,7 @@ const facts = {
         contracts: deployments.contracts,
       }
     : null,
-  costs,
+  costs: costs.perStep.length ? costs : null,
   keeper: ledger ? { lastRun: ledger.lastRun, sweeps: ledger.sweeps, decisionsAsked: ledger.decisionsAsked, openFindings: ledger.findings.length } : null,
 };
 writeFileSync("docs/FACTS.json", JSON.stringify(facts, null, 2));
