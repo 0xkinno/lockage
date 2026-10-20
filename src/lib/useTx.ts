@@ -48,8 +48,12 @@ export function useTx() {
         if (!address) throw new Error("Connect a wallet first.");
         setState({ status: "simulating" });
         await switchChainAsync({ chainId: chainId as 99801 | 998 }).catch(() => undefined);
+        let gas: bigint | undefined = req.force?.gas;
         if (!req.force && ely && chainId === elysiumTestnet.id) {
           await ely.simulateContract({ account: address, address: req.address, abi: req.abi, functionName: req.functionName, args: req.args as never, value: req.value });
+          // Arbitrum-style chains: the L2 to L1 send costs vary with tree state, so leave 50% headroom over the estimate
+          const est = await ely.estimateContractGas({ account: address, address: req.address, abi: req.abi, functionName: req.functionName, args: req.args as never, value: req.value });
+          gas = (est * 3n) / 2n;
         }
         setState({ status: "wallet" });
         const hash = await writeContractAsync({
@@ -59,7 +63,7 @@ export function useTx() {
           args: req.args as never,
           value: req.value,
           chainId,
-          ...(req.force ? { gas: req.force.gas } : {}),
+          ...(gas ? { gas } : {}),
         } as never);
         setState({ status: "pending", hash });
         const rc = await ely?.waitForTransactionReceipt({ hash, timeout: 90_000 });

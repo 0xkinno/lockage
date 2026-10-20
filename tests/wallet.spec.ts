@@ -111,18 +111,27 @@ test.describe("transaction flow, end to end on testnet", () => {
     await page.getByTestId("claim").click().catch(() => undefined);
     await page.getByTestId("in-amount").fill("10");
     const rename = page.getByTestId("rename");
-    // make sure the token is in the drifted state
+    // make sure the token is in the drifted state, decided from the chain and not from the page
+    const symbol = () => pub.readContract({ address: dep.contracts.DriftToken.address as Hex, abi: [{ type: "function", name: "symbol", stateMutability: "view", inputs: [], outputs: [{ type: "string" }] }] as const, functionName: "symbol" });
     const identity = page.locator('[data-check="identity"]');
-    if ((await identity.getAttribute("data-ok")) === "true") {
+    if (!(await symbol()).endsWith("2")) {
       await rename.click();
-      await expect(identity).toHaveAttribute("data-ok", "false", { timeout: 90_000 });
+      await expect.poll(symbol, { timeout: 90_000 }).toMatch(/2$/);
     }
+    await page.reload({ waitUntil: "networkidle" });
+    // the wallet already authorised this site, so wagmi reconnects by itself after a reload
+    await expect(page.getByTestId("wallet-address")).toBeVisible({ timeout: 30_000 });
+    await page.getByTestId("pick-drift").click();
+    await expect(identity).toHaveAttribute("data-ok", "false", { timeout: 60_000 });
     await page.getByTestId("approve").click();
     await page.getByTestId("cross").click();
     await expect(page.getByTestId("tx-error").last()).toContainText(/MetadataDrift|MirrorIdentityDrift/, { timeout: 60_000 });
     await page.getByTestId("force-cross").click();
-    await expect(page.getByTestId("tx-status").last()).toHaveAttribute("data-status", "error", { timeout: 120_000 });
-    const hash = (await page.getByTestId("tx-link").last().getAttribute("title")) as Hex;
+    // the simulation error is also an "error" status, so wait for the forced transaction's own hash
+    const forcedLink = page.getByTestId("tx-status").last().getByTestId("tx-link");
+    await expect(forcedLink).toBeVisible({ timeout: 120_000 });
+    await expect(page.getByTestId("tx-status").last()).toContainText("Reverted", { timeout: 120_000 });
+    const hash = (await forcedLink.getAttribute("title")) as Hex;
     const rc = await pub.getTransactionReceipt({ hash });
     expect(rc.status).toBe("reverted");
     expect(w.hashes).toContain(hash);

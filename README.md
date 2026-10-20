@@ -1,6 +1,6 @@
 # LOCKAGE
 
-[![CI](https://img.shields.io/badge/CI-passing-C8F04A?style=flat-square&labelColor=12140C)](.github/workflows/ci.yml) [![License](https://img.shields.io/badge/license-MIT-C8F04A?style=flat-square&labelColor=12140C)](LICENSE) [![Network](https://img.shields.io/badge/Elysium_testnet-99801-C8F04A?style=flat-square&labelColor=12140C)](docs/EVIDENCE.md)
+[![Live](https://img.shields.io/badge/live-vercel-C8F04A?style=flat-square&labelColor=12140C)](https://lockage-kinnoskis-projects.vercel.app) [![CI](https://img.shields.io/badge/CI-passing-C8F04A?style=flat-square&labelColor=12140C)](.github/workflows/ci.yml) [![License](https://img.shields.io/badge/license-MIT-C8F04A?style=flat-square&labelColor=12140C)](LICENSE) [![Network](https://img.shields.io/badge/Elysium_testnet-99801-C8F04A?style=flat-square&labelColor=12140C)](docs/EVIDENCE.md)
 
 LOCKAGE tells you, before you launch on Ascend, whether your token can ever reach a HyperCore orderbook, and keeps your holders on the one bridge route that is still real.
 
@@ -10,8 +10,8 @@ Ines is launching her first token at 23:10 and types a supply of one trillion wi
 
 | | |
 |---|---|
-| Live | set by the Vercel deployment (see `docs/SUBMISSION_ASCEND.md`) |
-| For judges | `/judge` |
+| Live | https://lockage-kinnoskis-projects.vercel.app |
+| For judges | https://lockage-kinnoskis-projects.vercel.app/judge |
 | Video | recorded by the team, script in `docs/SUBMISSION_ASCEND.md` |
 | Contracts | `/proof` and `docs/EVIDENCE.md` |
 | Census | `/census` |
@@ -146,7 +146,7 @@ All numbers below are rendered from `docs/FACTS.json`.
 | Owner mint found | 119 |
 | Mutable metadata found | 0 |
 | Challenge window (seconds) | not run yet |
-| Lockkeeper sweeps run | 1 |
+| Lockkeeper sweeps run | 2 |
 | Decisions asked of the builder | 2 |
 | HyperCore testnet tokens used as ground truth | 1,673 |
 

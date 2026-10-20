@@ -6,7 +6,7 @@
 - [x] `.gitignore` covers reference/, .env*, out/, cache/, broadcast/, node_modules/
 - [x] Reference docs saved to `reference/docs/`; `reference/BANNED_NAMES.txt` written (reference repos are not cloned: not needed to build)
 - [x] `RULES_EXTRACT.md`; deadline AM or PM still to confirm with the organiser (UNKNOWN)
-- [ ] Create GitHub repo `0xkinno/lockage` and push (owner action)
+- [x] Pushed to https://github.com/0xkinno/lockage, all commits authored by 0xkinno
 
 ## Phase 1. Discovery
 - [x] Foundry installed locally; demo tokens; LockSurvey; envelope fuzz and 10,000-vector twin equality
@@ -51,6 +51,8 @@
 - [x] Final red-team round after the live run (REDTEAM_LOG.md round 2)
 
 ## Phase 7. Ship
+- [x] Vercel production deployment with public env vars: https://lockage-kinnoskis-projects.vercel.app
+- [x] Full Playwright suite (6 viewports, axe, fonts, overlap, real wallet transactions) run against the Vercel link
 - [x] README rendered from FACTS; PROOF.md; MILESTONES.md; PROGRESS.md
 - [x] SUBMISSION_ASCEND.md mirroring the six Discord fields
 - [ ] Video recorded (owner), X thread, submission ticket, tag, freeze (owner actions, never done without asking)

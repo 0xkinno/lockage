@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-10-20T14:30:52.909Z",
-  "sweeps": 1,
+  "lastRun": "2026-10-20T15:36:49.339Z",
+  "sweeps": 2,
   "decisionsAsked": 2,
   "askedHashes": [
     "0x7a7fb794cbb66473be4af7ee8bd757ea73097d9d6272b3fb4f157da37d9359ac",
@@ -27,13 +27,13 @@
       "token": "0xa16b878dA523e42892455704aB34dbD98b488462",
       "symbol": "LSEAL",
       "sealedBy": "0x7c8A5a8b84a9A552c4A964dDe23266fA9A6Aa344",
-      "escrow": "100000000000000000000",
+      "escrow": "600000000000000000000",
       "mirrorSupply": "0",
-      "pending": "100000000000000000000",
-      "pendingNote": "1 outbound message for this mirror, some still waiting",
+      "pending": "600000000000000000000",
+      "pendingNote": "6 outbound messages for this mirror, some still waiting",
       "status": "in-flight",
       "findings": [],
-      "checkedAt": "2026-10-20T14:30:36.953Z"
+      "checkedAt": "2026-10-20T15:36:32.221Z"
     },
     {
       "token": "0xC63edc7F5B55f7C1ad905e949e18E5552f10056b",
@@ -56,7 +56,7 @@
           "hash": "0xa0dfc4877e96f9fa1311d1a3814baaf469c94c776016e4cf20ecef027c2094ba"
         }
       ],
-      "checkedAt": "2026-10-20T14:30:41.149Z"
+      "checkedAt": "2026-10-20T15:36:39.405Z"
     },
     {
       "token": "0xA302F4331b6bE3013B5aCbb7eF0C093dCFcb91BB",
@@ -68,7 +68,7 @@
       "pendingNote": "0 outbound messages for this mirror, all executed",
       "status": "reconciled",
       "findings": [],
-      "checkedAt": "2026-10-20T14:30:46.345Z"
+      "checkedAt": "2026-10-20T15:36:43.177Z"
     },
     {
       "token": "0xe1bcCD5E9a0A800D7337A534E4B27A24E5498742",
@@ -80,7 +80,7 @@
       "pendingNote": "0 outbound messages for this mirror, all executed",
       "status": "reconciled",
       "findings": [],
-      "checkedAt": "2026-10-20T14:30:48.793Z"
+      "checkedAt": "2026-10-20T15:36:46.062Z"
     },
     {
       "token": "0xA9539FD9c256F8b19f3FD4759EDA9C90edBBBE7C",
@@ -92,12 +92,17 @@
       "pendingNote": "Mirror not deployed on HyperEVM yet.",
       "status": "abstain",
       "findings": [],
-      "checkedAt": "2026-10-20T14:30:52.471Z"
+      "checkedAt": "2026-10-20T15:36:48.926Z"
     }
   ],
   "history": [
     {
       "at": "2026-10-20T14:30:52.909Z",
+      "tokens": 5,
+      "open": 2
+    },
+    {
+      "at": "2026-10-20T15:36:49.339Z",
       "tokens": 5,
       "open": 2
     }

@@ -3,7 +3,7 @@
 Fill the six fields below. Items in angle brackets are supplied by the team at submission time.
 
 ## 1. Project and links
-LOCKAGE. X: <handle>. Website: <Vercel URL>. GitHub: <https://github.com/0xkinno/lockage>. Docs: `docs/DISCOVERY.md`.
+LOCKAGE. X: <handle>. Website: https://lockage-kinnoskis-projects.vercel.app. GitHub: https://github.com/0xkinno/lockage. Docs: `docs/DISCOVERY.md`.
 
 ## 2. Overview
 LOCKAGE tells a builder, before launch on Ascend, whether the token can ever reach a HyperCore orderbook, and walks holders across to HyperEVM only on the route that is still the real one. It is for builders launching on Ascend and for their holders. The problem: the third rung of Ascend's ladder is a one-shot, irreversible issuer ceremony gated by facts fixed at launch (decimals, supply, mintability, transfer tax, metadata mutability). Nobody reads them back at the moment they are cheap to fix. Why use it: it computes the graduation envelope exactly as HyperCore will, seals the bridge identity, refuses drifted crossings, and reconciles escrow against the mirror unattended.
