@@ -1,8 +1,9 @@
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig } from "@playwright/test";
 
-// keep browsers inside the project folder
-process.env.PLAYWRIGHT_BROWSERS_PATH = resolve(".tools/pw");
+// locally, keep browsers inside the project folder; on CI use the default install location
+if (existsSync(resolve(".tools/pw"))) process.env.PLAYWRIGHT_BROWSERS_PATH = resolve(".tools/pw");
 
 const PORT = process.env.TEST_PORT ?? "3107";
 

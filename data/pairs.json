@@ -1,0 +1,50 @@
+{
+  "ranOn": "2026-10-20",
+  "rows": [
+    {
+      "contract": "SealedToken",
+      "symbol": "LSEAL",
+      "token": "0xa16b878da523e42892455704ab34dbd98b488462",
+      "mirror": "0xb89923F73c7B2562201E1452996a2EB0A5FFeD60",
+      "wallet": "0x0A84c16fF667FB4CdaC0A6Cd61d4d6171E3b1bd7",
+      "routed": true,
+      "mirrorDeployed": true
+    },
+    {
+      "contract": "DriftToken",
+      "symbol": "LDRIFT2",
+      "token": "0xc63edc7f5b55f7c1ad905e949e18e5552f10056b",
+      "mirror": "0xe1089bD7953De63a68dc319588d63A3030af9D3D",
+      "wallet": "0xaE8cf79EE5088B263670C2d056a2F59c9E6c2a30",
+      "routed": true,
+      "mirrorDeployed": true
+    },
+    {
+      "contract": "TaxToken",
+      "symbol": "LTAX",
+      "token": "0xa302f4331b6be3013b5acbb7ef0c093dcfcb91bb",
+      "mirror": "0x3553D9DAB2c1De0f7b38bFca664cC1f028A430df",
+      "wallet": "0x0d2FF591F807435197B005a83A1964851Ef27275",
+      "routed": true,
+      "mirrorDeployed": true
+    },
+    {
+      "contract": "MintToken",
+      "symbol": "LMINT",
+      "token": "0xe1bccd5e9a0a800d7337a534e4b27a24e5498742",
+      "mirror": "0x3A39f45e5691631D86F704F92Ee4f58F470305CA",
+      "wallet": "0x40D564C05F12778040057ed063e996C579251EF7",
+      "routed": true,
+      "mirrorDeployed": true
+    },
+    {
+      "contract": "OversizeToken",
+      "symbol": "LBIG",
+      "token": "0xa9539fd9c256f8b19f3fd4759eda9c90edbbbe7c",
+      "mirror": "0xcB7fCF2fdABc7D212C082a3098f1ED22E998dF86",
+      "wallet": null,
+      "routed": false,
+      "mirrorDeployed": false
+    }
+  ]
+}

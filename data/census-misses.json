@@ -1,10 +1,5 @@
 [
   {
-    "address": "0x26aA352bD4324AA507C924AF9EdD65B2c7BDC1c2",
-    "symbol": "HEX",
-    "note": "mint: heuristic flagged it, simulation did not prove it (a different function name or guard may be in use)"
-  },
-  {
     "address": "0x4b02aBDeb08b58A1309491c133A07909aCD81a13",
     "symbol": "ELO",
     "note": "mint: heuristic flagged it, simulation did not prove it (a different function name or guard may be in use)"
@@ -22,11 +17,6 @@
   {
     "address": "0x05088Bd24EF839baf9231ecCe615755748F41154",
     "symbol": "THINK",
-    "note": "mint: heuristic flagged it, simulation did not prove it (a different function name or guard may be in use)"
-  },
-  {
-    "address": "0x989Ebb0c8b889BB4FcaD3487D832dF8be69c497B",
-    "symbol": "mUSDC",
     "note": "mint: heuristic flagged it, simulation did not prove it (a different function name or guard may be in use)"
   }
 ]

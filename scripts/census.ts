@@ -141,10 +141,10 @@ async function analyze() {
       const a = chunk[j];
       const r = res.slice(j * 7, j * 7 + 7);
       const ok = (x: { status: string; result?: unknown }) => (x.status === "success" ? (x.result as unknown) : null);
-      const name = ok(r[0]) as string | null;
-      const symbol = ok(r[1]) as string | null;
-      const decimals = ok(r[2]) as number | null;
-      const supply = ok(r[3]) as bigint | null;
+      let name = ok(r[0]) as string | null;
+      let symbol = ok(r[1]) as string | null;
+      let decimals = ok(r[2]) as number | null;
+      let supply = ok(r[3]) as bigint | null;
       const owner = ok(r[4]) as Address | null;
       const wallet = ok(r[5]) as Address | null;
       const mirror = ok(r[6]) as Address | null;
@@ -154,8 +154,21 @@ async function analyze() {
         mirror, owner, proxyImpl: null, logs: book.tokens[a].logs,
       };
       if (decimals === null || supply === null || name === null || symbol === null) {
-        rows.push(base);
-        continue;
+        // a failed multicall slot may be a transient RPC error, so ask again one call at a time before declaring the token invalid
+        const again = async <T,>(fn: string) => retry(() => ely.readContract({ address: a, abi: erc20Abi, functionName: fn } as never) as Promise<T>, 3).catch(() => null);
+        const [n2, s2, d2, t2] = await Promise.all([again<string>("name"), again<string>("symbol"), again<number>("decimals"), again<bigint>("totalSupply")]);
+        if (n2 === null || s2 === null || d2 === null || t2 === null) {
+          rows.push(base);
+          continue;
+        }
+        base.name = n2;
+        base.symbol = s2;
+        base.decimals = Number(d2);
+        base.totalSupply = t2.toString();
+        decimals = Number(d2);
+        supply = t2;
+        name = n2;
+        symbol = s2;
       }
       const code = (codes[j] ?? "0x") as Hex;
       base.codeSize = (code.length - 2) / 2;

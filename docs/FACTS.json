@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T15:37:34.297Z",
+  "generatedAt": "2026-10-20T16:21:08.977Z",
   "tests": {
     "total": 68,
     "passed": 68,
@@ -16,25 +16,25 @@
       "exactlyOneTransfer": 850832,
       "exactlyTwoTransfers": 242619
     },
-    "surveyed": 3081,
-    "notErc20Metadata": 228,
-    "canGraduateAsIs": 2263,
-    "graduatesByMathAlone": 2489,
-    "blockedBySupplyOrDecimals": 592,
+    "surveyed": 3249,
+    "notErc20Metadata": 60,
+    "canGraduateAsIs": 2390,
+    "graduatesByMathAlone": 2623,
+    "blockedBySupplyOrDecimals": 626,
     "mutableMetadata": 0,
-    "mintable": 119,
+    "mintable": 122,
     "taxOrRebaseLikely": 3,
-    "unreadableProxy": 224,
-    "transferNotMeasured": 3081,
-    "withBridgeWallet": 964
+    "unreadableProxy": 229,
+    "transferNotMeasured": 3249,
+    "withBridgeWallet": 1002
   },
   "controlSet": {
     "ranOn": "2026-10-20",
     "method": "ground truth by execution: eth_call as owner(); one-sided (a revert does not prove absence)",
     "sampled": 30,
     "mint": {
-      "truePositives": 9,
-      "falsePositives": 6,
+      "truePositives": 11,
+      "falsePositives": 4,
       "falseNegatives": 0
     },
     "rename": {
@@ -56,7 +56,7 @@
         "symbol": "HEX",
         "heuristicMint": true,
         "heuristicRename": false,
-        "provenMint": false,
+        "provenMint": true,
         "provenRename": false
       },
       {
@@ -120,7 +120,7 @@
         "symbol": "mUSDC",
         "heuristicMint": true,
         "heuristicRename": false,
-        "provenMint": false,
+        "provenMint": true,
         "provenRename": false
       },
       {

@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from "node:fs";
 import { config } from "dotenv";
 import { createPublicClient, formatEther, http, type Hex } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
+import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { expect, test } from "@playwright/test";
 import { elysiumTestnet } from "../src/lib/chains";
 import { installWallet } from "./helpers/mockWallet";
@@ -12,6 +12,8 @@ test.use({ viewport: { width: 1366, height: 900 } });
 const dep = existsSync("data/deployments.json") ? (JSON.parse(readFileSync("data/deployments.json", "utf8")) as { contracts: Record<string, { address: string }> }) : { contracts: {} };
 const deployed = !!dep.contracts.LockGate;
 const pub = createPublicClient({ chain: elysiumTestnet, transport: http() });
+// CI has no secrets: connection tests use a throwaway key, and the funded transaction tests skip themselves
+const walletKey = (k?: string) => (k as Hex | undefined) ?? generatePrivateKey();
 const short = (a: string) => `${a.slice(0, 6)}…${a.slice(-4)}`;
 
 async function funded(pk?: string, min = 0.02) {
@@ -22,7 +24,7 @@ async function funded(pk?: string, min = 0.02) {
 
 test.describe("wallet connection", () => {
   test("EIP-6963 wallet is discovered, connects, shows the pill, and disconnects with the power icon", async ({ page }) => {
-    const w = await installWallet(page, process.env.HOLDER_PK as Hex);
+    const w = await installWallet(page, walletKey(process.env.HOLDER_PK));
     await page.goto("/", { waitUntil: "networkidle" });
     await page.getByTestId("connect-wallet").click();
     const modal = page.getByTestId("wallet-modal");
@@ -37,7 +39,7 @@ test.describe("wallet connection", () => {
   });
 
   test("a wallet on another chain is asked to switch to Elysium", async ({ page }) => {
-    const w = await installWallet(page, process.env.HOLDER_PK as Hex, { startChain: 998 });
+    const w = await installWallet(page, walletKey(process.env.HOLDER_PK), { startChain: 998 });
     await page.goto("/", { waitUntil: "networkidle" });
     await page.getByTestId("connect-wallet").click();
     await page.getByTestId("wallet-modal").getByRole("button", { name: /Test Wallet/ }).click();
@@ -48,7 +50,7 @@ test.describe("wallet connection", () => {
   });
 
   test("modal closes with Escape and shows chain guidance", async ({ page }) => {
-    await installWallet(page, process.env.HOLDER_PK as Hex);
+    await installWallet(page, walletKey(process.env.HOLDER_PK));
     await page.goto("/", { waitUntil: "networkidle" });
     await page.getByTestId("connect-wallet").click();
     await expect(page.getByTestId("wallet-modal")).toContainText("99801");
@@ -57,7 +59,7 @@ test.describe("wallet connection", () => {
   });
 
   test("connection survives a page navigation and exposes the address on /cross", async ({ page }) => {
-    const w = await installWallet(page, process.env.HOLDER_PK as Hex);
+    const w = await installWallet(page, walletKey(process.env.HOLDER_PK));
     await page.goto("/", { waitUntil: "networkidle" });
     await page.getByTestId("connect-wallet").click();
     await page.getByTestId("wallet-modal").getByRole("button", { name: /Test Wallet/ }).click();
@@ -72,7 +74,7 @@ test.describe("transaction flow, end to end on testnet", () => {
 
   test("holder claims, approves, crosses 100 LSEAL through LockGate", async ({ page }) => {
     test.skip(!(await funded(process.env.HOLDER_PK)), "holder wallet needs Elysium testnet HYPE");
-    const w = await installWallet(page, process.env.HOLDER_PK as Hex);
+    const w = await installWallet(page, walletKey(process.env.HOLDER_PK));
     await page.goto("/cross", { waitUntil: "networkidle" });
     await page.getByTestId("connect-wallet").click();
     await page.getByTestId("wallet-modal").getByRole("button", { name: /Test Wallet/ }).click();
@@ -102,7 +104,7 @@ test.describe("transaction flow, end to end on testnet", () => {
 
   test("renamed drift token is refused with a decoded error and the refusal is recorded on chain", async ({ page }) => {
     test.skip(!(await funded(process.env.DEPLOYER_PK)), "deployer wallet needs Elysium testnet HYPE");
-    const w = await installWallet(page, process.env.DEPLOYER_PK as Hex);
+    const w = await installWallet(page, walletKey(process.env.DEPLOYER_PK));
     await page.goto("/cross", { waitUntil: "networkidle" });
     await page.getByTestId("connect-wallet").click();
     await page.getByTestId("wallet-modal").getByRole("button", { name: /Test Wallet/ }).click();
@@ -139,7 +141,7 @@ test.describe("transaction flow, end to end on testnet", () => {
 
   test("builder seals, probes and opens the certificate", async ({ page }) => {
     test.skip(!(await funded(process.env.DEPLOYER_PK)), "deployer wallet needs Elysium testnet HYPE");
-    const w = await installWallet(page, process.env.DEPLOYER_PK as Hex);
+    const w = await installWallet(page, walletKey(process.env.DEPLOYER_PK));
     await page.goto(`/survey?token=${dep.contracts.SealedToken.address}`, { waitUntil: "networkidle" });
     await page.getByTestId("connect-wallet").click();
     await page.getByTestId("wallet-modal").getByRole("button", { name: /Test Wallet/ }).click();
@@ -159,7 +161,7 @@ test.describe("transaction flow, end to end on testnet", () => {
 
   test("keeper finds the drift, and the builder's acknowledgement is signed and bound to the finding", async ({ page }) => {
     test.skip(!(await funded(process.env.DEPLOYER_PK)), "deployer wallet needs Elysium testnet HYPE");
-    const w = await installWallet(page, process.env.DEPLOYER_PK as Hex);
+    const w = await installWallet(page, walletKey(process.env.DEPLOYER_PK));
     await page.goto("/keeper", { waitUntil: "networkidle" });
     await page.getByTestId("connect-wallet").click();
     await page.getByTestId("wallet-modal").getByRole("button", { name: /Test Wallet/ }).click();
