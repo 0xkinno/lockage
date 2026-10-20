@@ -1,0 +1,22 @@
+[
+  {
+    "address": "0x4b02aBDeb08b58A1309491c133A07909aCD81a13",
+    "symbol": "ELO",
+    "note": "mint: heuristic flagged it, simulation did not prove it (a different function name or guard may be in use)"
+  },
+  {
+    "address": "0xe83c3630CaB1c3d1d3B19A1F6eE393618C690C7b",
+    "symbol": "USDC",
+    "note": "mint: heuristic flagged it, simulation did not prove it (a different function name or guard may be in use)"
+  },
+  {
+    "address": "0x3E589626786A438CE395b17b118B5286227df1f2",
+    "symbol": "CHIMPS",
+    "note": "mint: heuristic flagged it, simulation did not prove it (a different function name or guard may be in use)"
+  },
+  {
+    "address": "0x05088Bd24EF839baf9231ecCe615755748F41154",
+    "symbol": "THINK",
+    "note": "mint: heuristic flagged it, simulation did not prove it (a different function name or guard may be in use)"
+  }
+]

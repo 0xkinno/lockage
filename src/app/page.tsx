@@ -21,10 +21,25 @@ export default function Home() {
 
   return (
     <>
-      {/* 1. HERO */}
-      <section className="pt-28 md:pt-36" aria-labelledby="hero-title">
-        <div className="wrap grid gap-8 lg:gap-12 lg:grid-cols-12 items-stretch">
-          <div className="lg:col-span-7 flex flex-col justify-center order-2 lg:order-1 py-2 lg:py-10">
+      {/* 1. HERO: the photograph sits behind the writing, full width, under a paper scrim */}
+      <section className="relative isolate overflow-hidden min-h-[900px] md:min-h-[1000px] lg:min-h-[860px] flex items-end lg:items-center" aria-labelledby="hero-title" data-testid="hero">
+        <div className="absolute inset-0 -z-10" data-testid="hero-image" aria-hidden={hasPhoto ? undefined : true}>
+          {hasPhoto ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src="/hero.png" alt="Stone canal locks climbing a hillside at dawn, a small vessel rising in the third chamber" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "62% 40%" }} />
+          ) : (
+            <HeroPlate />
+          )}
+          {/* scrim: solid paper behind the copy, fading to clear so the whole photograph stays in view */}
+          <div className="absolute inset-0 hidden lg:block" style={{ background: "linear-gradient(90deg, var(--paper) 0%, color-mix(in srgb, var(--paper) 94%, transparent) 30%, color-mix(in srgb, var(--paper) 70%, transparent) 48%, color-mix(in srgb, var(--paper) 18%, transparent) 70%, transparent 88%)" }} />
+          <div className="absolute inset-0 lg:hidden" style={{ background: "linear-gradient(180deg, color-mix(in srgb, var(--paper) 55%, transparent) 0%, transparent 16%, transparent 34%, color-mix(in srgb, var(--paper) 88%, transparent) 50%, var(--paper) 62%)" }} />
+          {/* soft edges into the page */}
+          <div className="absolute inset-x-0 bottom-0 h-40" style={{ background: "linear-gradient(180deg, transparent, var(--paper))" }} />
+          <div className="absolute inset-x-0 top-0 h-28" style={{ background: "linear-gradient(180deg, color-mix(in srgb, var(--paper) 70%, transparent), transparent)" }} />
+        </div>
+
+        <div className="wrap w-full pt-[420px] md:pt-[520px] pb-16 lg:pt-40 lg:pb-20">
+          <div className="max-w-[640px] lg:max-w-[700px]">
             <Reveal>
               <Label>For builders launching on Ascend</Label>
             </Reveal>
@@ -34,7 +49,7 @@ export default function Home() {
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-6 text-[18px] md:text-[20px] leading-[1.5] text-ink-2 max-w-xl">
+              <p className="mt-6 text-[18px] md:text-[20px] leading-[1.5] text-ink max-w-xl">
                 LOCKAGE reads the five things HyperCore will hold you to, before you press launch, and walks your holders across only on the route that is still real.
               </p>
             </Reveal>
@@ -60,24 +75,14 @@ export default function Home() {
               </div>
             </Reveal>
           </div>
-          <div className="lg:col-span-5 order-1 lg:order-2">
-            <div className="relative overflow-hidden rounded-[28px] border border-hairline h-[230px] sm:h-[300px] lg:h-full lg:min-h-[560px]" data-testid="hero-plate">
-              {hasPhoto ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src="/hero.png" alt="Stone canal locks climbing a hillside at dawn, a small vessel rising in the third chamber" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "63% 42%" }} />
-              ) : (
-                <HeroPlate />
-              )}
-              <div className="absolute left-4 bottom-4 chip chip-pass bg-paper/80 backdrop-blur" style={{ color: "var(--ink)" }}>
-                Testnet 99801
-              </div>
-            </div>
-          </div>
+        </div>
+        <div className="absolute right-4 bottom-4 md:right-8 md:bottom-8 chip bg-paper/80 backdrop-blur" style={{ color: "var(--ink)" }}>
+          Testnet 99801
         </div>
       </section>
 
       {/* 2. LADDER */}
-      <section className="mt-28 md:mt-40" aria-labelledby="ladder-title">
+      <section className="mt-12 md:mt-20" aria-labelledby="ladder-title">
         <div className="wrap">
           <Reveal>
             <SectionHead label="The ladder" title={<span id="ladder-title">Four rungs. The third decides the rest.</span>} sub="Ascend sells every project the same climb. The third rung is a one-shot ceremony whose parameters are permanent, and it is gated by facts you fixed at launch." />

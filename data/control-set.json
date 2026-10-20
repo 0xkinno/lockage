@@ -1,0 +1,257 @@
+{
+  "ranOn": "2026-10-20",
+  "method": "ground truth by execution: eth_call as owner(); one-sided (a revert does not prove absence)",
+  "sampled": 30,
+  "mint": {
+    "truePositives": 11,
+    "falsePositives": 4,
+    "falseNegatives": 0
+  },
+  "rename": {
+    "truePositives": 0,
+    "falsePositives": 0,
+    "falseNegatives": 0
+  },
+  "rows": [
+    {
+      "address": "0x7Bc461Ff75a29351ab993900c9Ac83dD9FC84293",
+      "symbol": "tUSD",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0x26aA352bD4324AA507C924AF9EdD65B2c7BDC1c2",
+      "symbol": "HEX",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0x4b02aBDeb08b58A1309491c133A07909aCD81a13",
+      "symbol": "ELO",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x82CEd8bA34731D28313BEcae9a30DE8c9A1A5d50",
+      "symbol": "tBURN",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0xD0B13C6545d3B49FD22Ad09238018Bce80e84507",
+      "symbol": "mUSDC",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0x9F1D3A6E37FEF12925Fab74f268772E3be53F877",
+      "symbol": "mHYPE",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0xe83c3630CaB1c3d1d3B19A1F6eE393618C690C7b",
+      "symbol": "USDC",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x3E589626786A438CE395b17b118B5286227df1f2",
+      "symbol": "CHIMPS",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x05088Bd24EF839baf9231ecCe615755748F41154",
+      "symbol": "THINK",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x989Ebb0c8b889BB4FcaD3487D832dF8be69c497B",
+      "symbol": "mUSDC",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0x4d571E23DbCF3E73BeC7233aDC2aDC8BCa98Fbb5",
+      "symbol": "ORBT",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0x6806FD924eb0D4B22860e187A19f0d0E611Bb046",
+      "symbol": "tVOL",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0xc64A08ec71489c1188F9b1BbB3957Fa944335ad4",
+      "symbol": "tSTOCK",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0x345A7D0b4Fa84B599Aca9C400C1916e7686Ffe71",
+      "symbol": "tUSDI",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0x0ac45e56e58d9B6948EF1277408C3FB0984ec6F3",
+      "symbol": "WBT",
+      "heuristicMint": true,
+      "heuristicRename": false,
+      "provenMint": true,
+      "provenRename": false
+    },
+    {
+      "address": "0x245bFe8c6c2429f6a7743d53377Ae39b98500459",
+      "symbol": "ELYS",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x7ae29BE60A29425dABC75e361875F1dd21c160A7",
+      "symbol": "Chap",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x4C0Ba5e208734ACF8DdC127BE10E5DCA6F01cE92",
+      "symbol": "EHUNT",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x068Ed8c891cBCFe026ec981Af680084e772AA873",
+      "symbol": "OSTR",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x88D2E086E2f1ea931ffA36Afe415ce1A855056A7",
+      "symbol": "sxBALA-WHYPE",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x07396249A123E71104f015B61C2da261A5e428Ad",
+      "symbol": "OBLSTR",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0xb17D55F7E2E992A9b68FB2aBA17bEC763B0a8E65",
+      "symbol": "eHOUSE",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x34D0f93084E8cEE74451F9Abbf5F8101eD6B7415",
+      "symbol": "LLMPOKER",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0xe06a35AB2784516918a04ADD20023cDAA9605a09",
+      "symbol": "MLP",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0xd02e0fBE28810423f476b081c67c60879B13DF65",
+      "symbol": "OSTR",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x0908a6340F6A395171c8aE12eac8cc506E04ba87",
+      "symbol": "OSTR",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x52B33a6bD1D8D840f7E1708dAb023FDB3D4c21d6",
+      "symbol": "OBLSTR",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0xb6aFc4E7ced8EB330F1d76341d04f40c4092f5A2",
+      "symbol": "tUSD",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0xBAa26f9D34F3A3ed400C689b0a2464562525c647",
+      "symbol": "eHOUSE",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    },
+    {
+      "address": "0x994Fb45a872D337724916ae79be4839dB2354e1a",
+      "symbol": "LLMPOKER",
+      "heuristicMint": false,
+      "heuristicRename": false,
+      "provenMint": false,
+      "provenRename": false
+    }
+  ]
+}

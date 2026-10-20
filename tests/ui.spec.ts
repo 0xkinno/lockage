@@ -87,18 +87,18 @@ for (const vp of VIEWPORTS) {
               if (er.width && er.left < hr.right - 1 && er.right > hr.left + 1 && er.top < hr.bottom - 1 && er.bottom > hr.top + 1) out.push("header item overlaps h1: " + (e.textContent ?? "").slice(0, 20));
             }
           }
-          const plate = document.querySelector('[data-testid="hero-plate"]');
-          if (plate) {
-            const pr = rect(plate);
-            const targets = [h1, ...document.querySelectorAll("main .btn, main section:first-of-type p")];
-            for (const t of targets) {
+          // the hero photograph sits behind the copy: the copy must be on top, never covered
+          if (document.querySelector('[data-testid="hero-image"]')) {
+            for (const t of [h1, ...document.querySelectorAll("main section:first-of-type p, main section:first-of-type .btn")]) {
               const tr = rect(t);
-              if (tr.width && pr.left < tr.right - 1 && pr.right > tr.left + 1 && pr.top < tr.bottom - 1 && pr.bottom > tr.top + 1) out.push("hero plate overlaps " + (t.textContent ?? "").slice(0, 24));
+              if (!tr.width) continue;
+              const el = document.elementFromPoint(Math.min(window.innerWidth - 2, tr.left + tr.width / 2), Math.min(window.innerHeight - 2, tr.top + tr.height / 2));
+              if (tr.top < window.innerHeight && el && !t.contains(el) && !el.contains(t)) out.push("hero copy covered by " + el.tagName + ": " + (t.textContent ?? "").slice(0, 24));
             }
           }
           for (const s of document.querySelectorAll("main svg")) {
             const sr = rect(s);
-            if (sr.width && !s.closest("[data-testid=hero-plate]") && sr.left < hr.right - 1 && sr.right > hr.left + 1 && sr.top < hr.bottom - 1 && sr.bottom > hr.top + 1) out.push("svg overlaps h1");
+            if (sr.width && !s.closest("[data-testid=hero-image]") && sr.left < hr.right - 1 && sr.right > hr.left + 1 && sr.top < hr.bottom - 1 && sr.bottom > hr.top + 1) out.push("svg overlaps h1");
           }
           // text must stay inside the viewport horizontally
           for (const e of document.querySelectorAll("main h1, main h2, main h3, main p, main .btn")) {

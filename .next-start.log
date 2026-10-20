@@ -1,0 +1,8 @@
+▲ Next.js 16.4.2
+- Local:         http://localhost:3107
+- Network:       http://192.168.18.3:3107
+✓ Ready in 427ms
+⚠ Warning: Next.js ignored pnpm-workspace.yaml in C:\Users\hp\Downloads because it is outside the current Git repository (C:\Users\hp\Downloads\LOCKAGE).
+ To use this directory, set `outputFileTracingRoot` in your Next.js config.
+
+✓ Running next.config.mjs took 58ms
