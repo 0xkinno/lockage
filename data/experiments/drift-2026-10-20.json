@@ -1,0 +1,99 @@
+{
+  "ranOn": "2026-10-20",
+  "token": "0xc63edc7f5b55f7c1ad905e949e18e5552f10056b",
+  "oldMirror": "0x6EFE371E05Ad9ECfE68192dA87d694FFC4A53B16",
+  "newMirror": "0xe1089bD7953De63a68dc319588d63A3030af9D3D",
+  "steps": [
+    {
+      "step": "claim LDRIFT",
+      "chain": "elysium",
+      "txHash": "0x676152d29426a99f768639aa866325598f8acdfbcc887f7c5370fbe1e7d501a8",
+      "status": "ok",
+      "gasUsed": "73187"
+    },
+    {
+      "step": "claim LSEAL",
+      "chain": "elysium",
+      "txHash": "0x934a2a6b0a1c043a5d8d000b913b8c2861b01a23c52ad6af0e5c9b1a014c137a",
+      "status": "ok",
+      "gasUsed": "73098"
+    },
+    {
+      "step": "approve wallet (drift)",
+      "chain": "elysium",
+      "txHash": "0xd69c4a3d544444caac9821643956f2f4ec6fdd5b083392c36f3c88902f17e7bf",
+      "status": "ok",
+      "gasUsed": "46201"
+    },
+    {
+      "step": "raw crossing before rename (baseline pre)",
+      "chain": "elysium",
+      "txHash": "0xdaae80e2c522d5b15ae19a42dd1e677df22d27012b036c45f9f881beeb1456d4",
+      "status": "ok",
+      "gasUsed": "190279"
+    },
+    {
+      "step": "approve LockGate (sealed)",
+      "chain": "elysium",
+      "txHash": "0x481e07f0528f1369cbc1539a334c2808f72b113afb5787e20746ba46826046eb",
+      "status": "ok",
+      "gasUsed": "46178"
+    },
+    {
+      "step": "control: LockGate crossing of LSEAL",
+      "chain": "elysium",
+      "txHash": "0x932ff313d27c0b47e7164986bf0ad3976bf8583ed4b968203fb1644307a73d7f",
+      "status": "ok",
+      "gasUsed": "334390"
+    },
+    {
+      "step": "rename LDRIFT -> LDRIFT2",
+      "chain": "elysium",
+      "txHash": "0xc6af76c88b60ef134a4d601bc815abc6990bfbc061d019ad0b981b8b11690cc5",
+      "status": "ok",
+      "gasUsed": "34454"
+    },
+    {
+      "step": "raw crossing keyed on OLD mirror after rename (baseline)",
+      "chain": "elysium",
+      "txHash": "0x22a5623e1bfd6fc879d43a5c6383432a521943508dd17bc9a2079db8c6755c01",
+      "status": "ok",
+      "gasUsed": "173179"
+    },
+    {
+      "step": "createL2Wallet again after rename",
+      "chain": "elysium",
+      "txHash": "0x06ca39eab43ed78d6bc6fff737474c8af06349958e925d64fa3a4d98598bf14b",
+      "status": "ok",
+      "gasUsed": "343197"
+    },
+    {
+      "step": "register mirror for the NEW metadata",
+      "chain": "hyperevm",
+      "txHash": "0xb2304381070795cfb93825c86cb7a13bffafa2a9b96ba71d155358657cb12655",
+      "status": "ok",
+      "gasUsed": "686779"
+    },
+    {
+      "step": "raw crossing keyed on NEW mirror",
+      "chain": "elysium",
+      "status": "reverted",
+      "error": "The contract function \"outboundTransfer\" reverted with the following signature:"
+    },
+    {
+      "step": "intervention: LockGate crossing of renamed LDRIFT",
+      "chain": "elysium",
+      "txHash": "0x41081ed61fdd91620cfaf66b1cca2e96d802f3c0fa45b5807755278b86b7bf2b",
+      "status": "refused",
+      "error": "MetadataDrift"
+    }
+  ],
+  "outcomes": {
+    "Does the factory name a new canonical mirror after a rename?": "Yes. expectedL1Mirror moved from 0x6EFE371E05Ad9ECfE68192dA87d694FFC4A53B16 to 0xe1089bD7953De63a68dc319588d63A3030af9D3D.",
+    "(a) Does the old wallet still accept locks keyed on the old mirror?": "Yes. The raw router accepted the crossing (0x22a5623e1bfd6fc879d43a5c6383432a521943508dd17bc9a2079db8c6755c01). Old route gateway is 0x7255150a0340852Fe4B4B5657C5AcE6c09a4F959.",
+    "(b) Can a second wallet be created for the new metadata?": "Yes. A new wallet 0xaE8cf79EE5088B263670C2d056a2F59c9E6c2a30 was created.",
+    "(c) After crossing again, do two mirrors with nonzero supply exist?": "Mirror supply on HyperEVM, old: 0, new: 0. Crossing keyed on the new mirror: refused (The contract function \"outboundTransfer\" reverted with the following signature:). Supply only mints after the challenge window, so re-read these after it passes (the keeper does).",
+    "What does LockGate do after the rename?": "Refused with MetadataDrift. Preflight code 3."
+  },
+  "firstControlCrossingAt": "2026-10-20T14:27:29.279Z"
+}

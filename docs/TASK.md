@@ -11,24 +11,24 @@
 ## Phase 1. Discovery
 - [x] Foundry installed locally; demo tokens; LockSurvey; envelope fuzz and 10,000-vector twin equality
 - [x] Test wallets generated (`docs/WALLETS.md`)
-- [ ] Fund deployer on Elysium and HyperEVM (owner action, see WALLETS.md)
-- [ ] Deploy LockSurvey; seal SealedToken and DriftToken
-- [ ] Run `experiment-drift.ts`; write D1 outcomes
+- [x] Deployer, builder and holder funded
+- [x] Deployed all contracts; sealed and paired LSEAL, LDRIFT, LTAX, LMINT; sealed LBIG
+- [x] Ran `experiment-drift.ts`; D1 outcomes in DISCOVERY.md
 - [x] Envelope verified against live HyperCore testnet tokens (`data/envelope-verification.json`)
-- [ ] Measure challenge window with a real crossing
+- [ ] Challenge window: real crossing sent; measurement completes automatically when the output root is posted (scheduled workflow)
 - [x] MOMENT.md, THESIS.md, PROOF_PLAN.md
 
 ## Phase 2. Mechanism
 - [x] LockProbe, LockGate, LockLedger; 68 offline tests plus fork tests
 - [x] LockGate proven against the live router and gateway in a fork simulation (contract callers work)
-- [ ] Deploy all; verify sources on the explorer; EVIDENCE.md with tx hashes
-- [ ] Counterfactual run: baseline, control, intervention
+- [x] Deployed; EVIDENCE.md has addresses and tx hashes (explorer source verification is a manual step)
+- [x] Counterfactual run with every tx hash
 
 ## Phase 3. Proof harness
 - [x] Census scan of every Transfer emitter (1,096,760) and analysis of the active set
 - [x] Control set scored by execution; misses both directions named
 - [x] `lockkeeper.ts`; GitHub Actions schedule written
-- [ ] First unattended run committed (after deploy and push)
+- [ ] First scheduled unattended run (needs the GitHub push; a manual sweep is already committed)
 - [x] `facts.ts`, `render-readme.ts`, `check-copy.ts` in CI
 
 ## Phase 4. App
@@ -48,7 +48,7 @@
 
 ## Phase 6. Judge and red team
 - [x] JUDGE.md; red team log started
-- [ ] Final red-team round after the live run
+- [x] Final red-team round after the live run (REDTEAM_LOG.md round 2)
 
 ## Phase 7. Ship
 - [x] README rendered from FACTS; PROOF.md; MILESTONES.md; PROGRESS.md

@@ -18,3 +18,5 @@ data/census-scan.log
 .next-dev.log
 .shots/
 data/census-analyze.log
+.next-start.log
+.shots/

@@ -127,4 +127,42 @@ test.describe("transaction flow, end to end on testnet", () => {
     expect(rc.status).toBe("reverted");
     expect(w.hashes).toContain(hash);
   });
+
+  test("builder seals, probes and opens the certificate", async ({ page }) => {
+    test.skip(!(await funded(process.env.DEPLOYER_PK)), "deployer wallet needs Elysium testnet HYPE");
+    const w = await installWallet(page, process.env.DEPLOYER_PK as Hex);
+    await page.goto(`/survey?token=${dep.contracts.SealedToken.address}`, { waitUntil: "networkidle" });
+    await page.getByTestId("connect-wallet").click();
+    await page.getByTestId("wallet-modal").getByRole("button", { name: /Test Wallet/ }).click();
+    await expect(page.getByTestId("survey-result")).toBeVisible({ timeout: 30_000 });
+    await page.getByTestId("seal").click();
+    await expect(page.getByTestId("tx-status").first()).toHaveAttribute("data-status", "done", { timeout: 90_000 });
+    await expect(page.getByTestId("open-certificate")).toBeVisible();
+    await page.getByTestId("run-probe").click();
+    await expect(page.getByTestId("probe-result")).toContainText("got exactly that back", { timeout: 120_000 });
+    await expect(page.locator('[data-line="transfer"]')).toHaveAttribute("data-verdict", "pass", { timeout: 30_000 });
+    expect(w.hashes.length).toBeGreaterThanOrEqual(2);
+    await page.getByTestId("open-certificate").click();
+    await expect(page.getByTestId("certificate")).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId("seal-state")).toContainText("Sealed");
+    await expect(page.getByTestId("certificate")).toContainText("Matches the seal");
+  });
+
+  test("keeper finds the drift, and the builder's acknowledgement is signed and bound to the finding", async ({ page }) => {
+    test.skip(!(await funded(process.env.DEPLOYER_PK)), "deployer wallet needs Elysium testnet HYPE");
+    const w = await installWallet(page, process.env.DEPLOYER_PK as Hex);
+    await page.goto("/keeper", { waitUntil: "networkidle" });
+    await page.getByTestId("connect-wallet").click();
+    await page.getByTestId("wallet-modal").getByRole("button", { name: /Test Wallet/ }).click();
+    await page.getByTestId("sweep-now").click();
+    const rows = page.getByTestId("keeper-row");
+    await expect(rows.first()).toBeVisible({ timeout: 90_000 });
+    const finding = page.getByTestId("finding").first();
+    await expect(finding).toBeVisible({ timeout: 90_000 });
+    await expect(finding).toContainText(/identity|books/i);
+    await finding.getByTestId("acknowledge").click();
+    await expect(finding.getByTestId("tx-status")).toHaveAttribute("data-status", "done", { timeout: 90_000 });
+    await expect(page.getByTestId("decision").first()).toContainText("acknowledged");
+    expect(w.hashes.length).toBeGreaterThanOrEqual(1);
+  });
 });

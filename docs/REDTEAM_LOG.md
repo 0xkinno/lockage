@@ -19,4 +19,13 @@ Five roles attack the build. Each finding is fixed or recorded.
 | Security reviewer | A server key can move user funds | None exists: the lockkeeper reads only; every write is wallet-signed |
 | Security reviewer | Private keys in committed files | `.env` is gitignored; `check:copy` scans for key-shaped strings |
 
-Open: a final round after the live run, covering the real router's behaviour on drift (D1).
+## Round 2, after the live run
+
+| Role | Attack | Result |
+|---|---|---|
+| Chain skeptic | "The drift is theoretical" | Reproduced on testnet: raw router accepted the old mirror after a rename, a second escrow wallet was created, LockGate refused. Hashes on `/proof` |
+| Chain skeptic | "A contract cannot call the bridge-wallet gateway" | A signed LockGate crossing succeeded on testnet |
+| Honest-data critic | Keeper cries wolf on in-flight transfers | Pending messages are counted from ArbSys events minus Outbox `isSpent`; LSEAL reads in-flight, not a finding |
+| UX critic | Real wallet flow untested | The browser suite drives a real EIP-6963 wallet signing real testnet transactions: claim, approve, cross, refusal, seal, probe, certificate, keeper acknowledgement |
+
+Open: the challenge window length, which depends on the chain.

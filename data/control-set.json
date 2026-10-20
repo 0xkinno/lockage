@@ -3,8 +3,8 @@
   "method": "ground truth by execution: eth_call as owner(); one-sided (a revert does not prove absence)",
   "sampled": 30,
   "mint": {
-    "truePositives": 11,
-    "falsePositives": 4,
+    "truePositives": 9,
+    "falsePositives": 6,
     "falseNegatives": 0
   },
   "rename": {
@@ -26,7 +26,7 @@
       "symbol": "HEX",
       "heuristicMint": true,
       "heuristicRename": false,
-      "provenMint": true,
+      "provenMint": false,
       "provenRename": false
     },
     {
@@ -90,7 +90,7 @@
       "symbol": "mUSDC",
       "heuristicMint": true,
       "heuristicRename": false,
-      "provenMint": true,
+      "provenMint": false,
       "provenRename": false
     },
     {

@@ -59,7 +59,7 @@ export function CensusView() {
   ];
 
   return (
-    <div className="wrap pb-10 grid gap-8">
+    <div className="wrap pb-10 grid gap-8 grid-cols-[minmax(0,1fr)]">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-testid="census-tiles">
         {tiles.map(([k, v, sub]) => (
           <Plate key={k}>

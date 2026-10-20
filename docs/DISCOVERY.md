@@ -21,7 +21,7 @@ The Elysium to HyperEVM to HyperCore graduation path: `ElysiumBridgeFactory` (li
 | HyperCore testnet `spotMeta` lists 1,673 tokens; 843 use weiDecimals 8; 14 violate `szDecimals + 5 <= weiDecimals` | VERIFIED | `npm run verify:envelope`, saved to `data/envelope-verification.json` |
 | The envelope rules hold for real HyperCore tokens that have a linked EVM contract | VERIFIED with named exceptions | 80 linked tokens checked; exceptions (USDC and tokens whose reported max supply is at the uint64 ceiling) are listed in the data file. LOCKAGE plans 10% below the ceiling, so it is stricter than HyperCore. |
 | The Solidity and TypeScript envelope agree | VERIFIED | `forge test --match-contract EnvelopeTwin`: 10,000 shared vectors |
-| A contract (not an EOA) can call `outboundTransfer` on the real router and bridge-wallet gateway, and the real escrow wallet receives the exact amount | VERIFIED in a fork simulation | `FOUNDRY_PROFILE=fork forge test`, token `CTR 0xd5aC...9D19`. ArbSys is a stand-in because forge does not run Arbitrum precompiles. A signed transaction on testnet confirms it after funding (see section 4). |
+| A contract (not an EOA) can call `outboundTransfer` on the real router and bridge-wallet gateway, and the real escrow wallet receives the exact amount | VERIFIED on testnet and in a fork | A signed LockGate crossing succeeded on testnet: [0x932ff313...](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x932ff313d27c0b47e7164986bf0ad3976bf8583ed4b968203fb1644307a73d7f). First proven in a fork simulation (`FOUNDRY_PROFILE=fork forge test`, token `CTR`) with an ArbSys stand-in. The two-step fallback is not needed. |
 
 ### 2.1 The census and its spam floor
 
@@ -33,15 +33,17 @@ The bytecode scan cannot run the signed on-chain probe, so the transfer-behaviou
 
 ### D1. Mirror identity drift (headline)
 
-Status: **designed and scripted, not yet run on testnet** (needs a funded deployer). `npm run experiment:drift` answers by experiment:
+Status: **VERIFIED on testnet, 2026-10-20.** Reproduced by `npm run experiment:drift` on `DriftToken 0xc63edc7f5b55f7c1ad905e949e18e5552f10056b`. Every transaction hash is in `data/experiments/drift-2026-10-20.json` and on `/proof`.
 
-- (a) after a rename, does the old wallet still accept locks keyed on the old mirror?
-- (b) can a second wallet be created for the new metadata?
-- (c) after crossing again, do two mirrors with nonzero supply exist?
+| Question | Answer, by experiment |
+|---|---|
+| Does the factory name a new canonical mirror after a rename? | **Yes.** `expectedL1Mirror` moved from `0x6EFE371E05Ad9ECfE68192dA87d694FFC4A53B16` to `0xe1089bD7953De63a68dc319588d63A3030af9D3D` after `setSymbol` ([0xc6af76c8...](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xc6af76c88b60ef134a4d601bc815abc6990bfbc061d019ad0b981b8b11690cc5)). |
+| (a) Does the old wallet still accept locks keyed on the old mirror? | **Yes.** The raw router accepted a crossing keyed on the old mirror after the rename: [0x22a5623e...](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x22a5623e1bfd6fc879d43a5c6383432a521943508dd17bc9a2079db8c6755c01). The router has no memory of the identity change. |
+| (b) Can a second wallet be created for the new metadata? | **Yes.** `createL2Wallet` succeeded again after the rename and `l2WalletFor` now returns a new escrow wallet, so one token has two escrow wallets. |
+| (c) After crossing again, do two mirrors with nonzero supply exist? | **Not yet determined.** Supply only mints after the challenge window, so both mirrors read 0 right now. A crossing keyed on the new mirror reverted at the router (the new route was not usable in this run). The keeper re-reads this when the window passes. |
+| What does LockGate do after the rename? | **Refuses.** `MetadataDrift`, preflight code 3. [0x41081ed6...](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x41081ed61fdd91620cfaf66b1cca2e96d802f3c0fa45b5807755278b86b7bf2b) is the on-chain reverted transaction (forced gas, so the refusal is recorded). |
 
-Every transaction hash is recorded to `data/experiments/drift-<date>.json`. Whatever the outcome, the finding is real: either holders can keep minting a mirror the factory no longer calls canonical, or the token has two live mirrors. LockGate refuses both. If D1 turns out "handled by the factory", the headline becomes the envelope and the seal remains a holder-side check; the README will say so.
-
-The contract-level behaviour of the refusal is VERIFIED by unit test (`test_counterfactual_drift_baseline_control_intervention`) against mocks of the factory and router. The live behaviour of the real router is UNKNOWN until the experiment runs.
+The finding is real: after a rename, holders can keep sending funds into a mirror the factory no longer calls canonical, and a second escrow wallet appears for the same token. LockGate refuses both. The control, `SealedToken` through LockGate, succeeded: [0x932ff313...](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x932ff313d27c0b47e7164986bf0ad3976bf8583ed4b968203fb1644307a73d7f).
 
 ### D2. The graduation envelope
 
@@ -53,7 +55,7 @@ Decision recorded: the planning cap on `w` is **8**. 843 of 1,673 live testnet t
 
 ### D3. Escrow versus mirror books
 
-Status: **UNKNOWN** until one real crossing and `npm run measure:window` has run.
+Status: **PENDING, measured automatically.** Real crossings exist (control tx above, sent 2026-10-20 14:21 UTC). The window is measured by `scripts/measure-window.ts`, which the scheduled workflow re-runs until an output root covers the send; at the last check none had been posted. The pending-message accounting itself is VERIFIED: the keeper read LSEAL escrow of 100 equal to 100 pending and no mirror supply yet.
 
 The invariant `escrow == mirrorSupply` only holds after finality. Between a lock and its execution on HyperEVM, `escrow = mirrorSupply + pending`. The keeper counts pending messages from ArbSys `L2ToL1Tx` events minus Outbox `isSpent` and abstains when it cannot read them. The challenge window is measured as the time from an Elysium send to the first `SendRootUpdated` on the HyperEVM Bridge whose Elysium block is at or after the send.
 
@@ -61,9 +63,8 @@ The invariant `escrow == mirrorSupply` only holds after finality. Between a lock
 
 | Item | Status |
 |---|---|
-| Real-transaction confirmation that LockGate can cross through the live gateway | UNKNOWN until `npm run go-live` |
-| Mirror registration latency on testnet | UNKNOWN until run |
-| Challenge window length | UNKNOWN until measured |
+| Mirror registration latency on testnet | VERIFIED: the router registered each mirror about 60 to 70 seconds after `createAndRegisterL1Mirror` (`data/setup.json`) |
+| Challenge window length | UNKNOWN: not elapsed at last check; measured by the scheduled workflow |
 | Deposit-wallet factory addresses | UNKNOWN: not published by Kinetiq. The deposit-wallet leg is computed, not executed. |
 | HyperCore read precompile and ElysiumCoreWriter | UNKNOWN: not shipped. Roadmap only. |
 | Ascend's four-stage ladder primary source link | UNKNOWN: to be cited from Ascend's own post before submission |

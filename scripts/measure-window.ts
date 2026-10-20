@@ -29,24 +29,33 @@ console.log("first send at Elysium block", send.blockNumber, new Date(Number(sen
 
 const topic = keccak256(toHex("SendRootUpdated(bytes32,bytes32)"));
 const headHe = await he.getBlockNumber();
-// scan HyperEVM Bridge for output roots posted after the send, newest window first in chunks
-const fromHe = headHe > 400_000n ? headHe - 400_000n : 0n;
-const logs = await he.request({ method: "eth_getLogs", params: [{ address: ADDR.hyperevm.bridge, topics: [topic], fromBlock: toHex(fromHe), toBlock: "latest" }] } as never) as { topics: Hex[]; blockNumber: Hex }[];
-for (const l of logs) {
-  const l2Hash = l.topics[1];
-  let b;
-  try {
-    b = await ely.getBlock({ blockHash: l2Hash });
-  } catch {
-    continue;
-  }
-  if (b.number >= send.blockNumber) {
-    const heBlock = await he.getBlock({ blockNumber: BigInt(l.blockNumber) });
-    const seconds = Number(heBlock.timestamp) - Number(sendBlock.timestamp);
-    if (seconds <= 0) continue;
-    saveJson("data/challenge-window.json", { ranOn: today(), seconds, sendBlock: Number(send.blockNumber), sendTx: send.transactionHash, rootPostedAtHyperEvmBlock: Number(l.blockNumber), method: "time from the Elysium send to the first SendRootUpdated whose Elysium block is at or after the send" });
-    console.log("challenge window measured:", seconds, "seconds");
-    process.exit(0);
+// first HyperEVM block at or after the send, by binary search on timestamps (the RPC caps getLogs at 1000 blocks)
+let lo = 0n;
+let hi = headHe;
+while (lo < hi) {
+  const mid = (lo + hi) / 2n;
+  const t = (await he.getBlock({ blockNumber: mid })).timestamp;
+  if (t < sendBlock.timestamp) lo = mid + 1n;
+  else hi = mid;
+}
+for (let from = lo; from <= headHe; from += 1000n) {
+  const to = from + 999n > headHe ? headHe : from + 999n;
+  const logs = (await he.request({ method: "eth_getLogs", params: [{ address: ADDR.hyperevm.bridge, topics: [topic], fromBlock: toHex(from), toBlock: toHex(to) }] } as never)) as { topics: Hex[]; blockNumber: Hex }[];
+  for (const l of logs) {
+    let b;
+    try {
+      b = await ely.getBlock({ blockHash: l.topics[1] });
+    } catch {
+      continue;
+    }
+    if (b.number >= send.blockNumber) {
+      const heBlock = await he.getBlock({ blockNumber: BigInt(l.blockNumber) });
+      const seconds = Number(heBlock.timestamp) - Number(sendBlock.timestamp);
+      if (seconds <= 0) continue;
+      saveJson("data/challenge-window.json", { ranOn: today(), seconds, sendBlock: Number(send.blockNumber), sendTx: send.transactionHash, rootPostedAtHyperEvmBlock: Number(l.blockNumber), method: "time from the Elysium send to the first SendRootUpdated whose Elysium block is at or after the send" });
+      console.log("challenge window measured:", seconds, "seconds");
+      process.exit(0);
+    }
   }
 }
 console.log("no output root covers the send yet; try again later");

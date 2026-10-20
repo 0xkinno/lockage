@@ -13,7 +13,7 @@ Ines is launching her first token at 23:10 and types a supply of one trillion wi
 | Live | set by the Vercel deployment (see `docs/SUBMISSION_ASCEND.md`) |
 | For judges | `/judge` |
 | Video | recorded by the team, script in `docs/SUBMISSION_ASCEND.md` |
-| Contracts | `/proof` |
+| Contracts | `/proof` and `docs/EVIDENCE.md` |
 | Census | `/census` |
 | Network | Elysium testnet 99801, HyperEVM testnet 998 |
 
@@ -123,10 +123,11 @@ flowchart TD
 
 | Capability | Status |
 |---|---|
-| Survey (design mode and live token reads), envelope, certificate | Working: runs against the live testnet RPCs today |
-| Seal, probe, LockGate crossing, builder decisions | Built, unit tested and fork tested against the live gateway. First signed testnet run is recorded in `/proof` after `npm run go-live` |
-| Drift refusal as a recorded reverted transaction | Scripted (`npm run experiment:drift`); hashes appear in `/proof` once run |
-| Lockkeeper reconciliation | Built; the first unattended run is committed by the scheduled workflow |
+| Survey (design mode and live token reads), envelope, certificate | Live on testnet |
+| Seal, probe, LockGate crossing, builder decisions | Live on testnet, driven end to end by the browser suite with a real wallet |
+| Drift refusal as a recorded reverted transaction | Live on testnet, hashes on `/proof` |
+| Lockkeeper reconciliation | Live; first sweep committed, scheduled runs start after the push |
+| Challenge window | Measured automatically once the output root is posted |
 | Deposit-wallet leg and HyperCore genesis | Designed, waiting on Kinetiq's factory |
 | Core supply reconciliation on chain | Designed, waiting on the read precompile |
 
@@ -174,8 +175,8 @@ The control set scores the selector heuristic against ground truth by execution,
 - Testnet only. No mainnet funds are used.
 - The selector scan is a heuristic. It cannot prove a negative. Misses are published.
 - The census reads Transfer logs, so a contract that never emitted one is not seen, and contracts with fewer than {{fact:census.minTransfers}} transfers (deployment spam) are counted but not surveyed.
-- Several results are UNKNOWN until a run is recorded; `docs/DISCOVERY.md` lists each.
-- The contract-caller crossing through the live gateway was first proven in a fork simulation with an ArbSys stand-in. The signed testnet transaction is in the counterfactual record once run.
+- Items still UNKNOWN are listed in `docs/DISCOVERY.md`.
+- Whether two mirrors end up with nonzero supply after a drift is not yet determined: supply only mints after the challenge window.
 
 ## Disclosures
 

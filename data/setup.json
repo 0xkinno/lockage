@@ -1,0 +1,120 @@
+{
+  "ranOn": "2026-10-20",
+  "steps": [
+    {
+      "step": "seal LSEAL",
+      "chain": "elysium",
+      "txHash": "0x7fb2a120565930cb37ae433cd793f7d9ef1d71a3250e02c6dc5805e140aa5ba3",
+      "status": "ok",
+      "gasUsed": "220892"
+    },
+    {
+      "step": "createL2Wallet LSEAL",
+      "chain": "elysium",
+      "txHash": "0xe97500ba4b7db9d31da5462ee83e2d53cec200f720a74a871390f7f1043c726f",
+      "status": "ok",
+      "gasUsed": "343197"
+    },
+    {
+      "step": "createAndRegisterL1Mirror LSEAL",
+      "chain": "hyperevm",
+      "txHash": "0xa722f2644ac53559e58656d8d8e03b47160513cc0335d0c8b2d654cb991acca1",
+      "status": "ok",
+      "gasUsed": "686767"
+    },
+    {
+      "step": "route registered LSEAL",
+      "chain": "elysium",
+      "status": "ok",
+      "note": "after ~70s"
+    },
+    {
+      "step": "seal LDRIFT",
+      "chain": "elysium",
+      "txHash": "0x19912457c9f9ffd612d4018743eb8dd51cb145b0dc9d7a033ae5095d785acf15",
+      "status": "ok",
+      "gasUsed": "220896"
+    },
+    {
+      "step": "createL2Wallet LDRIFT",
+      "chain": "elysium",
+      "txHash": "0xddc0cabece91aae5fd9a8ddee3b7bc9f89e6225b03198f317c896ea50eadd90d",
+      "status": "ok",
+      "gasUsed": "343197"
+    },
+    {
+      "step": "createAndRegisterL1Mirror LDRIFT",
+      "chain": "hyperevm",
+      "txHash": "0x342a5c1d8a1e83d75ba1b6973e9c6773fb4693ac0bc008eba41d70b0493bb8ef",
+      "status": "ok",
+      "gasUsed": "686767"
+    },
+    {
+      "step": "route registered LDRIFT",
+      "chain": "elysium",
+      "status": "ok",
+      "note": "after ~70s"
+    },
+    {
+      "step": "seal LTAX",
+      "chain": "elysium",
+      "txHash": "0x9529f0e822cb10dc5ad72b9f74665d27646dee30b5b6a31b4893ce7afddf98bd",
+      "status": "ok",
+      "gasUsed": "220890"
+    },
+    {
+      "step": "createL2Wallet LTAX",
+      "chain": "elysium",
+      "txHash": "0x8775c24d5c85d35fdf8f0a4f684ce022e41128aacf4a3b496c65ede1ef3d91fd",
+      "status": "ok",
+      "gasUsed": "343195"
+    },
+    {
+      "step": "createAndRegisterL1Mirror LTAX",
+      "chain": "hyperevm",
+      "txHash": "0xfe575c8cca7146bacb5e945687993c3dcb595ecf9b342964eceae3313f404819",
+      "status": "ok",
+      "gasUsed": "686719"
+    },
+    {
+      "step": "route registered LTAX",
+      "chain": "elysium",
+      "status": "ok",
+      "note": "after ~60s"
+    },
+    {
+      "step": "seal LMINT",
+      "chain": "elysium",
+      "txHash": "0xd6371a15c07a1ead49a0a18dbd382bf10b66290ab4b5255bfe86e2e33c300107",
+      "status": "ok",
+      "gasUsed": "220806"
+    },
+    {
+      "step": "createL2Wallet LMINT",
+      "chain": "elysium",
+      "txHash": "0x2dd8095bc06fda212ebe58efa4f630d233bb78d89fc75b12f99bfbb75d43fa30",
+      "status": "ok",
+      "gasUsed": "343152"
+    },
+    {
+      "step": "createAndRegisterL1Mirror LMINT",
+      "chain": "hyperevm",
+      "txHash": "0x2f97a794ddb02efc3a3fcb2d9388d4ef4fc6eae63798e0d4da7b44a458820841",
+      "status": "ok",
+      "gasUsed": "686743"
+    },
+    {
+      "step": "route registered LMINT",
+      "chain": "elysium",
+      "status": "ok",
+      "note": "after ~70s"
+    },
+    {
+      "step": "seal LBIG",
+      "chain": "elysium",
+      "txHash": "0x25d59bd12f0150b43df443b8180d1e6ed94f411a27f6dbc5e4e4138796ede37b",
+      "status": "ok",
+      "gasUsed": "164084"
+    }
+  ]
+}

@@ -89,10 +89,15 @@ test.describe("survey, address mode reads the real chain", () => {
 });
 
 test("status API reports both chains and says which source answered", async ({ request }) => {
-  const r = await request.get("/api/status");
-  expect(r.ok()).toBeTruthy();
-  const j = await r.json();
-  expect(j.rpc).toHaveLength(2);
-  expect(j.rpc.map((x: { chainId: number }) => x.chainId).sort()).toEqual([998, 99801]);
-  expect(j.rpc.every((x: { ok: boolean; source: string }) => x.ok && x.source)).toBeTruthy();
+  let j: { rpc: { chainId: number; ok: boolean; source: string }[] } | null = null;
+  // a slow public RPC is reported honestly by the API (ok: false), so retry a few times
+  for (let i = 0; i < 4; i++) {
+    const r = await request.get("/api/status");
+    expect(r.ok()).toBeTruthy();
+    j = await r.json();
+    if (j!.rpc.every((x) => x.ok)) break;
+  }
+  expect(j!.rpc).toHaveLength(2);
+  expect(j!.rpc.map((x) => x.chainId).sort()).toEqual([998, 99801]);
+  expect(j!.rpc.every((x) => x.ok && x.source)).toBeTruthy();
 });

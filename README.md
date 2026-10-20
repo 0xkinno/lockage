@@ -13,7 +13,7 @@ Ines is launching her first token at 23:10 and types a supply of one trillion wi
 | Live | set by the Vercel deployment (see `docs/SUBMISSION_ASCEND.md`) |
 | For judges | `/judge` |
 | Video | recorded by the team, script in `docs/SUBMISSION_ASCEND.md` |
-| Contracts | `/proof` |
+| Contracts | `/proof` and `docs/EVIDENCE.md` |
 | Census | `/census` |
 | Network | Elysium testnet 99801, HyperEVM testnet 998 |
 
@@ -123,10 +123,11 @@ flowchart TD
 
 | Capability | Status |
 |---|---|
-| Survey (design mode and live token reads), envelope, certificate | Working: runs against the live testnet RPCs today |
-| Seal, probe, LockGate crossing, builder decisions | Built, unit tested and fork tested against the live gateway. First signed testnet run is recorded in `/proof` after `npm run go-live` |
-| Drift refusal as a recorded reverted transaction | Scripted (`npm run experiment:drift`); hashes appear in `/proof` once run |
-| Lockkeeper reconciliation | Built; the first unattended run is committed by the scheduled workflow |
+| Survey (design mode and live token reads), envelope, certificate | Live on testnet |
+| Seal, probe, LockGate crossing, builder decisions | Live on testnet, driven end to end by the browser suite with a real wallet |
+| Drift refusal as a recorded reverted transaction | Live on testnet, hashes on `/proof` |
+| Lockkeeper reconciliation | Live; first sweep committed, scheduled runs start after the push |
+| Challenge window | Measured automatically once the output root is posted |
 | Deposit-wallet leg and HyperCore genesis | Designed, waiting on Kinetiq's factory |
 | Core supply reconciliation on chain | Designed, waiting on the read precompile |
 
@@ -138,16 +139,16 @@ All numbers below are rendered from `docs/FACTS.json`.
 |---|---|
 | Contract tests | 68 total, 68 passing, fuzzed at 10,000 runs |
 | Solidity and TypeScript envelope agree on | 10,000 vectors |
-| ERC-20 emitters seen on Elysium testnet | not run yet |
-| Surveyed (at least not run yet transfers) | not run yet |
-| Clear on the four lines a scan can read | not run yet (not run yet) |
-| Blocked by supply or decimals | not run yet |
-| Owner mint found | not run yet |
-| Mutable metadata found | not run yet |
+| ERC-20 emitters seen on Elysium testnet | 1,096,760 |
+| Surveyed (at least 3 transfers) | 3,081 |
+| Clear on the four lines a scan can read | 73% (2,263) |
+| Blocked by supply or decimals | 592 |
+| Owner mint found | 119 |
+| Mutable metadata found | 0 |
 | Challenge window (seconds) | not run yet |
-| Lockkeeper sweeps run | not run yet |
-| Decisions asked of the builder | not run yet |
-| HyperCore testnet tokens used as ground truth | not run yet |
+| Lockkeeper sweeps run | 1 |
+| Decisions asked of the builder | 2 |
+| HyperCore testnet tokens used as ground truth | 1,673 |
 
 The control set scores the selector heuristic against ground truth by execution, in both error directions, with every miss named on `/census`.
 
@@ -173,9 +174,9 @@ The control set scores the selector heuristic against ground truth by execution,
 
 - Testnet only. No mainnet funds are used.
 - The selector scan is a heuristic. It cannot prove a negative. Misses are published.
-- The census reads Transfer logs, so a contract that never emitted one is not seen, and contracts with fewer than not run yet transfers (deployment spam) are counted but not surveyed.
-- Several results are UNKNOWN until a run is recorded; `docs/DISCOVERY.md` lists each.
-- The contract-caller crossing through the live gateway was first proven in a fork simulation with an ArbSys stand-in. The signed testnet transaction is in the counterfactual record once run.
+- The census reads Transfer logs, so a contract that never emitted one is not seen, and contracts with fewer than 3 transfers (deployment spam) are counted but not surveyed.
+- Items still UNKNOWN are listed in `docs/DISCOVERY.md`.
+- Whether two mirrors end up with nonzero supply after a drift is not yet determined: supply only mints after the challenge window.
 
 ## Disclosures
 

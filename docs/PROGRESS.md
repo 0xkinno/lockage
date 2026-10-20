@@ -7,4 +7,6 @@
 - Envelope checked against 80 live HyperCore testnet tokens that have a linked EVM contract; exceptions are named in `data/envelope-verification.json`.
 - App built: all eight routes, production build green, wallet connection verified with a real EIP-6963 test wallet signing locally.
 - Hero photograph placed full width behind the landing copy.
-- Blocked: the live run needs funded wallets (`docs/WALLETS.md`). The Elysium faucet rejects addresses with no HyperEVM or Hyperliquid mainnet balance and sits behind a Cloudflare check; the Quicknode faucet needs a connected wallet.
+- Wallets funded. Deployed all nine contracts, sealed and paired four tokens, ran the drift experiment, a keeper sweep, and the browser suite against the live contracts.
+- D1 answered on chain: after a rename the raw router still accepts the old mirror, a second escrow wallet can be created, and LockGate refuses with MetadataDrift (reverted tx recorded).
+- Open: the challenge window had not elapsed at the last check; the scheduled workflow measures it.

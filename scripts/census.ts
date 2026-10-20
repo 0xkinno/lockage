@@ -82,6 +82,19 @@ async function scanAddresses() {
   console.log(`\nscan done: head ${head}, ${Object.keys(book.tokens).length} ERC-20 candidates, ${windows} windows`);
 }
 
+async function retry<T>(fn: () => Promise<T>, tries = 5): Promise<T> {
+  let last: unknown;
+  for (let i = 0; i < tries; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      last = e;
+      await sleep(600 * (i + 1));
+    }
+  }
+  throw last;
+}
+
 type Row = {
   address: Address;
   name: string | null;
@@ -122,7 +135,8 @@ async function analyze() {
       { address: ADDR.elysium.bridgeFactory, abi: bridgeFactoryAbi, functionName: "l2WalletFor", args: [a] },
       { address: ADDR.elysium.bridgeFactory, abi: bridgeFactoryAbi, functionName: "expectedL1Mirror", args: [a] },
     ]);
-    const res = (await ely.multicall({ contracts: calls as never, allowFailure: true })) as { status: string; result?: unknown }[];
+    const res = (await retry(() => ely.multicall({ contracts: calls as never, allowFailure: true }))) as { status: string; result?: unknown }[];
+    const codes = await Promise.all(chunk.map((a) => retry(() => ely.getCode({ address: a })).catch(() => "0x" as Hex)));
     for (let j = 0; j < chunk.length; j++) {
       const a = chunk[j];
       const r = res.slice(j * 7, j * 7 + 7);
@@ -143,15 +157,15 @@ async function analyze() {
         rows.push(base);
         continue;
       }
-      const code = (await ely.getCode({ address: a })) ?? "0x";
+      const code = (codes[j] ?? "0x") as Hex;
       base.codeSize = (code.length - 2) / 2;
       let impl: Hex | null = null;
       if (base.codeSize < 400) {
-        const slot = await ely.getStorageAt({ address: a, slot: EIP1967_IMPL_SLOT });
+        const slot = await retry(() => ely.getStorageAt({ address: a, slot: EIP1967_IMPL_SLOT })).catch(() => null);
         if (slot && /[1-9a-f]/i.test(slot.slice(2))) {
           const implAddr = getAddress("0x" + slot.slice(26));
           base.proxyImpl = implAddr;
-          impl = ((await ely.getCode({ address: implAddr })) ?? null) as Hex | null;
+          impl = ((await retry(() => ely.getCode({ address: implAddr })).catch(() => null)) ?? null) as Hex | null;
         }
       }
       const scan = gauge(code as Hex, impl);

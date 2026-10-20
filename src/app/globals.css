@@ -6,13 +6,13 @@
   --paper-3: #e6ebcc;
   --ink: #12140c;
   --ink-2: #3a3e2e;
-  --muted: #6b705c;
+  --muted: #555a46;
   --hairline: #d9ddc4;
   --lime: #c8f04a;
-  --lime-deep: #5f7f00;
+  --lime-deep: #4a6600;
   --lime-glow: 0 0 0 1px rgba(200, 240, 74, 0.6), 0 0 24px rgba(200, 240, 74, 0.45), 0 0 64px rgba(200, 240, 74, 0.25);
   --signal-red: #c8202f;
-  --signal-amber: #9a6410;
+  --signal-amber: #7a4c06;
   --ok: #2f7a3e;
   --nav-bg: rgba(246, 247, 236, 0.72);
   --grain-opacity: 0.05;
@@ -307,4 +307,10 @@ a {
     size: A4;
     margin: 14mm;
   }
+}
+
+.plate dd,
+.plate p,
+.plate li {
+  overflow-wrap: anywhere;
 }

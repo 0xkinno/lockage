@@ -1,0 +1,28 @@
+{
+  "ranOn": "2026-10-20",
+  "baseline": {
+    "step": "Raw route, after rename",
+    "txHash": "0x22a5623e1bfd6fc879d43a5c6383432a521943508dd17bc9a2079db8c6755c01",
+    "chain": "elysium",
+    "status": "accepted"
+  },
+  "control": {
+    "step": "LockGate, immutable token",
+    "txHash": "0x932ff313d27c0b47e7164986bf0ad3976bf8583ed4b968203fb1644307a73d7f",
+    "chain": "elysium",
+    "status": "accepted"
+  },
+  "intervention": {
+    "step": "LockGate, after rename",
+    "txHash": "0x41081ed61fdd91620cfaf66b1cca2e96d802f3c0fa45b5807755278b86b7bf2b",
+    "chain": "elysium",
+    "status": "reverted",
+    "error": "MetadataDrift"
+  },
+  "rawPre": {
+    "txHash": "0xdaae80e2c522d5b15ae19a42dd1e677df22d27012b036c45f9f881beeb1456d4"
+  },
+  "rename": {
+    "txHash": "0xc6af76c88b60ef134a4d601bc815abc6990bfbc061d019ad0b981b8b11690cc5"
+  }
+}
