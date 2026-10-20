@@ -1,0 +1,39 @@
+name: CI
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: foundry-rs/foundry-toolchain@v1
+      - run: npm ci
+      - name: Generate twin vectors and ABIs
+        run: |
+          npx tsx scripts/gen-vectors.ts
+          forge build
+          node scripts/gen-abi.mjs
+      - name: Contract tests (fuzz and 10,000-vector twin equality)
+        run: forge test
+      - name: Typecheck
+        run: npm run typecheck
+      - name: House style, banned words, commit identities
+        run: npm run check:copy
+      - name: README facts match FACTS.json
+        run: npx tsx scripts/render-readme.ts --check
+      - name: Build
+        run: npm run build
+      - name: Browser tests
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:ui

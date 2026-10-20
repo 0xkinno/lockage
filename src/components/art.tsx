@@ -167,7 +167,7 @@ export function LadderDesktop() {
 }
 
 export function LadderMobile() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLOListElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 85%", "end 55%"] });
   const [p, setP] = useState(reduce ? 1 : 0);

@@ -1,0 +1,323 @@
+{
+  "ranOn": "2026-10-20",
+  "spotTokens": 1673,
+  "weiDecimalsDistribution": {
+    "0": 1,
+    "1": 3,
+    "2": 5,
+    "3": 3,
+    "5": 472,
+    "6": 164,
+    "7": 116,
+    "8": 843,
+    "9": 26,
+    "10": 40
+  },
+  "tokensAtOrBelowCap8": 1607,
+  "szRuleViolations": 14,
+  "szRuleViolationsSample": [
+    {
+      "name": "USDC",
+      "szDecimals": 8,
+      "weiDecimals": 8
+    },
+    {
+      "name": "JPL ",
+      "szDecimals": 3,
+      "weiDecimals": 5
+    },
+    {
+      "name": "BREAD",
+      "szDecimals": 1,
+      "weiDecimals": 1
+    },
+    {
+      "name": "P",
+      "szDecimals": 1,
+      "weiDecimals": 2
+    },
+    {
+      "name": "KOGU",
+      "szDecimals": 1,
+      "weiDecimals": 1
+    },
+    {
+      "name": "TestPascal1",
+      "szDecimals": 2,
+      "weiDecimals": 3
+    },
+    {
+      "name": "KORILA",
+      "szDecimals": 1,
+      "weiDecimals": 1
+    },
+    {
+      "name": "werfqwer",
+      "szDecimals": 2,
+      "weiDecimals": 3
+    },
+    {
+      "name": "trwe",
+      "szDecimals": 2,
+      "weiDecimals": 3
+    },
+    {
+      "name": "CHUTORO",
+      "szDecimals": 2,
+      "weiDecimals": 2
+    },
+    {
+      "name": "OTORO",
+      "szDecimals": 2,
+      "weiDecimals": 2
+    },
+    {
+      "name": "ODDISH",
+      "szDecimals": 2,
+      "weiDecimals": 2
+    },
+    {
+      "name": "TEST0",
+      "szDecimals": 2,
+      "weiDecimals": 2
+    },
+    {
+      "name": "TEST1",
+      "szDecimals": 0,
+      "weiDecimals": 0
+    }
+  ],
+  "linkedEvmTokens": 230,
+  "checked": 80,
+  "consistentWithRules": 72,
+  "tokensNearHardUint64Ceiling": 1,
+  "exceptions": [
+    {
+      "token": "USDC",
+      "weiDecimals": 8,
+      "evmExtra": -2,
+      "maxSupply": "1000000000000.0",
+      "why": "system token with a special supply"
+    },
+    {
+      "token": "SMOLL",
+      "weiDecimals": 8,
+      "evmExtra": -2,
+      "maxSupply": "184467440737.0955200195",
+      "why": "reported maxSupply exceeds uint64 in Core wei at the stated weiDecimals"
+    },
+    {
+      "token": "QWER",
+      "weiDecimals": 8,
+      "evmExtra": 18,
+      "maxSupply": "184467440737.0955200195",
+      "why": "reported maxSupply exceeds uint64 in Core wei at the stated weiDecimals"
+    },
+    {
+      "token": "APU",
+      "weiDecimals": 8,
+      "evmExtra": 10,
+      "maxSupply": "184467440737.0955200195",
+      "why": "reported maxSupply exceeds uint64 in Core wei at the stated weiDecimals"
+    },
+    {
+      "token": "EAGEN",
+      "weiDecimals": 8,
+      "evmExtra": 10,
+      "maxSupply": "184467440737.0955200195",
+      "why": "reported maxSupply exceeds uint64 in Core wei at the stated weiDecimals"
+    },
+    {
+      "token": "EAGEN2",
+      "weiDecimals": 8,
+      "evmExtra": 10,
+      "maxSupply": "184467440737.0955200195",
+      "why": "reported maxSupply exceeds uint64 in Core wei at the stated weiDecimals"
+    },
+    {
+      "token": "BAPE",
+      "weiDecimals": 8,
+      "evmExtra": 10,
+      "maxSupply": "184467440737.0955200195",
+      "why": "reported maxSupply exceeds uint64 in Core wei at the stated weiDecimals"
+    },
+    {
+      "token": "BPLUME",
+      "weiDecimals": 8,
+      "evmExtra": 10,
+      "maxSupply": "184467440737.0955200195",
+      "why": "reported maxSupply exceeds uint64 in Core wei at the stated weiDecimals"
+    }
+  ],
+  "note": "Exceptions are named, not hidden. LOCKAGE plans 10% below the uint64 ceiling by design, so it is stricter than HyperCore itself.",
+  "sample": [
+    {
+      "token": "USDC",
+      "weiDecimals": 8,
+      "szDecimals": 8,
+      "evmExtra": -2,
+      "evmDecimals": 6,
+      "maxSupply": "1000000000000.0",
+      "coreWei": "100000000000000000000",
+      "extraInRange": true,
+      "fitsUint64": false,
+      "ourFinestWei": 7,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "PURR",
+      "weiDecimals": 5,
+      "szDecimals": 0,
+      "evmExtra": 13,
+      "evmDecimals": 18,
+      "maxSupply": "1000000000.0",
+      "coreWei": "100000000000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "BARK",
+      "weiDecimals": 5,
+      "szDecimals": 0,
+      "evmExtra": 13,
+      "evmDecimals": 18,
+      "maxSupply": "1200000.0",
+      "coreWei": "120000000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "BARKY",
+      "weiDecimals": 5,
+      "szDecimals": 0,
+      "evmExtra": 13,
+      "evmDecimals": 18,
+      "maxSupply": "1200000.0",
+      "coreWei": "120000000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "WOOFY",
+      "weiDecimals": 5,
+      "szDecimals": 0,
+      "evmExtra": 13,
+      "evmDecimals": 18,
+      "maxSupply": "1000000.0",
+      "coreWei": "100000000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "KITTY",
+      "weiDecimals": 7,
+      "szDecimals": 2,
+      "evmExtra": 2,
+      "evmDecimals": 9,
+      "maxSupply": "7606507.3360000001",
+      "coreWei": "76065073360000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "HADSA",
+      "weiDecimals": 8,
+      "szDecimals": 2,
+      "evmExtra": 10,
+      "evmDecimals": 18,
+      "maxSupply": "123456789.0",
+      "coreWei": "12345678900000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "IZARD",
+      "weiDecimals": 8,
+      "szDecimals": 2,
+      "evmExtra": 10,
+      "evmDecimals": 18,
+      "maxSupply": "1000000.0",
+      "coreWei": "100000000000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "JNZ",
+      "weiDecimals": 8,
+      "szDecimals": 2,
+      "evmExtra": 10,
+      "evmDecimals": 18,
+      "maxSupply": "1000000000.0",
+      "coreWei": "100000000000000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "COTEST",
+      "weiDecimals": 5,
+      "szDecimals": 0,
+      "evmExtra": 13,
+      "evmDecimals": 18,
+      "maxSupply": "200000000.0",
+      "coreWei": "20000000000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "AMPURR",
+      "weiDecimals": 5,
+      "szDecimals": 0,
+      "evmExtra": 13,
+      "evmDecimals": 18,
+      "maxSupply": "200000000.0",
+      "coreWei": "20000000000000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    },
+    {
+      "token": "ZIGG",
+      "weiDecimals": 8,
+      "szDecimals": 2,
+      "evmExtra": 12,
+      "evmDecimals": 20,
+      "maxSupply": "4000000.0010000002",
+      "coreWei": "400000000100000",
+      "extraInRange": true,
+      "fitsUint64": true,
+      "ourFinestWei": 8,
+      "realWeiAtOrBelowOurCap": true,
+      "realFeasibleUnderOurRules": true
+    }
+  ]
+}

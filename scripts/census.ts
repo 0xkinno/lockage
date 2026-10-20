@@ -15,6 +15,8 @@ import { runSurvey } from "../src/lib/survey";
 const TRANSFER = keccak256(toHex("Transfer(address,address,uint256)"));
 const ADDR_FILE = "data/census-addresses.json";
 const OUT_FILE = "data/census.json";
+/** Contracts with fewer transfers than this are single-mint deployment spam on this testnet (see summary.spam). */
+const MIN_TRANSFERS = 3;
 
 type AddrBook = { cursor: number; head: number; tokens: Record<string, { first: number; logs: number }> };
 
@@ -44,10 +46,10 @@ async function scanAddresses() {
     while (queue.length) {
       const [a, b] = queue.shift()!;
       try {
-        const logs = await ely.request({
+        const logs = (await ely.request({
           method: "eth_getLogs",
           params: [{ fromBlock: toHex(a), toBlock: toHex(b), topics: [TRANSFER] }],
-        });
+        } as never)) as unknown;
         for (const l of logs as { address: string; topics: string[]; blockNumber: string }[]) {
           if (l.topics.length !== 3) continue; // ERC-721 Transfer has 4 topics
           const k = getAddress(l.address);
@@ -97,13 +99,16 @@ type Row = {
   mirror: Address | null;
   owner: Address | null;
   proxyImpl: Address | null;
+  unreadableProxy?: boolean;
   logs: number;
 };
 
 async function analyze() {
   const book = loadBook();
-  const addrs = Object.keys(book.tokens) as Address[];
-  console.log("analyzing", addrs.length, "candidates");
+  const all = Object.entries(book.tokens);
+  const addrs = all.filter(([, t]) => t.logs >= MIN_TRANSFERS).map(([a]) => a as Address);
+  const spam = { exactlyOneTransfer: all.filter(([, t]) => t.logs === 1).length, exactlyTwoTransfers: all.filter(([, t]) => t.logs === 2).length };
+  console.log("analyzing", addrs.length, "active candidates of", all.length);
   const rows: Row[] = [];
   const CH = 40;
   for (let i = 0; i < addrs.length; i += CH) {
@@ -117,11 +122,11 @@ async function analyze() {
       { address: ADDR.elysium.bridgeFactory, abi: bridgeFactoryAbi, functionName: "l2WalletFor", args: [a] },
       { address: ADDR.elysium.bridgeFactory, abi: bridgeFactoryAbi, functionName: "expectedL1Mirror", args: [a] },
     ]);
-    const res = await ely.multicall({ contracts: calls as never, allowFailure: true });
+    const res = (await ely.multicall({ contracts: calls as never, allowFailure: true })) as { status: string; result?: unknown }[];
     for (let j = 0; j < chunk.length; j++) {
       const a = chunk[j];
       const r = res.slice(j * 7, j * 7 + 7);
-      const ok = (x: (typeof r)[number]) => (x.status === "success" ? (x.result as unknown) : null);
+      const ok = (x: { status: string; result?: unknown }) => (x.status === "success" ? (x.result as unknown) : null);
       const name = ok(r[0]) as string | null;
       const symbol = ok(r[1]) as string | null;
       const decimals = ok(r[2]) as number | null;
@@ -153,9 +158,12 @@ async function analyze() {
       const s = runSurvey({ decimals, supplyBase: supply, scan });
       base.graduates = s.env.graduates;
       base.bestWei = s.env.graduates ? s.env.bestWei : null;
-      base.verdict = s.overall;
+      // The census cannot run the signed on-chain probe, so the transfer line stays "not measured" for every token.
+      // It is reported on its own and does not stop a token from counting as clear on the four lines a scan can read.
       base.blocks = s.lines.filter((l) => l.verdict === "block").map((l) => l.id);
-      base.unknowns = s.lines.filter((l) => l.verdict === "unknown").map((l) => l.id);
+      base.unknowns = s.lines.filter((l) => l.verdict === "unknown" && l.id !== "transfer").map((l) => l.id);
+      base.verdict = base.blocks.length ? "block" : base.unknowns.length ? "unknown" : "pass";
+      base.unreadableProxy = scan.unreadableProxy;
       base.flags = scan.matched;
       rows.push(base);
     }
@@ -166,7 +174,9 @@ async function analyze() {
   const summary = {
     ranOn: today(),
     headBlock: book.head,
-    candidates: addrs.length,
+    candidates: all.length,
+    minTransfers: MIN_TRANSFERS,
+    spam,
     surveyed: valid.length,
     notErc20Metadata: rows.length - valid.length,
     canGraduateAsIs: count((r) => r.verdict === "pass"),
@@ -175,10 +185,15 @@ async function analyze() {
     mutableMetadata: count((r) => r.flags.includes("rename")),
     mintable: count((r) => r.flags.includes("mint")),
     taxOrRebaseLikely: count((r) => r.flags.includes("tax") || r.flags.includes("rebase")),
-    unreadableProxy: count((r) => r.unknowns.length > 0),
+    unreadableProxy: count((r) => r.unreadableProxy === true),
+    transferNotMeasured: valid.length,
     withBridgeWallet: count((r) => r.hasWallet),
   };
-  writeFileSync(OUT_FILE, JSON.stringify({ summary, tokens: rows.sort((a, b) => b.logs - a.logs) }, null, 1));
+  const sorted = rows.sort((a, b) => b.logs - a.logs);
+  writeFileSync(OUT_FILE, JSON.stringify({ summary, tokens: sorted }, null, 1));
+  const pub = sorted.filter((r) => r.verdict !== "invalid").map((r) => ({ address: r.address, name: r.name, symbol: r.symbol, decimals: r.decimals, totalSupply: r.totalSupply, verdict: r.verdict, blocks: r.blocks, unknowns: r.unknowns, flags: r.flags, bestWei: r.bestWei, logs: r.logs }));
+  const prev = existsSync("data/census-misses.json") ? JSON.parse(readFileSync("data/census-misses.json", "utf8")) : [];
+  writeFileSync("data/census-public.json", JSON.stringify({ summary, tokens: pub, misses: prev }));
   console.log("\n", summary);
 }
 

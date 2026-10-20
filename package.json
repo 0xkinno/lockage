@@ -20,7 +20,12 @@
     "deploy": "tsx scripts/deploy.ts",
     "experiment:drift": "tsx scripts/experiment-drift.ts",
     "verify:envelope": "tsx scripts/verify-envelope.ts",
-    "balances": "tsx scripts/balances.ts"
+    "balances": "tsx scripts/balances.ts",
+    "go-live": "node scripts/go-live.mjs",
+    "setup": "tsx scripts/setup-demo.ts",
+    "measure:window": "tsx scripts/measure-window.ts",
+    "readme": "tsx scripts/render-readme.ts",
+    "gen": "tsx scripts/gen-vectors.ts && node scripts/forge.mjs build && node scripts/gen-abi.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.104.5",

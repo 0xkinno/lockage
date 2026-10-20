@@ -14,7 +14,7 @@ const CHECKS: { kind: CheckKind; title: string; line: string; rule: string }[] =
 ];
 
 export default function Home() {
-  const hasPhoto = existsSync(join(process.cwd(), "public", "hero.jpg"));
+  const hasPhoto = existsSync(join(process.cwd(), "public", "hero.png"));
   const c = facts.census;
   const asIs = c ? pct(c.canGraduateAsIs, c.surveyed) : null;
   const cf = facts.counterfactual as null | { baseline?: { txHash?: string; status?: string }; control?: { txHash?: string }; intervention?: { txHash?: string; error?: string }; ranOn?: string };
@@ -64,7 +64,7 @@ export default function Home() {
             <div className="relative overflow-hidden rounded-[28px] border border-hairline h-[230px] sm:h-[300px] lg:h-full lg:min-h-[560px]" data-testid="hero-plate">
               {hasPhoto ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src="/hero.jpg" alt="Stone canal locks climbing a hillside at dawn, lime-lit water in each chamber" className="absolute inset-0 w-full h-full object-cover" />
+                <img src="/hero.png" alt="Stone canal locks climbing a hillside at dawn, a small vessel rising in the third chamber" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "63% 42%" }} />
               ) : (
                 <HeroPlate />
               )}

@@ -12,6 +12,13 @@ optimizer_runs = 200
 bytecode_hash = "none"
 fs_permissions = [{ access = "read", path = "./data" }]
 
+no_match_contract = "ForkGate"
+
+[profile.fork]
+evm_version = "cancun"
+match_contract = "ForkGate"
+no_match_contract = "NONE_"
+
 [fuzz]
 runs = 10000
 

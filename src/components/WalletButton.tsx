@@ -76,7 +76,7 @@ export function WalletModal({ open, onClose }: { open: boolean; onClose: () => v
               </button>
             </li>
           ))}
-          {!list.length || (list.length === 1 && list[0].id === "injected" && typeof window !== "undefined" && !(window as unknown as { ethereum?: unknown }).ethereum) ? (
+          {!list.length || (list.length === 1 && (list[0] as { id: string }).id === "injected" && typeof window !== "undefined" && !(window as unknown as { ethereum?: unknown }).ethereum) ? (
             <li className="rounded-2xl border border-dashed border-hairline p-4 text-[14px] text-ink-2">
               No wallet found in this browser. Install one such as{" "}
               <a className="underline" href="https://rabby.io" target="_blank" rel="noreferrer">
@@ -105,7 +105,8 @@ export function NetworkPill() {
   const { chain, isConnected } = useAccount();
   const { switchChainAsync, isPending } = useSwitchChain();
   if (!isConnected) return null;
-  const ok = chain?.id === elysiumTestnet.id || chain?.id === hyperEvmTestnet.id;
+  const cid = chain?.id as number | undefined;
+  const ok = cid === elysiumTestnet.id || cid === hyperEvmTestnet.id;
   if (ok) return null;
   return (
     <button
@@ -113,7 +114,7 @@ export function NetworkPill() {
       disabled={isPending}
       data-testid="switch-network"
       onClick={() => switchChainAsync({ chainId: elysiumTestnet.id }).catch(() => undefined)}
-      title={`Wallet is on chain ${chain?.id ?? chainId}`}
+      title={`Wallet is on chain ${cid ?? chainId}`}
     >
       Switch to Elysium
     </button>
@@ -127,9 +128,7 @@ export function WalletButton() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <span className="btn btn-primary btn-sm opacity-0" aria-hidden>Connect</span>;
-
-  if (isConnected && address) {
+  if (mounted && isConnected && address) {
     return (
       <div className="flex items-center gap-2" data-testid="wallet-connected">
         <NetworkPill />

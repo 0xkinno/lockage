@@ -1,0 +1,32 @@
+name: Lockkeeper
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Sweep every sealed token (read only, no key)
+        env:
+          CONDUIT_RPC: ${{ secrets.CONDUIT_RPC }}
+        run: |
+          npx tsx scripts/lockkeeper.ts
+          npx tsx scripts/measure-window.ts
+      - name: Commit the ledger as 0xkinno
+        run: |
+          git config user.name "0xkinno"
+          git config user.email "0xkinno@users.noreply.github.com"
+          git add data/ledger.json data/challenge-window.json || true
+          git diff --cached --quiet || git commit -m "keeper: unattended sweep"
+          git push
