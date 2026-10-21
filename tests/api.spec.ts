@@ -8,7 +8,7 @@ test.describe("embeddable check for Ascend's launch form", () => {
     const r = await request.get("/api/survey?decimals=18&supply=1000000000000&rename=1&mint=1&tax=0");
     expect(r.status()).toBe(200);
     expect(r.headers()["access-control-allow-origin"]).toBe("*");
-    expect(r.headers()["cache-control"]).toContain("s-maxage=60");
+    expect(r.headers()["cache-control"]).toContain("public"); // the host CDN consumes s-maxage=60 and shows only public
     const j = await r.json();
     expect(j.ok).toBe(true);
     expect(j.mode).toBe("design");
