@@ -43,12 +43,22 @@ export async function installWallet(page: Page, pk: Hex, opts: { startChain?: nu
         return null;
       case "eth_sendTransaction": {
         const tx = p[0] as { to: Hex; data?: Hex; value?: Hex; gas?: Hex };
-        const hash = await wal(chainId).sendTransaction({
-          to: tx.to,
-          data: tx.data,
-          value: tx.value ? BigInt(tx.value) : undefined,
-          gas: tx.gas ? BigInt(tx.gas) : undefined,
-        });
+        // like a real wallet, retry when the node's pending nonce lags the transaction that just confirmed
+        let hash: Hex | undefined;
+        for (let i = 0; i < 5 && !hash; i++) {
+          try {
+            hash = await wal(chainId).sendTransaction({
+              to: tx.to,
+              data: tx.data,
+              value: tx.value ? BigInt(tx.value) : undefined,
+              gas: tx.gas ? BigInt(tx.gas) : undefined,
+            });
+          } catch (e) {
+            if (!/nonce/i.test(String((e as Error).message)) || i === 4) throw e;
+            await new Promise((r) => setTimeout(r, 1500 * (i + 1)));
+          }
+        }
+        if (!hash) throw new Error("send failed");
         hashes.push(hash);
         return hash;
       }

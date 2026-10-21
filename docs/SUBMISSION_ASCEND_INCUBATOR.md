@@ -98,3 +98,5 @@ Ascend's Builder Competition and the incubator announcement on X.
 ## 22. Application acknowledgements
 
 _Left for Kinnoski to tick: three statements about authorization, no guarantee of funding, and permission to contact._
+
+Prefilled form link: docs/ascend-form-prefilled-link.txt (open it, tick the three acknowledgements on page 4, add Telegram and Discord on page 1, then submit).
