@@ -1,10 +1,10 @@
 {
-  "lastRun": "2026-10-21T11:52:28.837Z",
+  "lastRun": "2026-10-21T17:15:13.899Z",
   "rpcSource": {
     "elysium": "testnet-rpc.elysium.kinetiq.xyz (public RPC, no CONDUIT_RPC secret set)",
     "hyperevm": "rpc.hyperliquid-testnet.xyz (public RPC)"
   },
-  "sweeps": 7,
+  "sweeps": 8,
   "decisionsAsked": 3,
   "askedHashes": [
     "0x7a7fb794cbb66473be4af7ee8bd757ea73097d9d6272b3fb4f157da37d9359ac",
@@ -51,7 +51,7 @@
       ],
       "status": "in-flight",
       "findings": [],
-      "checkedAt": "2026-10-21T11:51:40.397Z"
+      "checkedAt": "2026-10-21T17:14:22.872Z"
     },
     {
       "token": "0xC63edc7F5B55f7C1ad905e949e18E5552f10056b",
@@ -93,7 +93,7 @@
           "hash": "0x7a7fb794cbb66473be4af7ee8bd757ea73097d9d6272b3fb4f157da37d9359ac"
         }
       ],
-      "checkedAt": "2026-10-21T11:51:46.456Z"
+      "checkedAt": "2026-10-21T17:14:29.355Z"
     },
     {
       "token": "0xA302F4331b6bE3013B5aCbb7eF0C093dCFcb91BB",
@@ -118,7 +118,7 @@
       ],
       "status": "reconciled",
       "findings": [],
-      "checkedAt": "2026-10-21T11:51:52.198Z"
+      "checkedAt": "2026-10-21T17:14:36.962Z"
     },
     {
       "token": "0xe1bcCD5E9a0A800D7337A534E4B27A24E5498742",
@@ -143,7 +143,7 @@
       ],
       "status": "reconciled",
       "findings": [],
-      "checkedAt": "2026-10-21T11:51:55.089Z"
+      "checkedAt": "2026-10-21T17:14:39.978Z"
     },
     {
       "token": "0xA9539FD9c256F8b19f3FD4759EDA9C90edBBBE7C",
@@ -168,7 +168,7 @@
       ],
       "status": "reconciled",
       "findings": [],
-      "checkedAt": "2026-10-21T11:51:57.401Z"
+      "checkedAt": "2026-10-21T17:14:42.980Z"
     },
     {
       "token": "0x4B49f432c9C55ABE34b0C8684f7303Ce7Ec0De4f",
@@ -210,7 +210,7 @@
           "hash": "0x4494b8c1d301ea7cda00a2b5906cd3978e082ecb0f0ef19307b69df9d061120b"
         }
       ],
-      "checkedAt": "2026-10-21T11:52:11.885Z"
+      "checkedAt": "2026-10-21T17:14:56.908Z"
     }
   ],
   "history": [
@@ -246,6 +246,11 @@
     },
     {
       "at": "2026-10-21T11:52:28.837Z",
+      "tokens": 6,
+      "open": 2
+    },
+    {
+      "at": "2026-10-21T17:15:13.899Z",
       "tokens": 6,
       "open": 2
     }
