@@ -15,7 +15,7 @@
 - [x] Deployed all contracts; sealed and paired LSEAL, LDRIFT, LTAX, LMINT; sealed LBIG
 - [x] Ran `experiment-drift.ts`; D1 outcomes in DISCOVERY.md
 - [x] Envelope verified against live HyperCore testnet tokens (`data/envelope-verification.json`)
-- [ ] Challenge window: real crossing sent; measurement completes automatically when the output root is posted (scheduled workflow)
+- [ ] Challenge window: observed end-to-end time (configured period already read: 10 blocks)
 - [x] MOMENT.md, THESIS.md, PROOF_PLAN.md
 
 ## Phase 2. Mechanism
@@ -28,7 +28,7 @@
 - [x] Census scan of every Transfer emitter (1,096,760) and analysis of the active set
 - [x] Control set scored by execution; misses both directions named
 - [x] `lockkeeper.ts`; GitHub Actions schedule written
-- [ ] First scheduled unattended run (needs the GitHub push; a manual sweep is already committed)
+- [x] First unattended run: committed by the Lockkeeper workflow
 - [x] `facts.ts`, `render-readme.ts`, `check-copy.ts` in CI
 
 ## Phase 4. App
@@ -49,6 +49,17 @@
 ## Phase 6. Judge and red team
 - [x] JUDGE.md; red team log started
 - [x] Final red-team round after the live run (REDTEAM_LOG.md round 2)
+
+## Final pass (LOCKAGE_FINAL_PASS)
+- [x] Task 1. Keeper runs unattended: failure diagnosed from the log (transient RPC error with no retry, then a `git add` of a missing file), retries, `rpcSource` in the ledger, `git pull --rebase`, dispatched once; a `keeper: unattended sweep` commit by 0xkinno landed on main. `sweeps` and `decisionsAsked` are separate and `/keeper` reads "N sweeps, M decisions asked"
+- [x] Task 2. Keeper reports every pair a token has had; the LDRIFT2 finding names the stranded tokens, old wallet, old mirror and the canonical mirror; both pairs shown on `/keeper` and the certificate
+- [x] Task 3. Question (c) settled: the earlier revert decoded to `InsufficientAllowance()` (0x13be252b); after approving the second wallet the router accepts crossings on both mirrors. Outbox execution waits for the output root
+- [ ] Task 4. Challenge window: configured period read from the Rollup contract (10 blocks, about 9.8 s). The observed end-to-end time is UNKNOWN and shows "waiting since 14:21 UTC" until an output root covers a crossing
+- [x] Task 5. Ticker auction price read from `spotDeployState` on mainnet and testnet, snapshot, FACTS, README line and a test. The ladder source URL still needs to be pasted
+- [x] Task 6. Upgrade path: admin slot and UUPS detection, third state on survey line 3, `UpgradeToken`, counterfactual refused with MetadataDrift, README leads with the blocked number and explains the zero mutable-selector count
+- [x] Task 7. `GET /api/survey`, `/embed`, README section with curl and screenshot
+- [x] Task 8. Badges trimmed, mainnet date, checks and red team round recorded. `lockage.vercel.app` is taken by another project, so it is not used
+- [x] Task 9. `docs/SUBMISSION_ASCEND_INCUBATOR.md` written and the application form prefilled
 
 ## Phase 7. Ship
 - [x] Vercel production deployment with public env vars: https://lockage-kinnoskis-projects.vercel.app

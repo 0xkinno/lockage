@@ -22,13 +22,17 @@ const items = [
   ["OversizeToken", "demo/DemoTokens.sol"],
   ["TaxToken", "demo/DemoTokens.sol"],
   ["MintToken", "demo/DemoTokens.sol"],
+  ["UpgradeImplV1", "demo/UpgradeToken.sol"],
+  ["UpgradeImplV2", "demo/UpgradeToken.sol"],
+  ["UpgradeToken", "demo/UpgradeToken.sol", "constructor(address,bytes)", [dep.UpgradeImplV1?.address, "__INIT__"], "LockProxy"],
 ];
 let bad = 0;
-for (const [name, file, sig, args] of items) {
+for (const [name, file, sig, args, contractName] of items) {
   if (!dep[name]) continue;
-  const cmd = ["verify-contract", dep[name].address, `contracts/src/${file}:${name}`, "--chain", "99801", "--verifier", "blockscout", "--verifier-url", "https://elysium.kinetiq.xyz/api/", "--watch"];
+  const cmd = ["verify-contract", dep[name].address, `contracts/src/${file}:${contractName ?? name}`, "--chain", "99801", "--verifier", "blockscout", "--verifier-url", "https://elysium.kinetiq.xyz/api/", "--watch"];
   if (sig) {
-    const enc = spawnSync("cast", ["abi-encode", sig, ...args], { env, encoding: "utf8" }).stdout.trim();
+    const real = args.map((a) => (a === "__INIT__" ? spawnSync("cast", ["calldata", "initialize(address,uint256)", dep.LockSurvey ? JSON.parse(readFileSync("data/wallets.json", "utf8")).deployer : "", "1000000000"], { env, encoding: "utf8" }).stdout.trim() : a));
+    const enc = spawnSync("cast", ["abi-encode", sig, ...real], { env, encoding: "utf8" }).stdout.trim();
     cmd.push("--constructor-args", enc);
   }
   const r = spawnSync("forge", cmd, { env, encoding: "utf8", shell: process.platform === "win32" });

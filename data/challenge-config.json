@@ -1,0 +1,10 @@
+{
+  "readAt": "2026-10-21T01:45:57.995Z",
+  "rollup": "0xEbf08e34941fd93a0Fc1cD89dbBF7447267039Df",
+  "confirmPeriodBlocks": 10,
+  "hyperEvmBlockTimeSeconds": 0.984,
+  "configuredPeriodSeconds": 9.8,
+  "firstCrossingSentAt": "2026-10-20T14:21:14.000Z",
+  "firstCrossingTx": "0xbbb25cf899cef5a0e228b0953780e67ee00da3debd3853b9455529befd7d977b",
+  "observedEndToEndSeconds": null
+}

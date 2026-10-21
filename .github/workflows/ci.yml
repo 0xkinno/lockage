@@ -31,6 +31,8 @@ jobs:
         run: npm run check:copy
       - name: README facts match FACTS.json
         run: npx tsx scripts/render-readme.ts --check
+      - name: README auction figure matches its snapshot
+        run: npm run test:auction
       - name: Build
         run: npm run build
       - name: Browser tests

@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-20T16:40:49.273Z",
+  "generatedAt": "2026-10-21T02:02:53.903Z",
   "tests": {
-    "total": 68,
-    "passed": 68,
+    "total": 74,
+    "passed": 74,
     "failed": 0,
     "fuzzRunsPerProperty": 10000,
     "twinVectors": 10000
   },
   "census": {
-    "ranOn": "2026-10-20",
+    "ranOn": "2026-10-21",
     "headBlock": 12192898,
     "candidates": 1096760,
     "minTransfers": 3,
@@ -18,18 +18,21 @@
     },
     "surveyed": 3249,
     "notErc20Metadata": 60,
-    "canGraduateAsIs": 2390,
-    "graduatesByMathAlone": 2623,
-    "blockedBySupplyOrDecimals": 626,
+    "canGraduateAsIs": 2391,
+    "graduatesByMathAlone": 2624,
+    "blockedBySupplyOrDecimals": 625,
     "mutableMetadata": 0,
     "mintable": 122,
     "taxOrRebaseLikely": 3,
     "unreadableProxy": 229,
+    "identityUpgradeable": 2,
+    "upgradeAdminSet": 0,
+    "uupsImplementations": 2,
     "transferNotMeasured": 3249,
-    "withBridgeWallet": 1002
+    "withBridgeWallet": 975
   },
   "controlSet": {
-    "ranOn": "2026-10-20",
+    "ranOn": "2026-10-21",
     "method": "ground truth by execution: eth_call as owner(); one-sided (a revert does not prove absence)",
     "sampled": 30,
     "mint": {
@@ -286,104 +289,32 @@
     ]
   },
   "drift": {
-    "file": "drift-2026-10-20.json",
-    "ranOn": "2026-10-20",
+    "file": "drift-c-2026-10-21.json",
+    "ranOn": "2026-10-21",
     "token": "0xc63edc7f5b55f7c1ad905e949e18e5552f10056b",
-    "oldMirror": "0x6EFE371E05Ad9ECfE68192dA87d694FFC4A53B16",
     "newMirror": "0xe1089bD7953De63a68dc319588d63A3030af9D3D",
+    "newWallet": "0xaE8cf79EE5088B263670C2d056a2F59c9E6c2a30",
+    "routed": true,
+    "earlierRevertSelector": "0x13be252b",
+    "earlierRevertName": "InsufficientAllowance() on the demo token (missing approval to the second wallet), not a bridge refusal",
+    "simulation": "passes",
     "steps": [
       {
-        "step": "claim LDRIFT",
+        "step": "approve the SECOND escrow wallet",
         "chain": "elysium",
-        "txHash": "0x676152d29426a99f768639aa866325598f8acdfbcc887f7c5370fbe1e7d501a8",
+        "txHash": "0x3f027354fb8f328217aa39336bf489033496ea050f24794af965abc95709a307",
         "status": "ok",
-        "gasUsed": "73187"
+        "gasUsed": "46200"
       },
       {
-        "step": "claim LSEAL",
+        "step": "raw crossing keyed on the NEW mirror",
         "chain": "elysium",
-        "txHash": "0x934a2a6b0a1c043a5d8d000b913b8c2861b01a23c52ad6af0e5c9b1a014c137a",
+        "txHash": "0x5e4b14f90f35a116d86d495eb9e98cbec4c45e538e21ec7dda2e59029a0bf363",
         "status": "ok",
-        "gasUsed": "73098"
-      },
-      {
-        "step": "approve wallet (drift)",
-        "chain": "elysium",
-        "txHash": "0xd69c4a3d544444caac9821643956f2f4ec6fdd5b083392c36f3c88902f17e7bf",
-        "status": "ok",
-        "gasUsed": "46201"
-      },
-      {
-        "step": "raw crossing before rename (baseline pre)",
-        "chain": "elysium",
-        "txHash": "0xdaae80e2c522d5b15ae19a42dd1e677df22d27012b036c45f9f881beeb1456d4",
-        "status": "ok",
-        "gasUsed": "190279"
-      },
-      {
-        "step": "approve LockGate (sealed)",
-        "chain": "elysium",
-        "txHash": "0x481e07f0528f1369cbc1539a334c2808f72b113afb5787e20746ba46826046eb",
-        "status": "ok",
-        "gasUsed": "46178"
-      },
-      {
-        "step": "control: LockGate crossing of LSEAL",
-        "chain": "elysium",
-        "txHash": "0x932ff313d27c0b47e7164986bf0ad3976bf8583ed4b968203fb1644307a73d7f",
-        "status": "ok",
-        "gasUsed": "334390"
-      },
-      {
-        "step": "rename LDRIFT -> LDRIFT2",
-        "chain": "elysium",
-        "txHash": "0xc6af76c88b60ef134a4d601bc815abc6990bfbc061d019ad0b981b8b11690cc5",
-        "status": "ok",
-        "gasUsed": "34454"
-      },
-      {
-        "step": "raw crossing keyed on OLD mirror after rename (baseline)",
-        "chain": "elysium",
-        "txHash": "0x22a5623e1bfd6fc879d43a5c6383432a521943508dd17bc9a2079db8c6755c01",
-        "status": "ok",
-        "gasUsed": "173179"
-      },
-      {
-        "step": "createL2Wallet again after rename",
-        "chain": "elysium",
-        "txHash": "0x06ca39eab43ed78d6bc6fff737474c8af06349958e925d64fa3a4d98598bf14b",
-        "status": "ok",
-        "gasUsed": "343197"
-      },
-      {
-        "step": "register mirror for the NEW metadata",
-        "chain": "hyperevm",
-        "txHash": "0xb2304381070795cfb93825c86cb7a13bffafa2a9b96ba71d155358657cb12655",
-        "status": "ok",
-        "gasUsed": "686779"
-      },
-      {
-        "step": "raw crossing keyed on NEW mirror",
-        "chain": "elysium",
-        "status": "reverted",
-        "error": "The contract function \"outboundTransfer\" reverted with the following signature:"
-      },
-      {
-        "step": "intervention: LockGate crossing of renamed LDRIFT",
-        "chain": "elysium",
-        "txHash": "0x41081ed61fdd91620cfaf66b1cca2e96d802f3c0fa45b5807755278b86b7bf2b",
-        "status": "refused",
-        "error": "MetadataDrift"
+        "gasUsed": "208627"
       }
     ],
-    "outcomes": {
-      "Does the factory name a new canonical mirror after a rename?": "Yes. expectedL1Mirror moved from 0x6EFE371E05Ad9ECfE68192dA87d694FFC4A53B16 to 0xe1089bD7953De63a68dc319588d63A3030af9D3D.",
-      "(a) Does the old wallet still accept locks keyed on the old mirror?": "Yes. The raw router accepted the crossing (0x22a5623e1bfd6fc879d43a5c6383432a521943508dd17bc9a2079db8c6755c01). Old route gateway is 0x7255150a0340852Fe4B4B5657C5AcE6c09a4F959.",
-      "(b) Can a second wallet be created for the new metadata?": "Yes. A new wallet 0xaE8cf79EE5088B263670C2d056a2F59c9E6c2a30 was created.",
-      "(c) After crossing again, do two mirrors with nonzero supply exist?": "Mirror supply on HyperEVM, old: 0, new: 0. Crossing keyed on the new mirror: refused (The contract function \"outboundTransfer\" reverted with the following signature:). Supply only mints after the challenge window, so re-read these after it passes (the keeper does).",
-      "What does LockGate do after the rename?": "Refused with MetadataDrift. Preflight code 3."
-    },
-    "firstControlCrossingAt": "2026-10-20T14:27:29.279Z"
+    "answer": "The router accepts crossings keyed on BOTH mirrors for the same token after a rename: two live routes, one canonical."
   },
   "counterfactual": {
     "file": "counterfactual-2026-10-20.json",
@@ -415,6 +346,154 @@
     }
   },
   "challengeWindowSeconds": null,
+  "challenge": {
+    "readAt": "2026-10-21T01:45:57.995Z",
+    "rollup": "0xEbf08e34941fd93a0Fc1cD89dbBF7447267039Df",
+    "confirmPeriodBlocks": 10,
+    "hyperEvmBlockTimeSeconds": 0.984,
+    "configuredPeriodSeconds": 9.8,
+    "firstCrossingSentAt": "2026-10-20T14:21:14.000Z",
+    "firstCrossingTx": "0xbbb25cf899cef5a0e228b0953780e67ee00da3debd3853b9455529befd7d977b",
+    "observedEndToEndSeconds": null
+  },
+  "auction": {
+    "ranOn": "2026-10-21",
+    "user": "0x7c8A5a8b84a9A552c4A964dDe23266fA9A6Aa344",
+    "readAt": "2026-10-21T01:40:11.176Z",
+    "source": "info API spotDeployState",
+    "mainnet": {
+      "startGasHype": "1092.04430208",
+      "currentGasHype": "945.56020748",
+      "endGasHype": null,
+      "startTimeSeconds": 1792519200,
+      "durationSeconds": 111600,
+      "tickerPriceHype": "945.56020748"
+    },
+    "testnet": {
+      "startGasHype": "500.0",
+      "currentGasHype": "500.0",
+      "endGasHype": null,
+      "startTimeSeconds": 1792519200,
+      "durationSeconds": 111600,
+      "tickerPriceHype": "500.0"
+    }
+  },
+  "upgrade": {
+    "file": "upgrade-2026-10-21.json",
+    "ranOn": "2026-10-21",
+    "token": "0x4b49f432c9c55abe34b0c8684f7303ce7ec0de4f",
+    "implementationV2": "0x6001efc4b00f51a832e3990c12a9c4cd7965fbf2",
+    "symbolBefore": "LUPG",
+    "symbolAfter": "LUPG2",
+    "mirrorBefore": "0x2FA1369b73Bf139b58c7649367273a35A6D11283",
+    "mirrorAfter": "0x001f74191423826aAc248aC31eB392B2b4e1b4C7",
+    "mirrorMoved": true,
+    "noRenameFunction": "UpgradeToken exposes no setName or setSymbol: the change happened through upgradeToAndCall",
+    "control": {
+      "txHash": "0x9c76b8a6ec0f5d37db4020b7ffc32559eb6b6f0a53310fc13d987073314bf683",
+      "status": "ok"
+    },
+    "upgrade": {
+      "txHash": "0xf81a3ac405475b958ec9669082d1a04028c926a1de49992b82c54242f447e559"
+    },
+    "intervention": {
+      "txHash": "0x2a948c9c50454686766da33b9f69f72411aa5eba0937b2ba31bb9f188f7abdf0",
+      "status": "reverted",
+      "error": "MetadataDrift"
+    },
+    "steps": [
+      {
+        "step": "seal LUPG",
+        "chain": "elysium",
+        "txHash": "0xab3ba81622a078bfb1d59d11208add1bec73cdae204382687ba0c147509b2a67",
+        "status": "ok",
+        "gasUsed": "221435"
+      },
+      {
+        "step": "createL2Wallet LUPG",
+        "chain": "elysium",
+        "txHash": "0x1aea1db2bf5399eac0054b8b263c6167416a54ef4606ada310ffb538518d1c06",
+        "status": "ok",
+        "gasUsed": "343253"
+      },
+      {
+        "step": "createAndRegisterL1Mirror LUPG",
+        "chain": "hyperevm",
+        "txHash": "0x05dcd7fcfc20d1502d8f48821a68166967653331f816332fa5f0e7ec6bf60b9e",
+        "status": "ok",
+        "gasUsed": "686767"
+      },
+      {
+        "step": "route registered LUPG",
+        "chain": "elysium",
+        "status": "ok",
+        "note": "after ~70s"
+      },
+      {
+        "step": "claim LUPG",
+        "chain": "elysium",
+        "txHash": "0x3f639847fc8d5269a02d9ff37170c69f79bb8f7286756b07d7a98cc0f5c0e707",
+        "status": "ok",
+        "gasUsed": "77977"
+      },
+      {
+        "step": "approve LockGate",
+        "chain": "elysium",
+        "txHash": "0xec3ac631236ba21d9088749768cc27d61bad4723e1de2a315fa0a2cf8954bc1d",
+        "status": "ok",
+        "gasUsed": "51022"
+      },
+      {
+        "step": "control: LockGate crossing before the upgrade",
+        "chain": "elysium",
+        "txHash": "0x9c76b8a6ec0f5d37db4020b7ffc32559eb6b6f0a53310fc13d987073314bf683",
+        "status": "ok",
+        "gasUsed": "291296"
+      },
+      {
+        "step": "upgrade the implementation to V2 (symbol changes)",
+        "chain": "elysium",
+        "txHash": "0xf81a3ac405475b958ec9669082d1a04028c926a1de49992b82c54242f447e559",
+        "status": "ok",
+        "gasUsed": "33346"
+      },
+      {
+        "step": "intervention: LockGate crossing after the upgrade",
+        "chain": "elysium",
+        "txHash": "0x2a948c9c50454686766da33b9f69f72411aa5eba0937b2ba31bb9f188f7abdf0",
+        "status": "refused",
+        "error": "MetadataDrift"
+      }
+    ]
+  },
+  "driftC": {
+    "file": "drift-c-2026-10-21.json",
+    "ranOn": "2026-10-21",
+    "token": "0xc63edc7f5b55f7c1ad905e949e18e5552f10056b",
+    "newMirror": "0xe1089bD7953De63a68dc319588d63A3030af9D3D",
+    "newWallet": "0xaE8cf79EE5088B263670C2d056a2F59c9E6c2a30",
+    "routed": true,
+    "earlierRevertSelector": "0x13be252b",
+    "earlierRevertName": "InsufficientAllowance() on the demo token (missing approval to the second wallet), not a bridge refusal",
+    "simulation": "passes",
+    "steps": [
+      {
+        "step": "approve the SECOND escrow wallet",
+        "chain": "elysium",
+        "txHash": "0x3f027354fb8f328217aa39336bf489033496ea050f24794af965abc95709a307",
+        "status": "ok",
+        "gasUsed": "46200"
+      },
+      {
+        "step": "raw crossing keyed on the NEW mirror",
+        "chain": "elysium",
+        "txHash": "0x5e4b14f90f35a116d86d495eb9e98cbec4c45e538e21ec7dda2e59029a0bf363",
+        "status": "ok",
+        "gasUsed": "208627"
+      }
+    ],
+    "answer": "The router accepts crossings keyed on BOTH mirrors for the same token after a rename: two live routes, one canonical."
+  },
   "envelopeVerification": {
     "ranOn": "2026-10-20",
     "spotTokens": 1673,
@@ -743,8 +822,8 @@
     "tokens": 1673
   },
   "deployments": {
-    "contractCount": 9,
-    "totalDeployFeeWei": "628135097570000",
+    "contractCount": 12,
+    "totalDeployFeeWei": "768208702160000",
     "contracts": {
       "LockSurvey": {
         "address": "0xd62ec5f3fe3e97b25f0276db59e9be188d68e920",
@@ -817,6 +896,30 @@
         "feeWei": "60083214240000",
         "block": 12237734,
         "deployedOn": "2026-10-20"
+      },
+      "UpgradeImplV1": {
+        "address": "0x211b918abdf688650f3343480c89ab56163868fe",
+        "txHash": "0xa471ff78e5c4888ca341437388cf0aedaac7e0d9ddaf6435792ea175a8e4132a",
+        "gasUsed": "599592",
+        "feeWei": "59959200000000",
+        "block": 12522752,
+        "deployedOn": "2026-10-21"
+      },
+      "UpgradeImplV2": {
+        "address": "0x6001efc4b00f51a832e3990c12a9c4cd7965fbf2",
+        "txHash": "0x03e77728a98ac70c2e679796e5c59f62f9b174695254762ab1116dab2487d3ee",
+        "gasUsed": "600459",
+        "feeWei": "60051904590000",
+        "block": 12522763,
+        "deployedOn": "2026-10-21"
+      },
+      "UpgradeToken": {
+        "address": "0x4b49f432c9c55abe34b0c8684f7303ce7ec0de4f",
+        "txHash": "0x1d28789f6563d14815aef7678a09f55200ac22ced2e64d86ceb3b682d9b39075",
+        "gasUsed": "200625",
+        "feeWei": "20062500000000",
+        "block": 12523115,
+        "deployedOn": "2026-10-21"
       }
     }
   },
@@ -889,61 +992,21 @@
         "gasUsed": 164084
       },
       {
-        "step": "claim LDRIFT",
+        "step": "approve the SECOND escrow wallet",
         "chain": "elysium",
-        "gasUsed": 73187
+        "gasUsed": 46200
       },
       {
-        "step": "claim LSEAL",
+        "step": "raw crossing keyed on the NEW mirror",
         "chain": "elysium",
-        "gasUsed": 73098
-      },
-      {
-        "step": "approve wallet (drift)",
-        "chain": "elysium",
-        "gasUsed": 46201
-      },
-      {
-        "step": "raw crossing before rename (baseline pre)",
-        "chain": "elysium",
-        "gasUsed": 190279
-      },
-      {
-        "step": "approve LockGate (sealed)",
-        "chain": "elysium",
-        "gasUsed": 46178
-      },
-      {
-        "step": "control: LockGate crossing of LSEAL",
-        "chain": "elysium",
-        "gasUsed": 334390
-      },
-      {
-        "step": "rename LDRIFT -> LDRIFT2",
-        "chain": "elysium",
-        "gasUsed": 34454
-      },
-      {
-        "step": "raw crossing keyed on OLD mirror after rename (baseline)",
-        "chain": "elysium",
-        "gasUsed": 173179
-      },
-      {
-        "step": "createL2Wallet again after rename",
-        "chain": "elysium",
-        "gasUsed": 343197
-      },
-      {
-        "step": "register mirror for the NEW metadata",
-        "chain": "hyperevm",
-        "gasUsed": 686779
+        "gasUsed": 208627
       }
     ]
   },
   "keeper": {
-    "lastRun": "2026-10-20T15:36:49.339Z",
-    "sweeps": 2,
+    "lastRun": "2026-10-21T01:33:12.723Z",
+    "sweeps": 3,
     "decisionsAsked": 2,
-    "openFindings": 2
+    "openFindings": 1
   }
 }

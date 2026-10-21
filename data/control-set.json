@@ -1,5 +1,5 @@
 {
-  "ranOn": "2026-10-20",
+  "ranOn": "2026-10-21",
   "method": "ground truth by execution: eth_call as owner(); one-sided (a revert does not prove absence)",
   "sampled": 30,
   "mint": {

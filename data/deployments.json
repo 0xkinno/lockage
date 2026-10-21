@@ -73,6 +73,30 @@
       "feeWei": "60083214240000",
       "block": 12237734,
       "deployedOn": "2026-10-20"
+    },
+    "UpgradeImplV1": {
+      "address": "0x211b918abdf688650f3343480c89ab56163868fe",
+      "txHash": "0xa471ff78e5c4888ca341437388cf0aedaac7e0d9ddaf6435792ea175a8e4132a",
+      "gasUsed": "599592",
+      "feeWei": "59959200000000",
+      "block": 12522752,
+      "deployedOn": "2026-10-21"
+    },
+    "UpgradeImplV2": {
+      "address": "0x6001efc4b00f51a832e3990c12a9c4cd7965fbf2",
+      "txHash": "0x03e77728a98ac70c2e679796e5c59f62f9b174695254762ab1116dab2487d3ee",
+      "gasUsed": "600459",
+      "feeWei": "60051904590000",
+      "block": 12522763,
+      "deployedOn": "2026-10-21"
+    },
+    "UpgradeToken": {
+      "address": "0x4b49f432c9c55abe34b0c8684f7303ce7ec0de4f",
+      "txHash": "0x1d28789f6563d14815aef7678a09f55200ac22ced2e64d86ceb3b682d9b39075",
+      "gasUsed": "200625",
+      "feeWei": "20062500000000",
+      "block": 12523115,
+      "deployedOn": "2026-10-21"
     }
   }
 }

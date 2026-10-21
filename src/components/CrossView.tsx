@@ -33,7 +33,7 @@ function Step({ n, title, done, children }: { n: number; title: string; done?: b
 export function CrossView() {
   const { address: me } = useAccount();
   const qc = useQueryClient();
-  const live = DEMOS.filter((d) => d.address && (d.key === "sealed" || d.key === "drift" || d.key === "mint" || d.key === "tax"));
+  const live = DEMOS.filter((d) => d.address && (d.key === "sealed" || d.key === "drift" || d.key === "mint" || d.key === "tax" || d.key === "upgrade"));
   const [tok, setTok] = useState<DemoToken | undefined>(live[0]);
   const [amount, setAmount] = useState("100");
   const [to, setTo] = useState("");
@@ -242,10 +242,13 @@ export function CrossView() {
               <div className="mt-1 text-ink-2">
                 {window_ ? (
                   <>
-                    Measured window: {Math.round(window_ / 60)} min. {remaining && remaining > 0 ? <span className="mono">{Math.floor(remaining / 60)}:{String(remaining % 60).padStart(2, "0")} left</span> : "The window has passed. Claim on the bridge."}
+                    Observed end to end: {Math.round(window_ / 60)} min. {remaining && remaining > 0 ? <span className="mono">{Math.floor(remaining / 60)}:{String(remaining % 60).padStart(2, "0")} left</span> : "The window has passed. Claim on the bridge."}
                   </>
                 ) : (
-                  <>The challenge window has not been measured yet, so no countdown is shown. Elapsed: <span className="mono">{secondsSince}s</span>.</>
+                  <>
+                    {facts.challenge ? `The rollup's configured challenge period is ${facts.challenge.confirmPeriodBlocks} HyperEVM blocks (about ${facts.challenge.configuredPeriodSeconds} s). ` : ""}
+                    The observed end-to-end time is unknown until an output root covers a crossing{facts.challenge?.firstCrossingSentAt ? `: waiting since ${facts.challenge.firstCrossingSentAt.slice(11, 16)} UTC` : ""}. Elapsed for this crossing: <span className="mono">{secondsSince}s</span>.
+                  </>
                 )}{" "}
                 <a className="underline" href="https://elysium.kinetiq.xyz/bridge" target="_blank" rel="noreferrer">
                   Claim on the bridge

@@ -32,6 +32,9 @@ const deployments = readJson<{ contracts: Record<string, { gasUsed: string; feeW
 const ledger = readJson<{ lastRun: string; sweeps: number; decisionsAsked: number; findings: unknown[] }>("data/ledger.json");
 const envVerify = readJson<Record<string, unknown>>("data/envelope-verification.json");
 const challenge = readJson<{ seconds: number }>("data/challenge-window.json");
+const challengeCfg = readJson<Record<string, unknown>>("data/challenge-config.json");
+const auctionFile = existsSync("data") ? readdirSync("data").filter((f) => /^auction-.*\.json$/.test(f)).sort().pop() : undefined;
+const auction = auctionFile ? readJson<Record<string, unknown>>(`data/${auctionFile}`) : null;
 const spot = readJson<{ ranOn: string; tokens: number }>("data/spot-snapshot.json");
 
 const expDir = "data/experiments";
@@ -56,6 +59,10 @@ const facts = {
   drift: latest("drift-"),
   counterfactual: latest("counterfactual-"),
   challengeWindowSeconds: challenge?.seconds ?? null,
+  challenge: challengeCfg,
+  auction,
+  upgrade: latest("upgrade-"),
+  driftC: latest("drift-c-"),
   envelopeVerification: envVerify,
   hypercoreSnapshot: spot,
   deployments: deployments

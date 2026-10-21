@@ -19,3 +19,5 @@ None of this is a bug in Elysium. It is in the docs, on three pages, written for
 **Founder stake:** `$LOCK` is launching through Ascend. LOCKAGE surveys its own token first.
 
 **Assumption versus reality:** everyone assumes "launched on Elysium" means "can climb to HyperCore later". In reality the climb is decided at launch, by five token properties, under one-shot permanent rules.
+
+**Ascend's ladder, as Ascend states it:** Ascended status and ecosystem buybacks, HyperCore spot listings, and eligible HIP-3 perpetual markets through Kinetiq (Ascend's incubator announcement on X, 2026-10-20; post URL to be pasted here). Buying the HyperCore ticker cost 945.56 HYPE on mainnet on 2026-10-21, and the decimals chosen then can never change.

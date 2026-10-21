@@ -9,8 +9,6 @@ LOCKAGE reads that back to you first, seals the token's bridge identity, and ref
 
 [![Live](https://img.shields.io/badge/live-lockage.vercel-C8F04A?style=flat-square&labelColor=12140C)](https://lockage-kinnoskis-projects.vercel.app)
 [![CI](https://github.com/0xkinno/lockage/actions/workflows/ci.yml/badge.svg)](https://github.com/0xkinno/lockage/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/contract_tests-{{fact:tests.passed}}_passing-C8F04A?style=flat-square&labelColor=12140C)](#proof-measured-not-claimed)
-[![Network](https://img.shields.io/badge/Elysium_testnet-99801-C8F04A?style=flat-square&labelColor=12140C)](#deployed-contracts)
 [![License](https://img.shields.io/badge/license-MIT-C8F04A?style=flat-square&labelColor=12140C)](LICENSE)
 
 </div>
@@ -24,6 +22,8 @@ LOCKAGE reads that back to you first, seals the token's bridge identity, and ref
 | **Proof page** | [/proof](https://lockage-kinnoskis-projects.vercel.app/proof): contracts, transaction hashes, measured costs |
 | **Census** | [/census](https://lockage-kinnoskis-projects.vercel.app/census): the wild set of Elysium testnet tokens |
 | **Network** | Elysium testnet (99801) settling to HyperEVM testnet (998) |
+| **Tests** | {{fact:tests.passed}} contract tests passing, fuzzed at {{fact:tests.fuzzRunsPerProperty}} runs; 12 contracts source-verified on the explorer |
+| **Embed for Ascend** | [/embed](https://lockage-kinnoskis-projects.vercel.app/embed?decimals=18&supply=1000000000000&rename=1) and `GET /api/survey` |
 | **Author** | [0xkinno](https://github.com/0xkinno) |
 
 ---
@@ -31,6 +31,10 @@ LOCKAGE reads that back to you first, seals the token's bridge identity, and ref
 ## The finding in one paragraph
 
 Everyone assumes a token launched on Elysium can climb to HyperCore later. It cannot, unless five properties were right at launch: supply, decimals, metadata mutability, mintability and transfer behaviour. The climb's third rung is a one-shot, irreversible ceremony whose parameters are permanent, and the mirror bridge keys a token's identity on its live `name`, `symbol` and `decimals`. We reproduced the consequence on chain: **after a single `setSymbol`, the raw router kept accepting crossings keyed on the old mirror, a second escrow wallet could be created for the same token, and only LockGate refused.** Both transactions are below, one accepted and one reverted.
+
+### The number that saves builders money
+
+**{{fact:census.blockedBySupplyOrDecimals}} of {{fact:census.surveyed}} surveyed Elysium testnet tokens ({{pct:census.blockedBySupplyOrDecimals,census.surveyed}}) can never graduate** because of their supply or decimals, and {{fact:census.identityUpgradeable}} more can change their own identity by upgrade. Each of them found out after launch, when nothing can change. The selector scan finds {{fact:census.mutableMetadata}} tokens with a rename function. That zero is real and it is not comfort: a proxy's name and symbol can change through an upgrade with no rename function at all, which is why the survey reads the EIP-1967 admin slot from storage, and why the upgrade counterfactual below exists.
 
 ## The problem, in a person
 
@@ -43,6 +47,8 @@ None of it is an Elysium bug. It is in the docs, on three pages, written for iss
 | Elysium tokens reach HyperCore through the mirror bridge, then deposit-wallet linkage | [Token bridging on Elysium](https://elysium.kinetiq.xyz/docs/token-bridging-on-elysium) |
 | Mirror identity is the token plus its exact live metadata; mutable metadata makes one pair per snapshot | [Token bridging architecture](https://elysium.kinetiq.xyz/docs/token-bridging-architecture) |
 | The ticker spec is locked at auction, genesis is one-shot, the link is permanent | [HyperCore spot deployment](https://elysium.kinetiq.xyz/docs/hypercore-spot-deployment) |
+| Ascend's ladder: Ascended status and ecosystem buybacks, HyperCore spot listings, eligible HIP-3 perpetual markets through Kinetiq | Ascend's incubator announcement on X, 2026-10-20 (post link to be added) |
+| Buying a HyperCore ticker costs **{{ticker}} HYPE** on mainnet ({{tickerDate}}), and the decimals chosen then can never change | `spotDeployState` from the Hyperliquid info API, snapshot in `data/auction-*.json` |
 | Core amounts are `uint64` Core wei; `szDecimals + 5 <= weiDecimals`; `evmExtraWeiDecimals` in [-2, 18] | same page, step 1 |
 | Unaligned deposits revert `AmountNotCoreAligned`; fee-on-transfer and rebasing tokens are unsupported | [Deposit wallets](https://elysium.kinetiq.xyz/docs/hypercore-bridging-via-deposit-wallets) |
 
@@ -97,9 +103,16 @@ What the experiment answered, by execution rather than by reading docs:
 - **Does the old route still accept locks keyed on the old mirror?** Yes. The router has no memory of the identity change.
 - **Can a second escrow wallet be created for the new metadata?** Yes. One token, two wallets.
 - **Does LockGate catch it?** Yes, before any funds move, and the refusal is recorded on chain.
-- **Do two mirrors end up with nonzero supply?** Not yet determined. Supply only mints after the challenge window, and the keeper re-reads it when the window passes.
+- **Is the new route usable?** Yes. After approving the second wallet, a raw crossing keyed on the **new** mirror was accepted too, so one token has two live routes and only one canonical mirror. (The first attempt reverted with `0x13be252b`, which decodes to the demo token's own `InsufficientAllowance()`: a missing approval, not a bridge refusal.)
+- **Do two mirrors end up with nonzero supply?** Mirror supply only mints when an outbox message is executed, after an output root covers it. The keeper reads both pairs on every sweep and the answer is recorded in `docs/DISCOVERY.md`.
 
-### 2. The wild set
+### 2. A rename that no selector scan can see
+
+`UpgradeToken` is a UUPS proxy with no `setSymbol` and no `setName`. Its admin upgrades the implementation and the symbol changes anyway. LockGate does not read the function list, it reads the live metadata, so it refuses:
+
+{{table:upgrade}}
+
+### 3. The wild set
 
 The scan found **{{fact:census.candidates}}** ERC-20 emitters on Elysium testnet. {{fact:census.spam.exactlyOneTransfer}} emitted exactly one Transfer and {{fact:census.spam.exactlyTwoTransfers}} exactly two: single-mint deployment spam, counted and published but not surveyed. LOCKAGE surveyed the **{{fact:census.surveyed}}** contracts with at least {{fact:census.minTransfers}} transfers.
 
@@ -109,16 +122,17 @@ The scan found **{{fact:census.candidates}}** ERC-20 emitters on Elysium testnet
 | Blocked by supply or decimals | {{fact:census.blockedBySupplyOrDecimals}} |
 | Owner mint found | {{fact:census.mintable}} |
 | Mutable metadata found by selector scan | {{fact:census.mutableMetadata}} |
+| Identity can change by upgrade (EIP-1967 admin slot or UUPS `upgradeToAndCall`) | {{fact:census.identityUpgradeable}} |
 | Unreadable proxies (reported as Not determined) | {{fact:census.unreadableProxy}} |
 | Already paired with an escrow wallet on the bridge | {{fact:census.withBridgeWallet}} |
 
 The selector scan is a heuristic, so it is scored. A control set of {{fact:controlSet.sampled}} tokens is labelled by **execution** (simulating `mint` and rename calls as the owner), a different method from the one under test. Both error directions are published and every miss is named on [/census](https://lockage-kinnoskis-projects.vercel.app/census).
 
-### 3. The envelope against ground truth
+### 4. The envelope against ground truth
 
 The formula was checked against HyperCore testnet's own token list ({{fact:envelopeVerification.spotTokens}} tokens, {{fact:envelopeVerification.checked}} with linked EVM contracts). {{fact:envelopeVerification.consistentWithRules}} are consistent with the rules; the exceptions (the system token USDC and tokens whose reported max supply sits at the hard `uint64` ceiling) are named in `data/envelope-verification.json`. LOCKAGE plans 10% below that ceiling on purpose, so it is stricter than HyperCore itself.
 
-### 4. Tests
+### 5. Tests
 
 **{{fact:tests.passed}}** Foundry tests pass, fuzzed at {{fact:tests.fuzzRunsPerProperty}} runs per property. The Solidity and TypeScript envelopes are fed the same **{{fact:tests.twinVectors}}** vectors and must agree exactly. Fork tests run LockGate against the real factory, router and bridge-wallet gateway. A browser suite on six viewports drives a **real EIP-6963 wallet signing real testnet transactions**: claim, approve, cross, refusal, seal, probe, certificate, keeper decision.
 
@@ -132,13 +146,13 @@ The formula was checked against HyperCore testnet's own token list ({{fact:envel
 
 ## Deployed contracts
 
-Elysium testnet (99801), deployed 2026-10-20 by `0x7c8A...a344`. Total deployment cost: {{hype:deployments.totalDeployFeeWei}} HYPE for all nine contracts. **All nine are source-verified on the explorer**: each address below opens the verified Contract tab.
+Elysium testnet (99801), deployed 2026-10-20 and 2026-10-21 by `0x7c8A...a344`. Total deployment cost: {{hype:deployments.totalDeployFeeWei}} HYPE for all twelve contracts. **All twelve are source-verified on the explorer**: each address below opens the verified Contract tab.
 
 {{table:contracts}}
 
 ### Bridge pairs
 
-Each demo token has a live escrow wallet and a registered HyperEVM mirror. LBIG is sealed only: it can never graduate, so it has no pair on purpose. The LDRIFT row shows the token **after** its rename: the mirror and wallet are the second pair created for the new metadata.
+Each bridged demo token has a live escrow wallet and a registered HyperEVM mirror. LBIG is sealed only: it can never graduate, so it has no pair on purpose. The LDRIFT row shows the token **after** its rename: the mirror and wallet are the second pair created for the new metadata.
 
 {{table:pairs}}
 
@@ -233,8 +247,8 @@ The adversarial review is in [docs/REDTEAM_LOG.md](docs/REDTEAM_LOG.md): five ro
 | Survey, envelope, Lock Certificate | Live on testnet |
 | Seal, probe, LockGate crossing, builder decisions | Live on testnet, driven end to end by the browser suite with a real wallet |
 | Drift refusal as a recorded reverted transaction | Live on testnet, hashes above |
-| Lockkeeper reconciliation | Live; scheduled runs commit the ledger ({{fact:keeper.sweeps}} sweeps so far) |
-| Challenge window | Measured automatically once the output root is posted ({{fact:challengeWindowSeconds|pending}} seconds) |
+| Lockkeeper reconciliation | Live; the scheduled workflow commits the ledger ({{fact:keeper.sweeps}} sweeps, {{fact:keeper.decisionsAsked}} decisions asked of the builder) |
+| Challenge window | The rollup is configured for {{fact:challenge.confirmPeriodBlocks}} HyperEVM blocks (about {{fact:challenge.configuredPeriodSeconds}} s), read from the Rollup contract. The observed end-to-end time is unknown until an output root covers a crossing (waiting since 14:21 UTC on 2026-10-20) |
 | Deposit-wallet leg and HyperCore genesis | Designed, waiting on Kinetiq's factory |
 | Core supply reconciliation on chain | Designed, waiting on the read precompile |
 
@@ -242,18 +256,38 @@ The adversarial review is in [docs/REDTEAM_LOG.md](docs/REDTEAM_LOG.md): five ro
 
 | Criterion | Where to look |
 |---|---|
-| **Execution** | Nine deployed contracts, {{fact:tests.passed}} tests, a real-wallet browser suite, a live Vercel deployment, an unattended workflow |
-| **Usefulness** | The five lines before launch, a crossing that cannot land on a stale route, a printable certificate, a census of the wild set |
+| **Execution** | Twelve deployed and verified contracts, {{fact:tests.passed}} tests, a real-wallet browser suite, a live Vercel deployment, an unattended workflow |
+| **Usefulness** | {{fact:census.blockedBySupplyOrDecimals}} of {{fact:census.surveyed}} surveyed tokens ({{pct:census.blockedBySupplyOrDecimals,census.surveyed}}) are blocked by supply or decimals; the five lines before launch, an embeddable check, a crossing that cannot land on a stale route, a printable certificate, a census of the wild set |
 | **Long-term vision** | `$LOCK` and the roadmap below, tied to Elysium's own schedule |
 | **Originality** | The envelope computed exactly as HyperCore will, sealed bridge identity, a gate that refuses on drift, and a drift reproduced on chain. See [docs/DISCOVERY.md](docs/DISCOVERY.md) |
+
+## For Ascend's launch form
+
+A read endpoint, not a new product. The same five lines, as JSON, for a token that exists or one that does not yet:
+
+```bash
+# a token that does not exist yet (the launch-form case)
+curl "https://lockage-kinnoskis-projects.vercel.app/api/survey?decimals=18&supply=1000000000000&rename=1&mint=0&tax=0"
+
+# a deployed Elysium testnet token
+curl "https://lockage-kinnoskis-projects.vercel.app/api/survey?address=0xa16b878da523e42892455704ab34dbd98b488462"
+```
+
+Each line carries its verdict and the rule behind it. Responses are cached for 60 seconds, rate limited per IP, and name the RPC that answered. `/embed` renders the same result as a 360px card for an iframe:
+
+```html
+<iframe src="https://lockage-kinnoskis-projects.vercel.app/embed?decimals=18&supply=1000000000000&rename=1" width="360" height="620" style="border:0"></iframe>
+```
+
+![Embed](docs/screenshots/embed.png)
 
 ## `$LOCK` and the roadmap
 
 | Stage | State |
 |---|---|
 | **Working** | Contracts, app, census and keeper on Elysium testnet |
-| **In development** | Deposit-wallet leg: LockGate extends from HyperEVM into HyperCore deposits with `AmountNotCoreAligned` pre-checks, once Kinetiq publishes the factory |
-| **Before launch** | Mainnet redeploy at Elysium mainnet launch; a public seal and certificate for `$LOCK` |
+| **In development** | Deposit-wallet leg: LockGate extends from HyperEVM into HyperCore deposits with `AmountNotCoreAligned` pre-checks, once Kinetiq publishes the factory. The read precompile and CoreWriter follow about a month after mainnet |
+| **Before launch** | Mainnet redeploy on Elysium mainnet day (announced as November 9, 2026); a public seal and certificate for `$LOCK` |
 | **After launch** | **The toll:** surveys and holder crossings stay free; projects pay for a Graduation Package (sealed certificate, continuous keeper coverage, the scripted ceremony). Tolls fund `$LOCK` buybacks. Holders vote which Ascend launches get free coverage |
 
 Ask of Ascend: a slot in the launch form for the envelope check, and an introduction to Kinetiq for early deposit-wallet factory addresses.

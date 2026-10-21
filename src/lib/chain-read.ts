@@ -3,7 +3,7 @@ import { elyClient, heClient } from "./clients";
 import { ADDR } from "./chains";
 import { LOCK } from "./deployments";
 import { bridgeFactoryAbi, erc20Abi, lockGateAbi, lockLedgerAbi, lockSurveyAbi, mirrorFactoryAbi, routerAbi } from "./abi";
-import { scan as gauge, EIP1967_IMPL_SLOT, type Scan } from "./bytecode";
+import { scan as gauge, EIP1967_ADMIN_SLOT, EIP1967_IMPL_SLOT, type Scan } from "./bytecode";
 import { envelope } from "./envelope";
 
 export type TokenInfo = {
@@ -51,6 +51,13 @@ export async function readToken(address: Address): Promise<TokenInfo> {
       implCode = ((await elyClient.getCode({ address: proxyImpl })) ?? null) as Hex | null;
     }
   }
+  let proxyAdmin: Address | null = null;
+  if (codeSize < 400 || proxyImpl) {
+    const a = await elyClient.getStorageAt({ address, slot: EIP1967_ADMIN_SLOT }).catch(() => null);
+    if (a && /[1-9a-f]/i.test(a.slice(2))) proxyAdmin = getAddress(("0x" + a.slice(26)) as Hex);
+  }
+  const scanned = gauge(code as Hex, implCode);
+  scanned.proxyAdmin = proxyAdmin;
   return {
     address,
     name: r[0].result as string,
@@ -59,7 +66,7 @@ export async function readToken(address: Address): Promise<TokenInfo> {
     totalSupply: r[3].result as bigint,
     owner: r[4].status === "success" ? (r[4].result as Address) : null,
     codeSize,
-    scan: gauge(code as Hex, implCode),
+    scan: scanned,
     proxyImpl,
   };
 }

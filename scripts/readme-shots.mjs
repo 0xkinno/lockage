@@ -71,7 +71,7 @@ await p.getByTestId("sweep-now").click();
 await p.getByTestId("keeper-row").first().waitFor({ timeout: 90000 });
 await p.getByRole("button", { name: "Reconcile live now" }).waitFor({ timeout: 90000 });
 await settle(800);
-await focusOn('[data-testid="sweeps"]', 190);
+await focusOn('[data-status="finding"]', 170);
 await p.screenshot({ path: out("keeper") });
 
 // proof: contracts
@@ -95,6 +95,13 @@ await mask();
 await settle(900);
 await focusOn('[data-testid="census-tiles"]', 130);
 await p.screenshot({ path: out("census") });
+
+// embed: the 360px card for Ascend's launch form
+const ep = await ctx.newPage();
+await ep.setViewportSize({ width: 420, height: 760 });
+await ep.goto(base + "/embed?decimals=18&supply=1000000000000&rename=1&mint=1", { waitUntil: "networkidle" });
+await ep.waitForTimeout(800);
+await ep.getByTestId("embed").screenshot({ path: out("embed") });
 
 await b.close();
 console.log("README screenshots written to docs/screenshots/");

@@ -22,6 +22,10 @@ export type Facts = {
   drift: Record<string, unknown> | null;
   counterfactual: Record<string, unknown> | null;
   challengeWindowSeconds: number | null;
+  challenge: { confirmPeriodBlocks: number; hyperEvmBlockTimeSeconds: number; configuredPeriodSeconds: number; firstCrossingSentAt: string | null; observedEndToEndSeconds: number | null; readAt: string } | null;
+  auction: { ranOn: string; mainnet?: { tickerPriceHype?: string }; testnet?: { tickerPriceHype?: string } } | null;
+  upgrade: Record<string, unknown> | null;
+  driftC: Record<string, unknown> | null;
   envelopeVerification: Record<string, unknown> | null;
   hypercoreSnapshot: { ranOn: string; tokens: number } | null;
   deployments: { contractCount: number; totalDeployFeeWei: string; contracts: Record<string, { address: string; txHash: string; gasUsed: string; feeWei: string; deployedOn: string }> } | null;

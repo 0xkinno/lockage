@@ -1,0 +1,87 @@
+{
+  "ranOn": "2026-10-21",
+  "token": "0x4b49f432c9c55abe34b0c8684f7303ce7ec0de4f",
+  "implementationV2": "0x6001efc4b00f51a832e3990c12a9c4cd7965fbf2",
+  "symbolBefore": "LUPG",
+  "symbolAfter": "LUPG2",
+  "mirrorBefore": "0x2FA1369b73Bf139b58c7649367273a35A6D11283",
+  "mirrorAfter": "0x001f74191423826aAc248aC31eB392B2b4e1b4C7",
+  "mirrorMoved": true,
+  "noRenameFunction": "UpgradeToken exposes no setName or setSymbol: the change happened through upgradeToAndCall",
+  "control": {
+    "txHash": "0x9c76b8a6ec0f5d37db4020b7ffc32559eb6b6f0a53310fc13d987073314bf683",
+    "status": "ok"
+  },
+  "upgrade": {
+    "txHash": "0xf81a3ac405475b958ec9669082d1a04028c926a1de49992b82c54242f447e559"
+  },
+  "intervention": {
+    "txHash": "0x2a948c9c50454686766da33b9f69f72411aa5eba0937b2ba31bb9f188f7abdf0",
+    "status": "reverted",
+    "error": "MetadataDrift"
+  },
+  "steps": [
+    {
+      "step": "seal LUPG",
+      "chain": "elysium",
+      "txHash": "0xab3ba81622a078bfb1d59d11208add1bec73cdae204382687ba0c147509b2a67",
+      "status": "ok",
+      "gasUsed": "221435"
+    },
+    {
+      "step": "createL2Wallet LUPG",
+      "chain": "elysium",
+      "txHash": "0x1aea1db2bf5399eac0054b8b263c6167416a54ef4606ada310ffb538518d1c06",
+      "status": "ok",
+      "gasUsed": "343253"
+    },
+    {
+      "step": "createAndRegisterL1Mirror LUPG",
+      "chain": "hyperevm",
+      "txHash": "0x05dcd7fcfc20d1502d8f48821a68166967653331f816332fa5f0e7ec6bf60b9e",
+      "status": "ok",
+      "gasUsed": "686767"
+    },
+    {
+      "step": "route registered LUPG",
+      "chain": "elysium",
+      "status": "ok",
+      "note": "after ~70s"
+    },
+    {
+      "step": "claim LUPG",
+      "chain": "elysium",
+      "txHash": "0x3f639847fc8d5269a02d9ff37170c69f79bb8f7286756b07d7a98cc0f5c0e707",
+      "status": "ok",
+      "gasUsed": "77977"
+    },
+    {
+      "step": "approve LockGate",
+      "chain": "elysium",
+      "txHash": "0xec3ac631236ba21d9088749768cc27d61bad4723e1de2a315fa0a2cf8954bc1d",
+      "status": "ok",
+      "gasUsed": "51022"
+    },
+    {
+      "step": "control: LockGate crossing before the upgrade",
+      "chain": "elysium",
+      "txHash": "0x9c76b8a6ec0f5d37db4020b7ffc32559eb6b6f0a53310fc13d987073314bf683",
+      "status": "ok",
+      "gasUsed": "291296"
+    },
+    {
+      "step": "upgrade the implementation to V2 (symbol changes)",
+      "chain": "elysium",
+      "txHash": "0xf81a3ac405475b958ec9669082d1a04028c926a1de49992b82c54242f447e559",
+      "status": "ok",
+      "gasUsed": "33346"
+    },
+    {
+      "step": "intervention: LockGate crossing after the upgrade",
+      "chain": "elysium",
+      "txHash": "0x2a948c9c50454686766da33b9f69f72411aa5eba0937b2ba31bb9f188f7abdf0",
+      "status": "refused",
+      "error": "MetadataDrift"
+    }
+  ]
+}

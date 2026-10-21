@@ -29,3 +29,17 @@ Five roles attack the build. Each finding is fixed or recorded.
 | UX critic | Real wallet flow untested | The browser suite drives a real EIP-6963 wallet signing real testnet transactions: claim, approve, cross, refusal, seal, probe, certificate, keeper acknowledgement |
 
 Open: the challenge window length, which depends on the chain.
+
+## Round 3, after the final pass
+
+| Role | Attack | Result |
+|---|---|---|
+| Contract auditor | A rename path with no setter: upgrade the proxy | UpgradeToken: LockGate refused with MetadataDrift on chain; the survey now reads the EIP-1967 admin slot and the UUPS selector |
+| Honest-data critic | "Zero mutable metadata means the risk is imaginary" | The README explains the zero, leads with the 19% blocked by supply or decimals, and counts identity that can change by upgrade |
+| Honest-data critic | Keeper finding "escrow 0 does not equal supply 0 plus pending 200" is unreadable | Books reconcile per pair; the finding states the stranded amount, old wallet, old mirror and the canonical mirror |
+| Honest-data critic | An undecoded revert was left as evidence | Decoded: 0x13be252b is InsufficientAllowance() on the demo token, a test-script mistake, not a bridge refusal; the experiment was rerun correctly |
+| Chain skeptic | "Unattended" claim with no scheduled commit | Workflow fixed (retry, rebase, stage only existing files) and a keeper commit by 0xkinno landed on main |
+| UX critic | Embed card leaks site chrome or overflows | /embed hides the header and footer, is 360px, and is covered by a browser test |
+| Security reviewer | Public read endpoint abused | 60 second cache, per-IP rate limit, input validation with plain errors, names the RPC that answered |
+
+Open: the observed challenge window, which waits on an output root.

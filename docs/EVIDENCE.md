@@ -38,7 +38,7 @@ Deployer `0x7c8A5a8b84a9A552c4A964dDe23266fA9A6Aa344`.
 | TaxToken | `0xa302f4331b6be3013b5acbb7ef0c093dcfcb91bb` | [0xcad82b0b...](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xcad82b0b3c6244fdf5ea20f3912fe3ce2dfb1c58cd1e185e7fe0c775d534221d) | 580,055 |
 | MintToken | `0xe1bccd5e9a0a800d7337a534e4b27a24e5498742` | [0x39e1688a...](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x39e1688a1c0fdfb685aa5fede297364edcfa7dfac9bbb104d889964320008532) | 600,712 |
 
-The build is reproducible (solc 0.8.28, optimizer 200, `bytecode_hash = none`). All nine contracts are source-verified on the Elysium testnet explorer (`npm run verify:sources`, Blockscout API, original build settings). Open any address on the explorer and choose the Contract tab.
+The build is reproducible (solc 0.8.28, optimizer 200, `bytecode_hash = none`). All twelve contracts are source-verified on the Elysium testnet explorer (`npm run verify:sources`, Blockscout API, original build settings). Open any address on the explorer and choose the Contract tab.
 
 Bridge pairs (escrow wallet, registered mirror, router route) were set up for LSEAL, LDRIFT, LTAX and LMINT; steps and hashes are in `data/setup.json`. LBIG is sealed only and has no pair on purpose.
 

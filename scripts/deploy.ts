@@ -3,7 +3,7 @@
  * data/deployments.json. Records address, tx hash, gas used and fee per contract (cost per unit, no typing).
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { encodeDeployData, formatEther, type Abi, type Hex } from "viem";
+import { encodeDeployData, encodeFunctionData, formatEther, type Abi, type Hex } from "viem";
 import { ely, walletFor, account, today } from "./_env";
 import * as ABI from "../src/lib/abi";
 import { ADDR } from "../src/lib/chains";
@@ -19,12 +19,12 @@ const book: Book = existsSync(FILE)
 
 const wallet = walletFor("DEPLOYER_PK", "ely");
 
-async function deploy(name: string, abi: Abi, args: unknown[] = []) {
+async function deploy(name: string, abi: Abi, args: unknown[] = [], artifact = name) {
   if (book.contracts[name]) {
     console.log("skip", name, book.contracts[name].address);
     return book.contracts[name].address as `0x${string}`;
   }
-  const data = encodeDeployData({ abi, bytecode: artifacts[name], args: args as never });
+  const data = encodeDeployData({ abi, bytecode: artifacts[artifact], args: args as never });
   const hash = await wallet.sendTransaction({ data, chain: wallet.chain, account: wallet.account });
   const rc = await ely.waitForTransactionReceipt({ hash, timeout: 90_000 });
   if (rc.status !== "success" || !rc.contractAddress) throw new Error(`${name} deploy failed ${hash}`);
@@ -55,4 +55,9 @@ await deploy("LockProbe", ABI.lockProbeAbi as Abi);
 for (const t of ["SealedToken", "DriftToken", "OversizeToken", "TaxToken", "MintToken"]) {
   await deploy(t, (ABI as Record<string, unknown>)[t[0].toLowerCase() + t.slice(1) + "Abi"] as Abi);
 }
+// the UUPS demo: two implementations and a proxy that is the token (named UpgradeToken, like the other demos)
+const v1 = await deploy("UpgradeImplV1", ABI.upgradeImplV1Abi as Abi);
+await deploy("UpgradeImplV2", ABI.upgradeImplV2Abi as Abi);
+const initData = encodeFunctionData({ abi: ABI.upgradeImplV1Abi as Abi, functionName: "initialize", args: [wallet.account.address, 1_000_000_000n] });
+await deploy("UpgradeToken", ABI.lockProxyAbi as Abi, [v1, initData], "LockProxy");
 console.log("done. addresses in", FILE);

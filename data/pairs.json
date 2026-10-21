@@ -1,5 +1,5 @@
 {
-  "ranOn": "2026-10-20",
+  "ranOn": "2026-10-21",
   "rows": [
     {
       "contract": "SealedToken",
@@ -42,6 +42,15 @@
       "symbol": "LBIG",
       "token": "0xa9539fd9c256f8b19f3fd4759eda9c90edbbbe7c",
       "mirror": "0xcB7fCF2fdABc7D212C082a3098f1ED22E998dF86",
+      "wallet": null,
+      "routed": false,
+      "mirrorDeployed": false
+    },
+    {
+      "contract": "UpgradeToken",
+      "symbol": "LUPG2",
+      "token": "0x4b49f432c9c55abe34b0c8684f7303ce7ec0de4f",
+      "mirror": "0x001f74191423826aAc248aC31eB392B2b4e1b4C7",
       "wallet": null,
       "routed": false,
       "mirrorDeployed": false

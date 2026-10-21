@@ -111,7 +111,20 @@ export function runSurvey(i: SurveyInput): Survey {
 
   // 3 Metadata identity
   const renameable = d ? d.rename : s?.rename;
-  if (unreadable) {
+  const upgradeAdmin = s?.proxyAdmin ?? null;
+  const upgradeable = !!upgradeAdmin || !!s?.uups;
+  if (!d && upgradeable) {
+    lines.push({
+      id: "metadata",
+      title: "Metadata identity",
+      verdict: "block",
+      detail: upgradeAdmin
+        ? `Identity can change by upgrade (admin ${upgradeAdmin}). An upgrade can return a new name or symbol with no rename function at all, and that moves the canonical mirror.`
+        : "Identity can change by upgrade (UUPS: the implementation carries upgradeToAndCall). An upgrade can return a new name or symbol with no rename function at all, and that moves the canonical mirror.",
+      rule: "Mirror identity = token + exact live name, symbol, decimals; the EIP-1967 admin slot is read from storage, not guessed",
+      fix: "Renounce the upgrade authority before launch, or accept that every upgrade is a new bridge identity.",
+    });
+  } else if (unreadable) {
     lines.push({
       id: "metadata",
       title: "Metadata identity",
@@ -134,7 +147,7 @@ export function runSurvey(i: SurveyInput): Survey {
       id: "metadata",
       title: "Metadata identity",
       verdict: "pass",
-      detail: "No way to change name or symbol was found. One bridge identity for the life of the token.",
+      detail: "No way to change name or symbol was found, and the token is not an upgradeable proxy. One bridge identity for the life of the token.",
       rule: "Mirror identity = token + exact live name, symbol, decimals",
     });
   }

@@ -9,7 +9,7 @@ import { getAddress, keccak256, toHex, type Address, type Hex } from "viem";
 import { ely, sleep, today } from "./_env";
 import { erc20Abi, bridgeFactoryAbi } from "../src/lib/abi";
 import { ADDR } from "../src/lib/chains";
-import { scan as gauge, EIP1967_IMPL_SLOT } from "../src/lib/bytecode";
+import { scan as gauge, EIP1967_ADMIN_SLOT, EIP1967_IMPL_SLOT } from "../src/lib/bytecode";
 import { runSurvey } from "../src/lib/survey";
 
 const TRANSFER = keccak256(toHex("Transfer(address,address,uint256)"));
@@ -113,6 +113,8 @@ type Row = {
   owner: Address | null;
   proxyImpl: Address | null;
   unreadableProxy?: boolean;
+  upgradeAdmin?: string | null;
+  uups?: boolean;
   logs: number;
 };
 
@@ -181,7 +183,15 @@ async function analyze() {
           impl = ((await retry(() => ely.getCode({ address: implAddr })).catch(() => null)) ?? null) as Hex | null;
         }
       }
+      let upgradeAdmin: string | null = null;
+      if (base.codeSize < 400 || base.proxyImpl) {
+        const adm = await retry(() => ely.getStorageAt({ address: a, slot: EIP1967_ADMIN_SLOT })).catch(() => null);
+        if (adm && /[1-9a-f]/i.test(adm.slice(2))) upgradeAdmin = getAddress("0x" + adm.slice(26));
+      }
       const scan = gauge(code as Hex, impl);
+      scan.proxyAdmin = upgradeAdmin;
+      base.upgradeAdmin = upgradeAdmin;
+      base.uups = scan.uups;
       const s = runSurvey({ decimals, supplyBase: supply, scan });
       base.graduates = s.env.graduates;
       base.bestWei = s.env.graduates ? s.env.bestWei : null;
@@ -213,6 +223,9 @@ async function analyze() {
     mintable: count((r) => r.flags.includes("mint")),
     taxOrRebaseLikely: count((r) => r.flags.includes("tax") || r.flags.includes("rebase")),
     unreadableProxy: count((r) => r.unreadableProxy === true),
+    identityUpgradeable: count((r) => !!r.upgradeAdmin || r.uups === true),
+    upgradeAdminSet: count((r) => !!r.upgradeAdmin),
+    uupsImplementations: count((r) => r.uups === true),
     transferNotMeasured: valid.length,
     withBridgeWallet: count((r) => r.hasWallet),
   };

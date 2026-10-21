@@ -8,7 +8,7 @@ import type { Address } from "viem";
 
 const dep = JSON.parse(readFileSync("data/deployments.json", "utf8")).contracts as Record<string, { address: Address }>;
 const rows = [];
-for (const name of ["SealedToken", "DriftToken", "TaxToken", "MintToken", "OversizeToken"]) {
+for (const name of ["SealedToken", "DriftToken", "TaxToken", "MintToken", "OversizeToken", "UpgradeToken"]) {
   const token = dep[name].address;
   const [symbol, mirror, wallet] = await Promise.all([ely.readContract({ address: token, abi: erc20Abi, functionName: "symbol" }), mirrorOf(token), walletOf(token)]);
   const gw = await gatewayOf(mirror);

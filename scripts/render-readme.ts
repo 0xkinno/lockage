@@ -27,9 +27,24 @@ const ROLE: Record<string, string> = {
   OversizeToken: "Demo: 1 quadrillion supply, cannot graduate",
   TaxToken: "Demo: 1% transfer tax",
   MintToken: "Demo: the owner can mint",
+  UpgradeImplV1: "Demo: UUPS implementation, symbol LUPG",
+  UpgradeImplV2: "Demo: UUPS implementation after the upgrade, symbol LUPG2",
+  UpgradeToken: "Demo: the proxy that is the token; renames only by upgrade",
 };
 
 const tables: Record<string, () => string> = {
+  upgrade: () => {
+    const u = facts.upgrade as null | { control?: { txHash?: string }; upgrade?: { txHash?: string }; intervention?: { txHash?: string }; symbolBefore?: string; symbolAfter?: string };
+    if (!u) return "The upgrade counterfactual has not been run yet.";
+    const r = (label: string, h: string | undefined, verdict: string) => `| ${label} | ${verdict} | ${h ? txLink(h) : "n/a"} |`;
+    return [
+      "| Step | Outcome | Transaction |",
+      "|---|---|---|",
+      r("LockGate crossing of the sealed UUPS token", u.control?.txHash, "Accepted"),
+      r(`Admin upgrades the implementation (${u.symbolBefore} becomes ${u.symbolAfter}, no rename function called)`, u.upgrade?.txHash, "Mirror moves to a new address"),
+      r("LockGate crossing after the upgrade", u.intervention?.txHash, "**Refused: MetadataDrift**"),
+    ].join("\n");
+  },
   contracts: () => {
     const c = (readJson("data/deployments.json", { contracts: {} }) as { contracts: Record<string, { address: string; txHash: string; gasUsed: string }> }).contracts;
     const rows = Object.entries(c).map(([n, v]) => `| ${tick}${n}${tick} | ${ROLE[n] ?? ""} | ${addrLink(v.address, "el", "?tab=contract")} | ${txLink(v.txHash)} | ${Number(v.gasUsed).toLocaleString("en-US")} |`);
@@ -57,9 +72,15 @@ const tables: Record<string, () => string> = {
 };
 
 const get = (path: string): unknown => path.split(".").reduce<unknown>((o, k) => (o && typeof o === "object" ? (o as Record<string, unknown>)[k] : undefined), facts);
+const mainnetTicker = () => {
+  const a = facts.auction as null | { mainnet?: { tickerPriceHype?: string } };
+  return a?.mainnet?.tickerPriceHype ? Number(a.mainnet.tickerPriceHype).toLocaleString("en-US", { maximumFractionDigits: 2 }) : null;
+};
 const fmt = (v: unknown) => (typeof v === "number" ? v.toLocaleString("en-US") : String(v));
 
 const out = tpl
+  .replace(/\{\{ticker\}\}/g, () => mainnetTicker() ?? "not read yet")
+  .replace(/\{\{tickerDate\}\}/g, () => String((facts.auction as { ranOn?: string } | null)?.ranOn ?? "not read yet"))
   .replace(/\{\{hype:([^}]+)\}\}/g, (_m, path: string) => {
     const v = get(path.trim());
     return v ? (Number(BigInt(String(v))) / 1e18).toFixed(5) : "not run yet";

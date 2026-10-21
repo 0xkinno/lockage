@@ -47,6 +47,7 @@ export const SELECTORS = {
   blacklist: [sig("blacklist(address)"), sig("addToBlacklist(address)"), sig("setBlacklist(address,bool)")],
 } as const;
 
+export const EIP1967_ADMIN_SLOT = "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103" as const;
 export const EIP1967_IMPL_SLOT = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc" as const;
 
 export type Scan = {
@@ -58,6 +59,10 @@ export type Scan = {
   tax: boolean;
   rebase: boolean;
   upgradeable: boolean;
+  /** the implementation exposes upgradeTo or upgradeToAndCall (UUPS): the logic itself can be replaced */
+  uups: boolean;
+  /** read from the EIP-1967 admin slot by the caller; null when the slot is empty or the token is not a proxy */
+  proxyAdmin?: string | null;
   pause: boolean;
   blacklist: boolean;
   /** true when the code looks like a proxy whose logic we could not read, so every flag above is unreliable */
@@ -117,6 +122,7 @@ export function scan(code: Hex, implCode?: Hex | null): Scan {
     tax: has(SELECTORS.tax, "tax"),
     rebase: has(SELECTORS.rebase, "rebase"),
     upgradeable: has(SELECTORS.upgrade, "upgrade") || smallProxy,
+    uups: (hasDelegatecall || !!implCode) && [sig("upgradeTo(address)"), sig("upgradeToAndCall(address,bytes)")].some((x) => sels.has(x)),
     pause: has(SELECTORS.pause, "pause"),
     blacklist: has(SELECTORS.blacklist, "blacklist"),
     unreadableProxy,
