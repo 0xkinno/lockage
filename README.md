@@ -277,7 +277,7 @@ The adversarial review is in [docs/REDTEAM_LOG.md](docs/REDTEAM_LOG.md): five ro
 | Survey, envelope, Lock Certificate | Live on testnet |
 | Seal, probe, LockGate crossing, builder decisions | Live on testnet, driven end to end by the browser suite with a real wallet |
 | Drift refusal as a recorded reverted transaction | Live on testnet, hashes above |
-| Lockkeeper reconciliation | Live; the scheduled workflow commits the ledger (3 sweeps, 2 decisions asked of the builder) |
+| Lockkeeper reconciliation | Live; the scheduled workflow commits the ledger (5 sweeps, 3 decisions asked of the builder) |
 | Challenge window | The rollup is configured for 10 HyperEVM blocks (about 9.8 s), read from the Rollup contract. The observed end-to-end time is unknown until an output root covers a crossing (waiting since 14:21 UTC on 2026-10-20) |
 | Deposit-wallet leg and HyperCore genesis | Designed, waiting on Kinetiq's factory |
 | Core supply reconciliation on chain | Designed, waiting on the read precompile |

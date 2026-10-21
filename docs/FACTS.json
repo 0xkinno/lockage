@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T02:02:53.903Z",
+  "generatedAt": "2026-10-21T02:07:18.899Z",
   "tests": {
     "total": 74,
     "passed": 74,
@@ -1004,9 +1004,9 @@
     ]
   },
   "keeper": {
-    "lastRun": "2026-10-21T01:33:12.723Z",
-    "sweeps": 3,
-    "decisionsAsked": 2,
-    "openFindings": 1
+    "lastRun": "2026-10-21T02:07:01.692Z",
+    "sweeps": 5,
+    "decisionsAsked": 3,
+    "openFindings": 2
   }
 }
