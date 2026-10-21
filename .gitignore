@@ -30,3 +30,8 @@ docs/screenshots/*
 !docs/screenshots/keeper.png
 !docs/screenshots/proof.png
 !docs/screenshots/embed.png
+video/out/
+video/takes/
+video/vo/*.mp3
+video/vo/*.wav
+video/qa/sheets/

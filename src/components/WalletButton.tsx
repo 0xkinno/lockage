@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useAccount, useChainId, useConnect, useConnectors, useDisconnect, useSwitchChain } from "wagmi";
 import { elysiumTestnet, hyperEvmTestnet } from "@/lib/chains";
 import { short } from "./ui";
@@ -34,7 +35,7 @@ export function WalletModal({ open, onClose }: { open: boolean; onClose: () => v
   const announced = connectors.filter((c) => c.id !== "injected");
   const list = announced.length ? announced : connectors;
 
-  return (
+  const modal = (
     <div className="fixed inset-0 z-[80] flex items-end md:items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Connect a wallet" data-testid="wallet-modal">
       <button className="absolute inset-0 bg-[rgba(18,20,12,0.45)] backdrop-blur-sm" aria-label="Close" onClick={onClose} />
       <div ref={ref} className="plate relative w-full max-w-[420px]" style={{ background: "var(--paper)", boxShadow: "var(--lime-glow)" }}>
@@ -98,6 +99,8 @@ export function WalletModal({ open, onClose }: { open: boolean; onClose: () => v
       </div>
     </div>
   );
+  // The nav capsule uses backdrop-filter, which makes it the containing block for fixed children. Render on body so the dialog is viewport-sized.
+  return typeof document === "undefined" ? null : createPortal(modal, document.body);
 }
 
 export function NetworkPill() {

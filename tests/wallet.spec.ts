@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from "node:fs";
 import { config } from "dotenv";
-import { createPublicClient, formatEther, http, type Hex } from "viem";
+import { createPublicClient, createWalletClient, formatEther, http, parseEther, type Hex } from "viem";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { expect, test } from "@playwright/test";
 import { elysiumTestnet } from "../src/lib/chains";
@@ -71,6 +71,22 @@ test.describe("wallet connection", () => {
 
 test.describe("transaction flow, end to end on testnet", () => {
   test.skip(!deployed, "contracts are not deployed yet: run npm run deploy");
+
+  // The holder spends 100 LSEAL per run. Top it up from the deployer so the suite stays repeatable.
+  test.beforeAll(async () => {
+    if (!process.env.HOLDER_PK || !process.env.DEPLOYER_PK) return;
+    const erc20 = [
+      { type: "function", name: "balanceOf", stateMutability: "view", inputs: [{ type: "address" }], outputs: [{ type: "uint256" }] },
+      { type: "function", name: "transfer", stateMutability: "nonpayable", inputs: [{ type: "address" }, { type: "uint256" }], outputs: [{ type: "bool" }] },
+    ] as const;
+    const token = dep.contracts.SealedToken.address as Hex;
+    const holder = privateKeyToAccount(process.env.HOLDER_PK as Hex).address;
+    const bal = await pub.readContract({ address: token, abi: erc20, functionName: "balanceOf", args: [holder] });
+    if (bal >= parseEther("250")) return;
+    const w = createWalletClient({ account: privateKeyToAccount(process.env.DEPLOYER_PK as Hex), chain: elysiumTestnet, transport: http() });
+    const hash = await w.writeContract({ address: token, abi: erc20, functionName: "transfer", args: [holder, parseEther("300")] });
+    await pub.waitForTransactionReceipt({ hash });
+  });
 
   test("holder claims, approves, crosses 100 LSEAL through LockGate", async ({ page }) => {
     test.skip(!(await funded(process.env.HOLDER_PK)), "holder wallet needs Elysium testnet HYPE");
