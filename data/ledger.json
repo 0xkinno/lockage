@@ -1,10 +1,10 @@
 {
-  "lastRun": "2026-10-21T02:07:01.692Z",
+  "lastRun": "2026-10-21T04:51:29.540Z",
   "rpcSource": {
     "elysium": "testnet-rpc.elysium.kinetiq.xyz (public RPC, no CONDUIT_RPC secret set)",
     "hyperevm": "rpc.hyperliquid-testnet.xyz (public RPC)"
   },
-  "sweeps": 5,
+  "sweeps": 6,
   "decisionsAsked": 3,
   "askedHashes": [
     "0x7a7fb794cbb66473be4af7ee8bd757ea73097d9d6272b3fb4f157da37d9359ac",
@@ -32,26 +32,26 @@
       "token": "0xa16b878dA523e42892455704aB34dbD98b488462",
       "symbol": "LSEAL",
       "sealedBy": "0x7c8A5a8b84a9A552c4A964dDe23266fA9A6Aa344",
-      "escrow": "800000000000000000000",
+      "escrow": "1300000000000000000000",
       "mirrorSupply": "0",
-      "pending": "800000000000000000000",
-      "pendingNote": "8 outbound messages for this mirror, some still waiting",
+      "pending": "1300000000000000000000",
+      "pendingNote": "13 outbound messages for this mirror, some still waiting",
       "pairs": [
         {
           "mirror": "0xb89923F73c7B2562201E1452996a2EB0A5FFeD60",
           "wallet": "0x0A84c16fF667FB4CdaC0A6Cd61d4d6171E3b1bd7",
           "canonical": true,
           "sealed": true,
-          "escrow": "800000000000000000000",
+          "escrow": "1300000000000000000000",
           "mirrorSupply": "0",
-          "pending": "800000000000000000000",
-          "pendingNote": "8 outbound messages for this mirror, some still waiting",
+          "pending": "1300000000000000000000",
+          "pendingNote": "13 outbound messages for this mirror, some still waiting",
           "reconciles": true
         }
       ],
       "status": "in-flight",
       "findings": [],
-      "checkedAt": "2026-10-21T02:05:35.703Z"
+      "checkedAt": "2026-10-21T04:50:34.839Z"
     },
     {
       "token": "0xC63edc7F5B55f7C1ad905e949e18E5552f10056b",
@@ -93,7 +93,7 @@
           "hash": "0x7a7fb794cbb66473be4af7ee8bd757ea73097d9d6272b3fb4f157da37d9359ac"
         }
       ],
-      "checkedAt": "2026-10-21T02:05:57.330Z"
+      "checkedAt": "2026-10-21T04:50:40.015Z"
     },
     {
       "token": "0xA302F4331b6bE3013B5aCbb7eF0C093dCFcb91BB",
@@ -118,7 +118,7 @@
       ],
       "status": "reconciled",
       "findings": [],
-      "checkedAt": "2026-10-21T02:06:10.287Z"
+      "checkedAt": "2026-10-21T04:50:45.126Z"
     },
     {
       "token": "0xe1bcCD5E9a0A800D7337A534E4B27A24E5498742",
@@ -143,7 +143,7 @@
       ],
       "status": "reconciled",
       "findings": [],
-      "checkedAt": "2026-10-21T02:06:15.916Z"
+      "checkedAt": "2026-10-21T04:50:48.323Z"
     },
     {
       "token": "0xA9539FD9c256F8b19f3FD4759EDA9C90edBBBE7C",
@@ -168,7 +168,7 @@
       ],
       "status": "reconciled",
       "findings": [],
-      "checkedAt": "2026-10-21T02:06:22.598Z"
+      "checkedAt": "2026-10-21T04:50:51.535Z"
     },
     {
       "token": "0x4B49f432c9C55ABE34b0C8684f7303Ce7Ec0De4f",
@@ -210,7 +210,7 @@
           "hash": "0x4494b8c1d301ea7cda00a2b5906cd3978e082ecb0f0ef19307b69df9d061120b"
         }
       ],
-      "checkedAt": "2026-10-21T02:06:39.747Z"
+      "checkedAt": "2026-10-21T04:51:05.325Z"
     }
   ],
   "history": [
@@ -236,6 +236,11 @@
     },
     {
       "at": "2026-10-21T02:07:01.692Z",
+      "tokens": 6,
+      "open": 2
+    },
+    {
+      "at": "2026-10-21T04:51:29.540Z",
       "tokens": 6,
       "open": 2
     }
