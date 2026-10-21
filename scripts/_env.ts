@@ -8,6 +8,12 @@ config({ path: ".env", quiet: true });
 const elyRpc = process.env.CONDUIT_RPC || process.env.NEXT_PUBLIC_ELYSIUM_RPC || "https://testnet-rpc.elysium.kinetiq.xyz";
 const heRpc = process.env.NEXT_PUBLIC_HYPEREVM_RPC || "https://rpc.hyperliquid-testnet.xyz/evm";
 
+/** Which RPC answered: named in the ledger, never silent. */
+export const rpcSource = {
+  elysium: new URL(elyRpc).host + (process.env.CONDUIT_RPC ? " (CONDUIT_RPC secret)" : " (public RPC, no CONDUIT_RPC secret set)"),
+  hyperevm: new URL(heRpc).host + " (public RPC)",
+};
+
 export const ely = createPublicClient({ chain: elysiumTestnet, transport: http(elyRpc, { retryCount: 4, retryDelay: 400, timeout: 45_000 }) });
 export const he = createPublicClient({ chain: hyperEvmTestnet, transport: http(heRpc, { retryCount: 4, retryDelay: 400, timeout: 45_000 }) });
 

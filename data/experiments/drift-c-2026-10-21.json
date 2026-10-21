@@ -1,0 +1,27 @@
+{
+  "ranOn": "2026-10-21",
+  "token": "0xc63edc7f5b55f7c1ad905e949e18e5552f10056b",
+  "newMirror": "0xe1089bD7953De63a68dc319588d63A3030af9D3D",
+  "newWallet": "0xaE8cf79EE5088B263670C2d056a2F59c9E6c2a30",
+  "routed": true,
+  "earlierRevertSelector": "0x13be252b",
+  "earlierRevertName": "InsufficientAllowance() on the demo token (missing approval to the second wallet), not a bridge refusal",
+  "simulation": "passes",
+  "steps": [
+    {
+      "step": "approve the SECOND escrow wallet",
+      "chain": "elysium",
+      "txHash": "0x3f027354fb8f328217aa39336bf489033496ea050f24794af965abc95709a307",
+      "status": "ok",
+      "gasUsed": "46200"
+    },
+    {
+      "step": "raw crossing keyed on the NEW mirror",
+      "chain": "elysium",
+      "txHash": "0x5e4b14f90f35a116d86d495eb9e98cbec4c45e538e21ec7dda2e59029a0bf363",
+      "status": "ok",
+      "gasUsed": "208627"
+    }
+  ],
+  "answer": "The router accepts crossings keyed on BOTH mirrors for the same token after a rename: two live routes, one canonical."
+}

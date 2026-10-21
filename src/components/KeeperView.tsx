@@ -52,12 +52,23 @@ function Row({ r }: { r: KeeperRow }) {
         </div>
         <span className="chip" style={{ color: s.c }}>{s.t}</span>
       </div>
-      <dl className="grid grid-cols-3 gap-4 text-[14px]">
-        <div><dt className="label">Escrow</dt><dd className="mono">{fmt(r.escrow)}</dd></div>
-        <div><dt className="label">Mirror supply</dt><dd className="mono">{fmt(r.mirrorSupply)}</dd></div>
-        <div><dt className="label">Pending</dt><dd className="mono">{fmt(r.pending)}</dd></div>
-      </dl>
-      <p className="text-[13px] text-muted">{r.pendingNote}</p>
+      <div className={`grid gap-3 ${(r.pairs ?? []).length > 1 ? "md:grid-cols-2" : ""}`} data-testid="pairs">
+        {(r.pairs ?? []).map((p) => (
+          <div key={p.mirror} className="rounded-2xl border px-4 py-3 text-[14px]" style={{ borderColor: p.canonical ? "var(--lime-deep)" : "var(--hairline)" }} data-pair={p.canonical ? "canonical" : "older"}>
+            <div className="flex items-center justify-between gap-2">
+              <span className="label">{p.canonical ? "Canonical pair" : "Older pair, old identity"}</span>
+              <span className="chip" style={{ color: p.reconciles === false ? "var(--signal-red)" : p.reconciles === null ? "var(--signal-amber)" : "var(--ok)" }}>{p.reconciles === false ? "Does not reconcile" : p.reconciles === null ? "Not determined" : "Reconciles"}</span>
+            </div>
+            <div className="mt-2 grid grid-cols-3 gap-3">
+              <div><div className="label">Escrow</div><div className="mono">{fmt(p.escrow)}</div></div>
+              <div><div className="label">Mirror supply</div><div className="mono">{fmt(p.mirrorSupply)}</div></div>
+              <div><div className="label">Pending</div><div className="mono">{fmt(p.pending)}</div></div>
+            </div>
+            <div className="mt-2 text-[12px] text-muted">Wallet {p.wallet ? <Addr a={p.wallet} /> : "none"} · mirror <Addr a={p.mirror} chain="hyperevm" /></div>
+            <div className="text-[12px] text-muted">{p.pendingNote}</div>
+          </div>
+        ))}
+      </div>
       {finding && (
         <div className="rounded-2xl border border-red px-4 py-3" data-testid="finding">
           <div className="label" style={{ color: "var(--signal-red)" }}>Finding · {finding.kind}</div>
@@ -116,11 +127,12 @@ export function KeeperView() {
         <Plate hover={false}>
           <Label>Last unattended run</Label>
           <div className="mt-2 text-[22px] font-medium tracking-[-0.02em]" data-testid="last-run">{file.lastRun ? file.lastRun.slice(0, 16).replace("T", " ") + " UTC" : "No run committed yet"}</div>
-          <p className="text-[13px] text-muted mt-1">A scheduled GitHub Actions run commits this ledger. Nobody started it.</p>
+          <p className="text-[13px] text-muted mt-1">A scheduled GitHub Actions run commits this ledger. Nobody started it.{(file as unknown as { rpcSource?: { elysium: string } }).rpcSource ? ` RPC: ${(file as unknown as { rpcSource: { elysium: string } }).rpcSource.elysium}.` : ""}</p>
         </Plate>
         <Plate hover={false}>
           <Label>Sweeps run</Label>
           <div className="display text-[56px] mt-1" data-testid="sweeps">{file.sweeps}</div>
+          <p className="text-[13px] text-muted">{file.sweeps} sweeps, {file.decisionsAsked} decisions asked. A decision is requested once per distinct finding, never per sweep.</p>
         </Plate>
         <Plate hover={false}>
           <Label>Decisions asked of the builder</Label>

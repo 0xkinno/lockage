@@ -122,19 +122,17 @@ The formula was checked against HyperCore testnet's own token list ({{fact:envel
 
 **{{fact:tests.passed}}** Foundry tests pass, fuzzed at {{fact:tests.fuzzRunsPerProperty}} runs per property. The Solidity and TypeScript envelopes are fed the same **{{fact:tests.twinVectors}}** vectors and must agree exactly. Fork tests run LockGate against the real factory, router and bridge-wallet gateway. A browser suite on six viewports drives a **real EIP-6963 wallet signing real testnet transactions**: claim, approve, cross, refusal, seal, probe, certificate, keeper decision.
 
-## Screenshots
+## Product Screenshot
 
-| Survey: Ines at 23:10 | Cross: five live checks |
+| Survey: Ines at 23:10 | Cross: refused after the rename |
 |---|---|
-| ![Survey](docs/screenshots/survey.png) | ![Cross](docs/screenshots/cross.png) |
-| **Cross: refused after the rename** | **Keeper: unattended reconciliation** |
-| ![Refusal](docs/screenshots/cross-refusal.png) | ![Keeper](docs/screenshots/keeper.png) |
-| **Proof: contracts and transactions** | **Lock Certificate** |
-| ![Proof](docs/screenshots/proof.png) | ![Certificate](docs/screenshots/certificate.png) |
+| ![Survey](docs/screenshots/survey.png) | ![Refusal](docs/screenshots/cross-refusal.png) |
+| **Keeper: unattended reconciliation** | **Proof: contracts and transactions** |
+| ![Keeper](docs/screenshots/keeper.png) | ![Proof](docs/screenshots/proof.png) |
 
 ## Deployed contracts
 
-Elysium testnet (99801), deployed 2026-10-20 by `0x7c8A...a344`. Total deployment cost: {{hype:deployments.totalDeployFeeWei}} HYPE for all nine contracts.
+Elysium testnet (99801), deployed 2026-10-20 by `0x7c8A...a344`. Total deployment cost: {{hype:deployments.totalDeployFeeWei}} HYPE for all nine contracts. **All nine are source-verified on the explorer**: each address below opens the verified Contract tab.
 
 {{table:contracts}}
 

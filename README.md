@@ -128,31 +128,29 @@ The formula was checked against HyperCore testnet's own token list (1,673 tokens
 
 **68** Foundry tests pass, fuzzed at 10,000 runs per property. The Solidity and TypeScript envelopes are fed the same **10,000** vectors and must agree exactly. Fork tests run LockGate against the real factory, router and bridge-wallet gateway. A browser suite on six viewports drives a **real EIP-6963 wallet signing real testnet transactions**: claim, approve, cross, refusal, seal, probe, certificate, keeper decision.
 
-## Screenshots
+## Product Screenshot
 
-| Survey: Ines at 23:10 | Cross: five live checks |
+| Survey: Ines at 23:10 | Cross: refused after the rename |
 |---|---|
-| ![Survey](docs/screenshots/survey.png) | ![Cross](docs/screenshots/cross.png) |
-| **Cross: refused after the rename** | **Keeper: unattended reconciliation** |
-| ![Refusal](docs/screenshots/cross-refusal.png) | ![Keeper](docs/screenshots/keeper.png) |
-| **Proof: contracts and transactions** | **Lock Certificate** |
-| ![Proof](docs/screenshots/proof.png) | ![Certificate](docs/screenshots/certificate.png) |
+| ![Survey](docs/screenshots/survey.png) | ![Refusal](docs/screenshots/cross-refusal.png) |
+| **Keeper: unattended reconciliation** | **Proof: contracts and transactions** |
+| ![Keeper](docs/screenshots/keeper.png) | ![Proof](docs/screenshots/proof.png) |
 
 ## Deployed contracts
 
-Elysium testnet (99801), deployed 2026-10-20 by `0x7c8A...a344`. Total deployment cost: 0.00063 HYPE for all nine contracts.
+Elysium testnet (99801), deployed 2026-10-20 by `0x7c8A...a344`. Total deployment cost: 0.00063 HYPE for all nine contracts. **All nine are source-verified on the explorer**: each address below opens the verified Contract tab.
 
 | Contract | Role | Address | Deploy tx | Gas |
 |---|---|---|---|---|
-| `LockSurvey` | Envelope math, metadata hash, seal | [`0xd62e...e920`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xd62ec5f3fe3e97b25f0276db59e9be188d68e920) | [`0x2bcf1f77...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x2bcf1f771e662dcc92f74099ab664cbb20875a361fbc0604d285ca389cc055df) | 1,013,377 |
-| `LockLedger` | Builder decisions bound to a finding hash; holds | [`0xe065...38ac`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xe0651987e8992b51b2ee0d73883777810a4938ac) | [`0x9ab285e2...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x9ab285e223971bf87f15c17b5b324fa935c602e366394da42c18b811c388249f) | 609,683 |
-| `LockGate` | The enforcement point for crossings | [`0xacdf...d6fe`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xacdfa87818a91f68c4ccf89ef0375e7984f4d6fe) | [`0x278d0968...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x278d09687e82000d6239534616ede18cb4d8150cd941d5ddd0d052306d0c3d80) | 1,293,971 |
-| `LockProbe` | Measures whether transfers deliver exactly what is sent | [`0x9baa...ef36`](https://elysium.kinetiq.xyz/testnet-explorer/address/0x9baac75a4e0e12dd6ed7fd70b1f844c9b8f3ef36) | [`0x4a93a568...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x4a93a568d302939a3b046bc10863ef2392838bd4c6c38905c6780d4eb4ef59ab) | 401,036 |
-| `SealedToken` | Demo: fixed 1B supply, immutable metadata (the control) | [`0xa16b...8462`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xa16b878da523e42892455704ab34dbd98b488462) | [`0xc04242ce...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xc04242ce9b74efcff7b0b5a223b6d8b40a0e9ac7335932c30d1fa5d14af6085c) | 511,222 |
-| `DriftToken` | Demo: the owner can rename it (the drift case) | [`0xc63e...056b`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xc63edc7f5b55f7c1ad905e949e18e5552f10056b) | [`0xef8eefc3...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xef8eefc31e194972662a87ee02c5497a4514796e052d144d91aee70f8b937295) | 759,045 |
-| `OversizeToken` | Demo: 1 quadrillion supply, cannot graduate | [`0xa953...be7c`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xa9539fd9c256f8b19f3fd4759eda9c90edbbbe7c) | [`0xccf3d224...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xccf3d2249438f852f6655e33e247b8142bf9a689acf0590b2c241f034f05a974) | 511,286 |
-| `TaxToken` | Demo: 1% transfer tax | [`0xa302...91bb`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xa302f4331b6be3013b5acbb7ef0c093dcfcb91bb) | [`0xcad82b0b...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xcad82b0b3c6244fdf5ea20f3912fe3ce2dfb1c58cd1e185e7fe0c775d534221d) | 580,055 |
-| `MintToken` | Demo: the owner can mint | [`0xe1bc...8742`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xe1bccd5e9a0a800d7337a534e4b27a24e5498742) | [`0x39e1688a...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x39e1688a1c0fdfb685aa5fede297364edcfa7dfac9bbb104d889964320008532) | 600,712 |
+| `LockSurvey` | Envelope math, metadata hash, seal | [`0xd62e...e920`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xd62ec5f3fe3e97b25f0276db59e9be188d68e920?tab=contract) | [`0x2bcf1f77...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x2bcf1f771e662dcc92f74099ab664cbb20875a361fbc0604d285ca389cc055df) | 1,013,377 |
+| `LockLedger` | Builder decisions bound to a finding hash; holds | [`0xe065...38ac`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xe0651987e8992b51b2ee0d73883777810a4938ac?tab=contract) | [`0x9ab285e2...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x9ab285e223971bf87f15c17b5b324fa935c602e366394da42c18b811c388249f) | 609,683 |
+| `LockGate` | The enforcement point for crossings | [`0xacdf...d6fe`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xacdfa87818a91f68c4ccf89ef0375e7984f4d6fe?tab=contract) | [`0x278d0968...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x278d09687e82000d6239534616ede18cb4d8150cd941d5ddd0d052306d0c3d80) | 1,293,971 |
+| `LockProbe` | Measures whether transfers deliver exactly what is sent | [`0x9baa...ef36`](https://elysium.kinetiq.xyz/testnet-explorer/address/0x9baac75a4e0e12dd6ed7fd70b1f844c9b8f3ef36?tab=contract) | [`0x4a93a568...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x4a93a568d302939a3b046bc10863ef2392838bd4c6c38905c6780d4eb4ef59ab) | 401,036 |
+| `SealedToken` | Demo: fixed 1B supply, immutable metadata (the control) | [`0xa16b...8462`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xa16b878da523e42892455704ab34dbd98b488462?tab=contract) | [`0xc04242ce...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xc04242ce9b74efcff7b0b5a223b6d8b40a0e9ac7335932c30d1fa5d14af6085c) | 511,222 |
+| `DriftToken` | Demo: the owner can rename it (the drift case) | [`0xc63e...056b`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xc63edc7f5b55f7c1ad905e949e18e5552f10056b?tab=contract) | [`0xef8eefc3...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xef8eefc31e194972662a87ee02c5497a4514796e052d144d91aee70f8b937295) | 759,045 |
+| `OversizeToken` | Demo: 1 quadrillion supply, cannot graduate | [`0xa953...be7c`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xa9539fd9c256f8b19f3fd4759eda9c90edbbbe7c?tab=contract) | [`0xccf3d224...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xccf3d2249438f852f6655e33e247b8142bf9a689acf0590b2c241f034f05a974) | 511,286 |
+| `TaxToken` | Demo: 1% transfer tax | [`0xa302...91bb`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xa302f4331b6be3013b5acbb7ef0c093dcfcb91bb?tab=contract) | [`0xcad82b0b...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0xcad82b0b3c6244fdf5ea20f3912fe3ce2dfb1c58cd1e185e7fe0c775d534221d) | 580,055 |
+| `MintToken` | Demo: the owner can mint | [`0xe1bc...8742`](https://elysium.kinetiq.xyz/testnet-explorer/address/0xe1bccd5e9a0a800d7337a534e4b27a24e5498742?tab=contract) | [`0x39e1688a...`](https://elysium.kinetiq.xyz/testnet-explorer/tx/0x39e1688a1c0fdfb685aa5fede297364edcfa7dfac9bbb104d889964320008532) | 600,712 |
 
 ### Bridge pairs
 

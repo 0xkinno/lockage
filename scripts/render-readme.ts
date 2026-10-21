@@ -14,7 +14,7 @@ const tpl = readFileSync("docs/README.template.md", "utf8");
 const EL = "https://elysium.kinetiq.xyz/testnet-explorer";
 const HE = "https://testnet.hyperevm-explorer.xyz";
 const tick = "`";
-const addrLink = (a: string, chain: "el" | "he" = "el") => `[${tick}${a.slice(0, 6)}...${a.slice(-4)}${tick}](${chain === "el" ? EL : HE}/address/${a})`;
+const addrLink = (a: string, chain: "el" | "he" = "el", tab = "") => `[${tick}${a.slice(0, 6)}...${a.slice(-4)}${tick}](${chain === "el" ? EL : HE}/address/${a}${tab})`;
 const txLink = (h: string) => `[${tick}${h.slice(0, 10)}...${tick}](${EL}/tx/${h})`;
 
 const ROLE: Record<string, string> = {
@@ -32,7 +32,7 @@ const ROLE: Record<string, string> = {
 const tables: Record<string, () => string> = {
   contracts: () => {
     const c = (readJson("data/deployments.json", { contracts: {} }) as { contracts: Record<string, { address: string; txHash: string; gasUsed: string }> }).contracts;
-    const rows = Object.entries(c).map(([n, v]) => `| ${tick}${n}${tick} | ${ROLE[n] ?? ""} | ${addrLink(v.address)} | ${txLink(v.txHash)} | ${Number(v.gasUsed).toLocaleString("en-US")} |`);
+    const rows = Object.entries(c).map(([n, v]) => `| ${tick}${n}${tick} | ${ROLE[n] ?? ""} | ${addrLink(v.address, "el", "?tab=contract")} | ${txLink(v.txHash)} | ${Number(v.gasUsed).toLocaleString("en-US")} |`);
     return ["| Contract | Role | Address | Deploy tx | Gas |", "|---|---|---|---|---|", ...rows].join("\n");
   },
   pairs: () => {

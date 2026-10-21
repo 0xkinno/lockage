@@ -21,7 +21,7 @@
 ## Phase 2. Mechanism
 - [x] LockProbe, LockGate, LockLedger; 68 offline tests plus fork tests
 - [x] LockGate proven against the live router and gateway in a fork simulation (contract callers work)
-- [x] Deployed; EVIDENCE.md has addresses and tx hashes (explorer source verification is a manual step)
+- [x] Deployed; EVIDENCE.md has addresses and tx hashes (all nine sources verified on the explorer)
 - [x] Counterfactual run with every tx hash
 
 ## Phase 3. Proof harness

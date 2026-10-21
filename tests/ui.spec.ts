@@ -21,7 +21,7 @@ const ROUTES = [
 ];
 const NAV_ROUTE = new Set(["/survey", "/cross", "/keeper", "/census", "/proof", "/judge"]);
 
-mkdirSync("docs/screenshots", { recursive: true });
+mkdirSync("test-results/shots", { recursive: true });
 
 async function settle(page: Page) {
   await page.goto("about:blank");
@@ -138,7 +138,7 @@ for (const vp of VIEWPORTS) {
         expect(errors, `console errors on ${r.path}`).toEqual([]);
 
         // 7. evidence
-        await page.screenshot({ path: `docs/screenshots/${r.slug}-${vp.name}.png`, fullPage: true });
+        await page.screenshot({ path: `test-results/shots/${r.slug}-${vp.name}.png`, fullPage: true });
       });
     }
   });

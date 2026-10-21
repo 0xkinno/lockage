@@ -23,3 +23,9 @@ data/census-analyze.log
 
 .vercel
 .env*
+docs/screenshots/*
+!docs/screenshots/banner.png
+!docs/screenshots/survey.png
+!docs/screenshots/cross-refusal.png
+!docs/screenshots/keeper.png
+!docs/screenshots/proof.png

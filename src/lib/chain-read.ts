@@ -2,7 +2,7 @@ import { getAddress, isAddress, zeroAddress, type Address, type Hex } from "viem
 import { elyClient, heClient } from "./clients";
 import { ADDR } from "./chains";
 import { LOCK } from "./deployments";
-import { bridgeFactoryAbi, erc20Abi, lockGateAbi, lockLedgerAbi, lockSurveyAbi, routerAbi } from "./abi";
+import { bridgeFactoryAbi, erc20Abi, lockGateAbi, lockLedgerAbi, lockSurveyAbi, mirrorFactoryAbi, routerAbi } from "./abi";
 import { scan as gauge, EIP1967_IMPL_SLOT, type Scan } from "./bytecode";
 import { envelope } from "./envelope";
 
@@ -180,4 +180,28 @@ export async function mirrorSupply(mirror: Address): Promise<bigint | null> {
 
 export async function balanceOf(token: Address, who: Address): Promise<bigint> {
   return elyClient.readContract({ address: token, abi: erc20Abi, functionName: "balanceOf", args: [who] });
+}
+
+export type PairView = { mirror: Address; wallet: Address | null; canonical: boolean; escrow: bigint };
+
+/** Every pair the token owns: the one it was sealed with and the one the factory names now. */
+export async function readPairs(token: Address, sealedMirror: Address | null): Promise<PairView[]> {
+  const cur = await readPair(token);
+  const out: PairView[] = [];
+  const mirrors = [cur.mirror, ...(sealedMirror && sealedMirror.toLowerCase() !== cur.mirror.toLowerCase() ? [sealedMirror] : [])];
+  for (const m of mirrors) {
+    const canonical = m.toLowerCase() === cur.mirror.toLowerCase();
+    let wallet: Address | null = canonical ? cur.wallet : null;
+    if (!canonical) {
+      try {
+        const w = await heClient.readContract({ address: ADDR.hyperevm.mirrorFactory, abi: mirrorFactoryAbi, functionName: "expectedL2Wallet", args: [m] });
+        wallet = w === zeroAddress ? null : (w as Address);
+      } catch {
+        wallet = null;
+      }
+    }
+    const escrow = wallet ? await elyClient.readContract({ address: token, abi: erc20Abi, functionName: "balanceOf", args: [wallet] }) : 0n;
+    out.push({ mirror: m, wallet, canonical, escrow });
+  }
+  return out;
 }

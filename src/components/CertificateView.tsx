@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { type Address } from "viem";
-import { parseAddress, readDecision, readLiveMetaHash, readPair, readSeal, readToken } from "@/lib/chain-read";
+import { parseAddress, readDecision, readLiveMetaHash, readPair, readPairs, readSeal, readToken } from "@/lib/chain-read";
 import { runSurvey } from "@/lib/survey";
 import { Addr, Label, VerdictChip } from "./ui";
 import { LogoMark } from "./Logo";
@@ -16,7 +16,8 @@ export function CertificateView({ token: raw }: { token: string }) {
     queryFn: async () => {
       const a = token as Address;
       const [info, seal, pair, dec, live] = await Promise.all([readToken(a), readSeal(a), readPair(a), readDecision(a), readLiveMetaHash(a)]);
-      return { info, seal, pair, dec, live };
+      const pairs = await readPairs(a, seal?.sealed ? seal.mirror : null).catch(() => []);
+      return { info, seal, pair, dec, live, pairs };
     },
   });
 
@@ -24,7 +25,7 @@ export function CertificateView({ token: raw }: { token: string }) {
   if (q.isLoading) return <div className="wrap pt-40" role="status">Reading the chain…</div>;
   if (q.error || !q.data) return <div className="wrap pt-40 text-red" role="alert">Could not read this token: {(q.error as Error)?.message.split("\n")[0]}</div>;
 
-  const { info, seal, pair, dec, live } = q.data;
+  const { info, seal, pair, dec, live, pairs } = q.data;
   const survey = runSurvey({ decimals: info.decimals, supplyBase: info.totalSupply, scan: info.scan });
   const drift = !!seal?.sealed && !!live && live !== seal.metaHash;
 
@@ -55,6 +56,22 @@ export function CertificateView({ token: raw }: { token: string }) {
           </div>
           <div className="md:col-span-2"><div className="label">Metadata hash sealed</div><span className="mono text-[12px] break-all">{seal?.sealed ? seal.metaHash : "none"}</span></div>
         </section>
+
+        {pairs.length > 1 && (
+          <section className="py-6 border-b border-hairline" data-testid="cert-pairs">
+            <Label>Bridge pairs: the token owns more than one</Label>
+            <div className="mt-3 grid gap-3 md:grid-cols-2 text-[14px]">
+              {pairs.map((p) => (
+                <div key={p.mirror} className="rounded-2xl border px-4 py-3" style={{ borderColor: p.canonical ? "var(--lime-deep)" : "var(--hairline)" }}>
+                  <div className="label">{p.canonical ? "Canonical pair, current identity" : "Older pair, sealed identity"}</div>
+                  <div className="mt-1">Mirror <Addr a={p.mirror} chain="hyperevm" /></div>
+                  <div>Wallet {p.wallet ? <Addr a={p.wallet} /> : "none"}</div>
+                  <div className="mono">Escrow {(p.escrow / 10n ** BigInt(info.decimals)).toLocaleString("en-US")} {info.symbol}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="py-6 border-b border-hairline">
           <Label>Graduation envelope</Label>

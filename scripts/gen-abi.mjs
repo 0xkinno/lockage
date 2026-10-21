@@ -58,6 +58,7 @@ export const mirrorFactoryAbi = [
   },
   { type: "function", name: "predictL1Mirror", stateMutability: "view", inputs: [{ name: "elysiumToken", type: "address" }, { name: "name", type: "string" }, { name: "symbol", type: "string" }, { name: "decimals", type: "uint8" }], outputs: [{ type: "address" }] },
   { type: "function", name: "l1MirrorFor", stateMutability: "view", inputs: [{ name: "elysiumToken", type: "address" }, { name: "name", type: "string" }, { name: "symbol", type: "string" }, { name: "decimals", type: "uint8" }], outputs: [{ type: "address" }] },
+  { type: "function", name: "expectedL2Wallet", stateMutability: "view", inputs: [{ name: "mirror", type: "address" }], outputs: [{ type: "address" }] },
   { type: "function", name: "elysiumTokenOf", stateMutability: "view", inputs: [{ name: "mirror", type: "address" }], outputs: [{ type: "address" }] },
 ] as const;
 

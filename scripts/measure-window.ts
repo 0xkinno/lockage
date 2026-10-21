@@ -45,7 +45,7 @@ process.on("uncaughtException", (e) => {
 });
 
 const topic = keccak256(toHex("SendRootUpdated(bytes32,bytes32)"));
-const headHe = await he.getBlockNumber();
+const headHe = await retry(() => he.getBlockNumber());
 // first HyperEVM block at or after the send, by binary search on timestamps (the RPC caps getLogs at 1000 blocks)
 let lo = 0n;
 let hi = headHe;
@@ -61,12 +61,12 @@ for (let from = lo; from <= headHe; from += 1000n) {
   for (const l of logs) {
     let b;
     try {
-      b = await ely.getBlock({ blockHash: l.topics[1] });
+      b = await retry(() => ely.getBlock({ blockHash: l.topics[1] }));
     } catch {
       continue;
     }
     if (b.number >= send.blockNumber) {
-      const heBlock = await he.getBlock({ blockNumber: BigInt(l.blockNumber) });
+      const heBlock = await retry(() => he.getBlock({ blockNumber: BigInt(l.blockNumber) }));
       const seconds = Number(heBlock.timestamp) - Number(sendBlock.timestamp);
       if (seconds <= 0) continue;
       saveJson("data/challenge-window.json", { ranOn: today(), seconds, sendBlock: Number(send.blockNumber), sendTx: send.transactionHash, rootPostedAtHyperEvmBlock: Number(l.blockNumber), method: "time from the Elysium send to the first SendRootUpdated whose Elysium block is at or after the send" });
